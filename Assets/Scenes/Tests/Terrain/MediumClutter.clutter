@@ -29,12 +29,28 @@
   "TileSizeEnum": "Size1024",
   "TileRadius": 3,
   "Scatterer": {
-    "__type": "SimpleScatterer",
+    "Type": "TerrainMaterialScatterer",
     "Scale": "0.8 1.2",
-    "Density": 0.022265956,
-    "PlaceOnGround": true,
+    "Density": 0.1,
     "HeightOffset": 0,
-    "AlignToNormal": false
+    "AlignToNormal": false,
+    "RandomYaw": true,
+    "Mappings": [
+      {
+        "Material": "terrain/materials/terrain_grass_a.tmat",
+        "EntryIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "Material": "terrain/materials/terrain_rock_b.tmat",
+        "EntryIndices": [
+          2
+        ]
+      }
+    ],
+    "UseFallback": true
   },
   "__references": [
     "facepunch.beech_bush_medium_wall_corner#108291",

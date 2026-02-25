@@ -89,12 +89,50 @@
   "TileSizeEnum": "Size1024",
   "TileRadius": 2,
   "Scatterer": {
-    "__type": "SimpleScatterer",
-    "Scale": "0.8 1.2",
-    "Density": 0.03821542,
-    "PlaceOnGround": true,
-    "HeightOffset": 0,
-    "AlignToNormal": false
+    "Type": "TerrainMaterialScatterer",
+    "Scale": "0.6200001 1.0000002",
+    "Density": 0.1,
+    "HeightOffset": -0.53000003,
+    "AlignToNormal": true,
+    "RandomYaw": true,
+    "Mappings": [
+      {
+        "Material": "terrain/materials/terrain_grass_a.tmat",
+        "EntryIndices": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "Material": "terrain/materials/terrain_dirt_a.tmat",
+        "EntryIndices": [
+          3,
+          4,
+          7,
+          11
+        ]
+      },
+      {
+        "Material": "terrain/materials/terrain_rock_b.tmat",
+        "EntryIndices": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "Material": "terrain/materials/terrain_rock_a.tmat",
+        "EntryIndices": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "UseFallback": false
   },
   "__references": [
     "facepunch.rock_scatter_pile_03#116946",

@@ -6,21 +6,25 @@
         "prefab": "scenes/tests/terrain/rock_moss_01d.prefab"
       },
       "Model": null,
-      "Weight": 0.55
+      "Weight": 0.55,
+      "HasAsset": true,
+      "AssetName": "rock_moss_01d"
     },
     {
       "Prefab": null,
       "Model": "models/rust_ground_plants/agave_a.vmdl",
-      "Weight": 1
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/agave_a.vmdl"
     }
   ],
+  "IsEmpty": false,
   "TileSizeEnum": "Size512",
   "TileRadius": 4,
-  "ScattererTypeName": "SimpleScatterer",
   "Scatterer": {
-    "$type": "SimpleScatterer",
+    "Type": "SimpleScatterer",
     "Scale": "0.8 1.2",
-    "Density": 0.1,
+    "Density": 0.27588698,
     "PlaceOnGround": true,
     "HeightOffset": 0,
     "AlignToNormal": false

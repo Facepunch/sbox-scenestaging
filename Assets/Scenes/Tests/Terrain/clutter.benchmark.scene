@@ -842,7 +842,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Text (1)",
-      "Position": "4460.118,18705.32,2202.699",
+      "Position": "6551.775,17821.88,2202.698",
       "Rotation": "0,0,-0.6087614,0.7933534",
       "Scale": "1,1,1",
       "Tags": "",
@@ -874,7 +874,7 @@
             "BloomLayer": false,
             "AfterUILayer": false
           },
-          "Scale": 0.4,
+          "Scale": 0.9920424,
           "TextScope": {
             "Text": "Volume\nprefab w/ collisions",
             "TextColor": "1,1,1,1",
@@ -920,7 +920,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Text (2)",
-      "Position": "2747.79,18736.94,2202.697",
+      "Position": "3665.54,17782.47,2403.935",
       "Rotation": "0,0,-0.7071068,0.7071068",
       "Scale": "1,1,1",
       "Tags": "",
@@ -952,7 +952,7 @@
             "BloomLayer": false,
             "AfterUILayer": false
           },
-          "Scale": 0.4,
+          "Scale": 1.2254642,
           "TextScope": {
             "Text": "Volume \nInstanced models",
             "TextColor": "1,1,1,1",
@@ -1079,7 +1079,7 @@
           "OnComponentUpdate": null,
           "Seed": 3,
           "Storage": {
-            "$blob": "93d47ded-2ff6-4570-83a1-41f690bb8e1c"
+            "$blob": "04f65a0d-b70e-469a-8423-ce3340d707c9"
           }
         }
       ],
@@ -2598,7 +2598,7 @@
                   "IdValue": "4a04959e-a27a-46c9-9909-45ffc0a352e2"
                 },
                 "Property": "Position",
-                "Value": "-6680.235,6341.162,678.1297"
+                "Value": "-6680.234,6341.162,678.1297"
               },
               {
                 "Target": {
@@ -3348,7 +3348,7 @@
                   "IdValue": "4a04959e-a27a-46c9-9909-45ffc0a352e2"
                 },
                 "Property": "Position",
-                "Value": "-7276.022,8671.857,982.9031"
+                "Value": "-7276.021,8671.857,982.9031"
               },
               {
                 "Target": {
@@ -4248,7 +4248,7 @@
                   "IdValue": "4a04959e-a27a-46c9-9909-45ffc0a352e2"
                 },
                 "Property": "Position",
-                "Value": "-4848.063,3256.975,544.9969"
+                "Value": "-4848.062,3256.975,544.9969"
               },
               {
                 "Target": {
@@ -6998,7 +6998,7 @@
                   "IdValue": "83b8214b-c097-4e54-83c4-44587592b10f"
                 },
                 "Property": "Position",
-                "Value": "-2021.731,8003.799,501.637"
+                "Value": "-2021.73,8003.799,501.637"
               },
               {
                 "Target": {
@@ -7698,7 +7698,7 @@
                   "IdValue": "8dd51e7e-64ad-4d32-9e32-1d82ac30e6e0"
                 },
                 "Property": "Position",
-                "Value": "-1532.19,2250.1,457.1878"
+                "Value": "-1532.189,2250.1,457.1878"
               },
               {
                 "Target": {
@@ -8298,7 +8298,7 @@
                   "IdValue": "83b8214b-c097-4e54-83c4-44587592b10f"
                 },
                 "Property": "Position",
-                "Value": "-1526.106,9990.104,659.4954"
+                "Value": "-1526.105,9990.104,659.4954"
               },
               {
                 "Target": {
@@ -9198,7 +9198,7 @@
                   "IdValue": "8dd51e7e-64ad-4d32-9e32-1d82ac30e6e0"
                 },
                 "Property": "Position",
-                "Value": "-6915.183,15245.44,642.9051"
+                "Value": "-6915.184,15245.44,642.9051"
               },
               {
                 "Target": {
@@ -19448,7 +19448,7 @@
                   "IdValue": "8dd51e7e-64ad-4d32-9e32-1d82ac30e6e0"
                 },
                 "Property": "Position",
-                "Value": "7685.885,-8032.511,354.3651"
+                "Value": "7685.885,-8032.512,354.3651"
               },
               {
                 "Target": {
@@ -38908,7 +38908,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Seed": 0,
+          "Seed": 1,
           "Storage": null
         }
       ],
@@ -38919,7 +38919,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "ClutterVolume",
-      "Position": "5113.115,18032.48,2475.033",
+      "Position": "6732.067,17692.71,2342.859",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -38949,1917 +38949,13 @@
           "OnComponentUpdate": null,
           "Seed": 5,
           "Storage": {
-            "$blob": "61d69abe-b45d-47a0-874b-0577b6c17672"
+            "$blob": "573972a0-2fe9-4780-99d4-7ed53859fad1"
           }
         }
       ],
       "Children": [
         {
-          "__guid": "94245a25-efbd-461a-a5e1-793cbbb1f135",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "9596cdf0-f3e4-4f3d-a97c-9d59c6a8fc31"
-          }
-        },
-        {
-          "__guid": "02516897-7d1d-4c7a-a9c4-dbe74eb5425a",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "6fefc708-f4d7-40fe-a6b7-4e174025d2f4"
-          }
-        },
-        {
-          "__guid": "01d4ab24-d75b-4fe2-b8fc-e14a54d0524f",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "efabc769-dff3-4d4c-a855-8080cd8c52ce"
-          }
-        },
-        {
-          "__guid": "3ed39bf8-6693-49f7-b84f-6cfd45286e3c",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "8cd7534f-628b-4dc4-ac4e-cfd786939c0b"
-          }
-        },
-        {
-          "__guid": "1ad29d7b-c587-4b9a-946e-0701e999545b",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a9d527cb-79de-478b-84a4-80f0f8c050de"
-          }
-        },
-        {
-          "__guid": "4f24c3c2-4d19-4b27-9cf8-178e4b8fa970",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a85679a9-6019-4d11-9651-1feae81128da"
-          }
-        },
-        {
-          "__guid": "78b14567-7e18-4229-abf8-667c70557eac",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f419c284-71fd-47ef-9bde-0b85dbc2d83c"
-          }
-        },
-        {
-          "__guid": "dc886983-ec58-4cda-9b38-1f746098dfa3",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "37cee205-1e1b-47da-ae39-6f693ca7e44f"
-          }
-        },
-        {
-          "__guid": "8e4599d9-4acc-4604-a624-95efb6ab1b7d",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "aed07da3-dfbc-4f0a-a038-82ad7534f56d"
-          }
-        },
-        {
-          "__guid": "6e26a33e-aac6-4a56-a786-af357e6b68b9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "719b124a-3ea5-4c98-8365-0252f613e897"
-          }
-        },
-        {
-          "__guid": "d14e7b64-d09e-4341-8416-4863ed7cc3fd",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e907978a-0191-4302-96b5-310c7240af46"
-          }
-        },
-        {
-          "__guid": "750018ca-58e5-4491-b494-3f7b0981a4e7",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "2e0c06b4-aea8-461c-a7b3-c726ed5643e1"
-          }
-        },
-        {
-          "__guid": "c4294ff2-c3c9-4362-9344-3a276bfd84e0",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "69015587-a403-4ea9-af0c-4b13401b879f"
-          }
-        },
-        {
-          "__guid": "060c3168-8bfe-4ca3-8291-0b3f7ee036e5",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f8167e44-5934-4330-a18a-6fd674e63f14"
-          }
-        },
-        {
-          "__guid": "0168dcc1-61c6-4ac4-8f39-d0eb078ca0d2",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "5115f48a-18c4-41c6-8447-29be2eb0ea33"
-          }
-        },
-        {
-          "__guid": "583b914e-e156-4e4a-9c93-774976587057",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "dbd21817-0743-4b4b-86d3-6a7ad7c82a99"
-          }
-        },
-        {
-          "__guid": "1849a9e3-3a9f-48d9-b368-d76cc5ca5410",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "d2d0dfe7-a433-44f8-af49-b482b1b1704a"
-          }
-        },
-        {
-          "__guid": "2ca44f7a-4d63-4817-b207-8613f2717f56",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ac508ea4-8582-49ed-b6ca-840609e63c3b"
-          }
-        },
-        {
-          "__guid": "77327992-4cb5-47a5-bac4-9aac323993bc",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "82eb689b-efbc-4f1d-a4f4-55fc61f26bec"
-          }
-        },
-        {
-          "__guid": "914d9b7e-5efe-4817-84ad-ee99e6609870",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "24d05feb-b94a-4941-864d-3336c2dc50b3"
-          }
-        },
-        {
-          "__guid": "0c94109b-5420-49e5-9834-de00a1a30e74",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e0e18d34-e5d5-419f-88be-34fc9c2bb9bc"
-          }
-        },
-        {
-          "__guid": "5458c0f8-0e5c-4348-ba1d-4ffe5e03a955",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "cf47b29c-9cc6-4267-b628-46744f6e432d"
-          }
-        },
-        {
-          "__guid": "fc5a57cf-3f62-410c-888d-3bb925991012",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "b816aac8-afa1-4630-af23-935b3f6b11d7"
-          }
-        },
-        {
-          "__guid": "ddfda27c-93ab-467b-840b-a2ba7ce75cb3",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "5922506c-dadf-416b-b1eb-d239c4d053b6"
-          }
-        },
-        {
-          "__guid": "d535ccdc-32df-4da8-9f18-3f17e087831c",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "0cda6bb1-cebf-4cfa-8848-4c18367da460"
-          }
-        },
-        {
-          "__guid": "c01ebf10-b2a8-4473-a961-9fcf20b1ce5c",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "d0afd840-6bb3-4312-a55b-e2b46fe14b91"
-          }
-        },
-        {
-          "__guid": "047fb54a-ba29-4572-9da9-2365d45a9d81",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e46ea573-e21d-4168-99d4-09f4d1924996"
-          }
-        },
-        {
-          "__guid": "820c4c99-c2d3-4bab-85b2-c852cac3afa9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "b5a2bd81-f5f9-4ac8-a851-a3249f81e106"
-          }
-        },
-        {
-          "__guid": "c2e667a8-37c3-4d05-ba7b-583ac1d276bf",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f945f927-9f0e-4c86-8d24-8fd50d1d7a4a"
-          }
-        },
-        {
-          "__guid": "8de502b0-6b6c-47a1-8e36-b558eba7b5c3",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "b6ac6cb2-e1cb-4d54-affe-4cf4ed2d86d2"
-          }
-        },
-        {
-          "__guid": "3e804442-e7e5-4cab-9d3b-5641eae5e88e",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ab5d98eb-5d18-417b-b527-f152e229521e"
-          }
-        },
-        {
-          "__guid": "f96b42a4-ded2-4bc6-be53-39d647e4a671",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3935d7fa-f6e4-4870-b01d-b0e2bdd7fae1"
-          }
-        },
-        {
-          "__guid": "48e2743b-4770-45bc-bfb8-649fdc17e4eb",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "66d86dd2-892e-4530-80c2-6ac2556daf19"
-          }
-        },
-        {
-          "__guid": "ce33d618-a7b5-499d-9613-fe6f7a7c8f13",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "b6db1c91-a038-4082-87bc-8358321e8f5a"
-          }
-        },
-        {
-          "__guid": "8a312e0f-f6ff-45c2-8247-715b5c1c7464",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ac1ca9f3-392c-4470-a719-d123040cb25a"
-          }
-        },
-        {
-          "__guid": "0ccd0f46-12c1-4786-ad69-a925293436a8",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "2e75c59f-1519-44ba-94aa-6a0006dae17e"
-          }
-        },
-        {
-          "__guid": "b3eab43b-f47d-44e3-b29f-15d20ff8d35e",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "9f6d8d6c-d389-425b-84cc-cf4b128336cd"
-          }
-        },
-        {
-          "__guid": "59be4bd0-05b4-451d-b3b6-449b56dc0f76",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "4deca5be-31c8-4bd7-8fce-f319940e1d11"
-          }
-        },
-        {
-          "__guid": "8529b46f-678f-4979-acfc-61c04a11538a",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "cf93e59e-e5ee-4963-b2de-b9c2acfda19e"
-          }
-        },
-        {
-          "__guid": "01dcd353-77ce-43af-97fc-511fa0ff9cf9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3558004f-e517-4cd8-8fa4-18e0c7a736bb"
-          }
-        },
-        {
-          "__guid": "5b85df68-8019-45c8-b69d-0a05a2e73643",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "2e5340f3-efb1-4739-b8c3-7844ee8c7e88"
-          }
-        },
-        {
-          "__guid": "1a264277-5f71-4d88-927d-5d69403d5126",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "750342b8-7709-466e-baea-09f320e61efb"
-          }
-        },
-        {
-          "__guid": "1a97db79-502e-4fa9-9eb4-3b57be533336",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "45af0aa6-0609-4f1a-8b84-ef0b93c9ff28"
-          }
-        },
-        {
-          "__guid": "bb585a83-94f0-4c84-bd8a-106ccae8fe44",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "c99b364a-1ca0-4dec-9fc2-d6fe6e1fd0d4"
-          }
-        },
-        {
-          "__guid": "e76a7411-cfb5-4033-a193-c98e6a20d870",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "13bbf265-7da6-4a46-acdf-7c6f805f14f5"
-          }
-        },
-        {
-          "__guid": "14ad7e62-0bae-4bd6-a055-801eeb947c93",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f3ba9b8f-bee8-485e-836a-296f0a6daeff"
-          }
-        },
-        {
-          "__guid": "942ee180-1057-42cf-beed-1be0cfb13869",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "aeae189c-7607-44ae-8e79-c831be93d459"
-          }
-        },
-        {
-          "__guid": "24823acc-3c5d-4155-9b51-df6ebb784b98",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "428c944a-ec9d-48e9-b641-95c0bfafab8f"
-          }
-        },
-        {
-          "__guid": "499e63b1-2f97-4f98-b0cd-422348596197",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "39ee179e-cb23-4f0f-ba4f-1efb4694680f"
-          }
-        },
-        {
-          "__guid": "90c09770-0b6a-4702-bc84-ad923a924806",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "40f4924e-e952-4d57-a4d3-01cb044a44d8"
-          }
-        },
-        {
-          "__guid": "a2324090-3d28-4428-bc26-75a588bdfef3",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "83866f91-1c21-4d08-a33a-843db7ad664f"
-          }
-        },
-        {
-          "__guid": "99606b91-8f10-4df2-886f-b971ab04596f",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "c21542d9-59f3-4db2-ae15-8e7b958895d0"
-          }
-        },
-        {
-          "__guid": "07abe5a1-eb2f-4cb7-ace1-66ed0e45193f",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "4f3164c9-3158-4b5a-964e-a4080fef2c8e"
-          }
-        },
-        {
-          "__guid": "c521d869-5cae-430a-871d-737bc4b5e0e4",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a143b961-ea3a-46ef-a58e-3146f38478b1"
-          }
-        },
-        {
-          "__guid": "f89be78d-423b-4149-8340-d8ae774886b9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f1aa8e36-7cb6-4bca-8d89-ba4b07aeacf5"
-          }
-        },
-        {
-          "__guid": "953a8162-331d-40f3-98b4-956139eb8ce0",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "5d32fa8a-458c-4b1a-808a-911fbd57209b"
-          }
-        },
-        {
-          "__guid": "bfbdbe21-257f-4d76-a969-5317aeaea132",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "06e3230c-dd11-4e23-9303-9f2cb73b4c70"
-          }
-        },
-        {
-          "__guid": "8505c5d0-ec06-4b95-a4a4-ce1dce4cc759",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "5af09469-ad2e-4412-a507-6491bb0aa62a"
-          }
-        },
-        {
-          "__guid": "af536b23-b4ec-4b01-9147-132592042d07",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "77c43e5b-197c-4d49-baa5-433358d4bdd7"
-          }
-        },
-        {
-          "__guid": "9e88c4db-5c59-4e82-9b46-0064f5aac161",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "c5573574-a7b6-4355-a5d2-c2589e676852"
-          }
-        },
-        {
-          "__guid": "5c3c72a1-7b02-4aa0-aa19-7fc2f6c1c236",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "4e4d1ba2-29f8-47b8-8f34-870b234769c9"
-          }
-        },
-        {
-          "__guid": "0dc760a0-a9b2-4949-b1da-2915041373e2",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "cc398942-a75b-47ad-81cf-a730d892aa75"
-          }
-        },
-        {
-          "__guid": "13da2746-2229-40e9-b69e-d50f187843d7",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "47285f9a-d849-440e-90e7-0ee4ab8265e3"
-          }
-        },
-        {
-          "__guid": "e5bc3753-bb57-4495-a461-ab611797fb33",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ece99a87-98e9-43f0-b917-9b8335ea1199"
-          }
-        },
-        {
-          "__guid": "3f9bed2d-20cc-4a1f-a1ab-feb358e339eb",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "926c5664-d360-453d-80e5-b3c517be0911"
-          }
-        },
-        {
-          "__guid": "08b22093-99c2-42ed-8f2e-a1949b33a898",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3a48d850-98b9-40d0-8f01-47050e4bf0fb"
-          }
-        },
-        {
-          "__guid": "113ec594-ce70-4283-92f6-a42964a22585",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "feebfa3c-2163-4da1-8704-9040586680f9"
-          }
-        },
-        {
-          "__guid": "2bb4938d-9c99-466a-82ba-19f53aee52e9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "fe947de0-5ad0-460b-a00c-7a7ec8898f2d"
-          }
-        },
-        {
-          "__guid": "32ec7343-bdcf-4ef1-8ff9-303f6aa1d915",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "71ee9cd7-6b41-499c-bd9a-58c476af3b2a"
-          }
-        },
-        {
-          "__guid": "1de3fbf7-c982-4536-b295-928773832595",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e56b1110-d096-4361-9b53-531480289d37"
-          }
-        },
-        {
-          "__guid": "fafb2548-d333-4b78-b59b-b89d076e3f2a",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "52dca695-9de7-49a6-ad50-14f82ba76b7f"
-          }
-        },
-        {
-          "__guid": "accd7d4b-0366-469b-8039-6ffa32550c01",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "d636cb66-6974-4109-8cf1-63dd8dc81c61"
-          }
-        },
-        {
-          "__guid": "31241591-5053-4efc-a1db-543572e262d6",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "91d2c610-0329-4cc2-98ad-d8a7279f71c2"
-          }
-        },
-        {
-          "__guid": "4a8da880-9b69-4a2e-a511-86d55b27fd88",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "0ea75edc-2b16-4871-b81a-585af52c1893"
-          }
-        },
-        {
-          "__guid": "48b4dc29-a315-4b45-9f90-78e53f36267e",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "789936d8-c461-43e3-b182-20aab96dccab"
-          }
-        },
-        {
-          "__guid": "77952272-980b-426e-851f-569ebdc53015",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "71d712e4-f355-4ad2-9b07-68890cb7909b"
-          }
-        },
-        {
-          "__guid": "2aa24098-7416-4512-93a0-833ff5ab3a72",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "063ae5ae-b3ad-4a42-996e-e03aaacaa7aa"
-          }
-        },
-        {
-          "__guid": "9a74f34d-cbc7-42a7-8ce5-12bd9334a42a",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "4621180e-e529-4bd9-a566-1c01dce6ceb9"
-          }
-        },
-        {
-          "__guid": "1c66273e-fb86-415a-832c-33e6ef538436",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "2f7c166b-779c-4795-b25b-f8b26f1e84f1"
-          }
-        },
-        {
-          "__guid": "ba1d5f83-b6a8-420c-8354-766853dabe12",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "148c6b6c-5264-4e11-900c-9f814bb62335"
-          }
-        },
-        {
-          "__guid": "9b8df708-f8fd-4da4-bf9f-8db2813e7f74",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a921b47f-07bd-4252-8877-cbc0ec8fcbec"
-          }
-        },
-        {
-          "__guid": "3d62caf2-c7a9-474d-a6ca-b48ee3b5cdb2",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "b65b0a3c-3074-4217-9670-b268e2312fbe"
-          }
-        },
-        {
-          "__guid": "35153823-77e7-44d4-9b22-6546ddf2f87d",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "87be3882-36a6-4e3a-85bf-6e8805a39616"
-          }
-        },
-        {
-          "__guid": "24494d7d-3c4f-45cd-ad11-ecb3214ffd1a",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "b3082c30-0723-4745-805f-7f842037eb00"
-          }
-        },
-        {
-          "__guid": "be990258-c1c3-4803-a02d-9a383a49391b",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "912649be-9fd9-4faf-8670-926c94743b60"
-          }
-        },
-        {
-          "__guid": "9acc44cc-77a1-4878-a78f-2cbd1b7b7837",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "7ca62b88-e1ad-47d5-bf4c-f61bdf68a17b"
-          }
-        },
-        {
-          "__guid": "419b039a-81cc-4016-a29b-b0abdb90c68d",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "5bc8a755-aac6-46bd-9739-d2c58ec40aa8"
-          }
-        },
-        {
-          "__guid": "4cee9a39-96bc-463c-b198-d7cc2ead12d7",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "95018f4a-1b2a-425b-9cbd-1bf3a53946cc"
-          }
-        },
-        {
-          "__guid": "12915d59-3abe-40b9-a767-bc085a260b93",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "d333850f-03b6-4451-8d43-dee6583b5eac"
-          }
-        },
-        {
-          "__guid": "0f52ef58-c031-4fe5-bead-238938ebcc8e",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ad779245-d7fa-4730-bfe3-8a4517563e21"
-          }
-        },
-        {
-          "__guid": "5288e306-8ac3-4204-be45-c0e1005b4a3d",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3e81dbef-e37e-4563-bf4a-ea903085c201"
-          }
-        },
-        {
-          "__guid": "f67cf2fe-8207-4300-a974-f40736336b0d",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "418326c2-8afd-4e6f-854f-9afc62366da2"
-          }
-        },
-        {
-          "__guid": "2d8272b0-b1a3-405c-96e1-937c8055b9c6",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "31c6cf10-0148-4af8-93f6-57fadc8fb528"
-          }
-        },
-        {
-          "__guid": "905b8c6e-3507-4ef5-8c11-20f3dd63c8a0",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "8db6dd66-9310-4349-b68c-9cd86a753c8c"
-          }
-        },
-        {
-          "__guid": "4a55e4fe-16d8-4b00-9c51-8e05ab5a06b9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3e0ad144-6fe0-4856-a08e-8a224dd8ee14"
-          }
-        },
-        {
-          "__guid": "686ab44a-29c3-4e0a-a16d-2f2dfee4c06b",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "1278abd9-757f-42f3-ae7e-4b1d47560116"
-          }
-        },
-        {
-          "__guid": "0ad76fa1-04e1-4ff6-8592-8a8e723f37af",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "82812fb8-f401-4fd7-8632-f873a25a97b2"
-          }
-        },
-        {
-          "__guid": "3a793c76-01d2-4649-a20a-8e4f7330c59b",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "2c4f3bfa-4a7b-4447-9abc-c88dadae7898"
-          }
-        },
-        {
-          "__guid": "44afc7be-776a-42f4-ad7d-06b237452ec6",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "52a54abf-7963-4d00-91cc-054d393d6742"
-          }
-        },
-        {
-          "__guid": "da7bf54c-12a2-498f-af52-8f9987ee9cb0",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "1cf25e94-cf86-47c6-b517-593d316f989c"
-          }
-        },
-        {
-          "__guid": "1060737c-aae1-4247-898f-9b9c5c7d14eb",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "98589dc1-037a-40b9-8cba-17b4b216b89d"
-          }
-        },
-        {
-          "__guid": "a8333200-c248-4da8-86b8-88892a7d3b52",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "0d62c72e-6669-4801-9ac6-22e1ab63ced3"
-          }
-        },
-        {
-          "__guid": "7c1eaaba-db7b-4653-bb30-f9adad77d040",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "1d1cb558-6bc0-47f1-828f-a2fb9cb3c635"
-          }
-        },
-        {
-          "__guid": "330c1c3e-5b6e-4989-a5fc-ef6d7bcd1ae6",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "67e483cb-16cb-4a05-af0c-df76d0f2efac"
-          }
-        },
-        {
-          "__guid": "3cb4b5d5-b6b1-4c8b-9059-975d82e7f755",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e441a13c-96eb-4497-9398-1a53fef41431"
-          }
-        },
-        {
-          "__guid": "a5096ddf-5324-46fd-8fd3-d3dd48af2751",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e2aabaa3-ae28-4944-ac9d-f5a14cc3bdb5"
-          }
-        },
-        {
-          "__guid": "0f8910e5-db76-453a-bc18-8809022ad1ca",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "4fed81f5-1783-4977-ab48-90f6e2c5e9f5"
-          }
-        },
-        {
-          "__guid": "1ea3f94a-36e5-4eb0-ae37-3ce3bb6461eb",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "7196bb3a-8a75-4fc3-9ee8-8787be421b0e"
-          }
-        },
-        {
-          "__guid": "cfa59736-ef46-4d32-9715-ca42c76c0eb1",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "878c19f3-51a0-47e5-9699-3193372af394"
-          }
-        },
-        {
-          "__guid": "bca13136-cfd9-419d-b5c7-99f5aba6eaec",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "45249240-9bc1-49e1-9a17-368dcbbe78c3"
-          }
-        },
-        {
-          "__guid": "92a34ab3-92f3-4897-9de4-c086e83408fb",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "802c119c-79ff-4075-aa68-c6e3582c4c5d"
-          }
-        },
-        {
-          "__guid": "bd6ba3f5-e186-41aa-ad60-d369dad1c768",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "839fdf78-3501-4359-83a7-da8027f27369"
-          }
-        },
-        {
-          "__guid": "becfd678-afc7-45ec-9b2e-811f8f183343",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f8fa2518-da34-4f14-a039-5d22895f2de4"
-          }
-        },
-        {
-          "__guid": "cfce0194-c68e-420e-949e-9edfac0428c5",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "080e45e5-f096-4715-815b-018a4374efa7"
-          }
-        },
-        {
-          "__guid": "c910a6d8-dab0-48b6-be06-1ff6499ad4c8",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "2b883fbd-3242-46dd-91c0-16fa25398185"
-          }
-        },
-        {
-          "__guid": "4912f0b2-9b75-498e-9f3d-b9128a709913",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3c66569e-a647-4a2a-b73c-6aed545177be"
-          }
-        },
-        {
-          "__guid": "d99da955-b5c9-4d5e-a970-56949c0ad72a",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "18f5fc30-784e-4615-ae91-950653b011be"
-          }
-        },
-        {
-          "__guid": "901911be-10cc-4824-b7c8-a4d1142d6bf9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a6a4993e-26d6-4157-9f93-783afa0897c4"
-          }
-        },
-        {
-          "__guid": "565613bf-57aa-4ac5-a27c-1e5e9428ef3b",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "e073363f-dc8e-4b78-86e1-57d5a61e748c"
-          }
-        },
-        {
-          "__guid": "39307a5f-8aa4-411e-9ab0-73e0354670d1",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "172b4913-852d-4ca2-a8dc-f44d45cfdcca"
-          }
-        },
-        {
-          "__guid": "33f244d8-3793-49df-88af-03982f5bf60b",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "c7a66d19-ff03-4088-8661-7a0ea9d37a19"
-          }
-        },
-        {
-          "__guid": "b3775d60-78bf-44e2-af6d-76fb808159fa",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "825ce563-5f4a-44df-8174-641e42950efc"
-          }
-        },
-        {
-          "__guid": "39de97bc-4463-4374-8a77-d198bf16eb1e",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a7207275-e64e-461e-a73f-f84db855cd65"
-          }
-        },
-        {
-          "__guid": "38a53e9b-7dda-4594-8cbf-2a8779ce74d3",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "df7f2faa-f291-4457-bef2-6a81cf669bce"
-          }
-        },
-        {
-          "__guid": "21e28ff8-22fd-4a4e-a176-eba7b19475c5",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "366ab717-8e94-4989-9264-5723167fbfe6"
-          }
-        },
-        {
-          "__guid": "136d53ab-7409-4bca-afc7-a0cc200ff108",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "97b22f7d-e397-48f2-8527-bf828f3baf18"
-          }
-        },
-        {
-          "__guid": "043f354b-e64e-40e0-8741-46737077c7bd",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "f8bca4c0-52de-4c6e-b546-299b10a291e8"
-          }
-        },
-        {
-          "__guid": "b38d5af4-ac1e-4104-8820-52ffaa2a8775",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "a967278e-4280-4826-8f08-257227a8ecf3"
-          }
-        },
-        {
-          "__guid": "d0859e4c-9d3d-4f4a-8c0e-b36ff1b69e56",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "c4021375-9cf3-4dac-81d8-1044e5f67ade"
-          }
-        },
-        {
-          "__guid": "f76bd280-e0f3-45a4-b6d9-b341c3434256",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ea970c38-4d0b-462f-8c46-fef3e3199cbc"
-          }
-        },
-        {
-          "__guid": "7a7f175c-adde-4cc7-a114-ab178e2728b5",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "3aec63cb-6a1a-4491-9cf8-38d92f4ce4bc"
-          }
-        },
-        {
-          "__guid": "dcfa8b10-69a6-449c-95fb-2d52e34a86f4",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "468815ec-ef01-4c61-b6cb-d15eda736eab"
-          }
-        },
-        {
-          "__guid": "2281d588-20cc-498c-b139-217d64577ee1",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "9ddfd55a-b29a-427b-bdfa-5df8011609fc"
-          }
-        },
-        {
-          "__guid": "7057d3d2-ff46-447c-9675-2b2210881560",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "35995d91-571a-44b4-81b8-06589c0e73cb"
-          }
-        },
-        {
-          "__guid": "71d8e1ce-ab40-4c2d-b939-77b38a763181",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "ccb9676c-6733-438f-9dcb-8fcc70180edf"
-          }
-        },
-        {
-          "__guid": "d58a8b85-877c-4bc6-8b67-c6c59c359cd4",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01e.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "a60dfbfa-27fb-4a46-915d-46184b42ac57": "679308ff-ac07-4109-bc6f-fe86c71af5f8"
-          }
-        },
-        {
-          "__guid": "a46ecc76-73e3-4ddd-80a8-d2aa19b5b5a3",
+          "__guid": "df27c5bc-34d6-4526-afe1-4c75843f9f3a",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -40871,8 +38967,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-592.1338,-829.2109,-307.3828"
               },
               {
                 "Target": {
@@ -40880,20 +38976,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "-0.1857405,0.03162372,0.9681578,0.1648361"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "0.9213731,0.9213731,0.9213731"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "a46ecc76-73e3-4ddd-80a8-d2aa19b5b5a3",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "f313b012-bfbb-495f-aa5a-b3cd5f578208",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "398acc39-0b8e-4da8-8745-47205e562495",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "dea8eb65-5fb8-4812-8cda-d803abb9bd87"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "df27c5bc-34d6-4526-afe1-4c75843f9f3a",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "7e853724-9726-41ce-b306-c7ffd267682b",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "e625951a-5bde-4395-b140-a08882fa2a70",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "a534279c-c4e5-4392-ab0d-1aa579f3fbab"
           }
         },
         {
-          "__guid": "980ed7a1-379a-4aec-8ed0-e32bc6f08de6",
+          "__guid": "53a36e2c-b58c-40ce-8b17-89a33ddbb9b7",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -40905,8 +39017,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-989.5166,-175.8008,-376.6172"
               },
               {
                 "Target": {
@@ -40914,20 +39026,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1692301,-0.08282976,-0.8820986,-0.4317436"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "0.8909093,0.8909093,0.8909093"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "980ed7a1-379a-4aec-8ed0-e32bc6f08de6",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "f87f3c80-e07c-4fd1-ae70-b9ceb3f7cb1e",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "d49389ea-e0fb-4527-8f0c-3cc2f538d722",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "fc89880f-a5e7-4dd1-8ef3-a07e4c213164"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "53a36e2c-b58c-40ce-8b17-89a33ddbb9b7",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "1ebaf4c6-a4d9-4c8f-bf02-f908200f86d4",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "620c911c-484e-4937-aecb-d6cefd96db31",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "26daa3fb-eeef-49a5-a959-00de7a7c2858"
           }
         },
         {
-          "__guid": "14a692c9-24bc-421b-936d-8e90144a7af7",
+          "__guid": "0cf44cb0-5d43-4944-a89f-b4f0de731cf7",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -40939,8 +39067,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-787.458,340.6016,-447.5273"
               },
               {
                 "Target": {
@@ -40948,20 +39076,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.04546135,-0.1828465,-0.2369637,-0.9530733"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "0.8718864,0.8718864,0.8718864"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "14a692c9-24bc-421b-936d-8e90144a7af7",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "c4e7bff5-c097-4952-afb6-eb676e0d2283",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "9e9f2029-88d5-481c-bd1d-83d56552b5b0",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "58161428-e335-4319-b70f-68050bbb22c0"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "0cf44cb0-5d43-4944-a89f-b4f0de731cf7",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "5d8907fe-c362-45c5-870f-b87e98dab145",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "2cd1369c-e699-4b9c-a110-5cd060c263da",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "cb3c483d-eeaf-4a05-8d7e-35310a222827"
           }
         },
         {
-          "__guid": "6a171d79-1a09-4c44-8e71-590230bda3d8",
+          "__guid": "841cf846-f1de-46b5-8815-ca05bef9192e",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -40973,8 +39117,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-101.376,-1024.125,-171.7656"
               },
               {
                 "Target": {
@@ -40982,20 +39126,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.0170282,-0.1876423,-0.08875814,-0.9780708"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.092862,1.092862,1.092862"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "6a171d79-1a09-4c44-8e71-590230bda3d8",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "0f961953-1d3e-4b7d-8a64-c02a44f4bcf1",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "4b894d52-5a61-404f-ab4a-bafdd462644a",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "d080e9bf-0336-49a8-bb7e-640b48c7acac"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "841cf846-f1de-46b5-8815-ca05bef9192e",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "2522405f-4a6e-4429-8dde-7de8eb578695",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "b3874cfe-1431-4278-85a3-1dc2635a94e0",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "79563f48-4c13-48db-a52f-9ca01f6a99af"
           }
         },
         {
-          "__guid": "5b2e45c3-eb36-4fee-8b86-281e8ad6ae41",
+          "__guid": "939cc5cb-9aa6-4822-b5c8-f415524aa2c2",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41007,8 +39167,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-515.208,-626.0586,-336.5781"
               },
               {
                 "Target": {
@@ -41016,20 +39176,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1307527,-0.1356589,-0.681538,-0.7071113"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "0.9443417,0.9443417,0.9443417"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "5b2e45c3-eb36-4fee-8b86-281e8ad6ae41",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "20b356f1-e4d2-4114-8b54-8f5a4eab233d",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "4d53d09d-e734-4e3a-be00-3c0ff52b7a83",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "f741ec72-0d9b-4929-bd03-6c37ab408e70"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "939cc5cb-9aa6-4822-b5c8-f415524aa2c2",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "232a506e-6f55-4e98-ab36-7509ab811636",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "8a605e2a-838c-4666-8db5-2195ac6a66d0",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "f13a6052-11bd-4c4e-8fe8-76ba6f5d963c"
           }
         },
         {
-          "__guid": "efbb3fe7-8e72-4795-8761-0855445e12cc",
+          "__guid": "0ab4391c-f465-41ed-bf9d-f6a35e0bb990",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41041,8 +39217,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-340.0283,-82.13672,-408.4258"
               },
               {
                 "Target": {
@@ -41050,20 +39226,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1662506,-0.08865852,-0.8665682,-0.4621256"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.168648,1.168648,1.168648"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "efbb3fe7-8e72-4795-8761-0855445e12cc",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "94c753af-7182-43e8-be2e-73b7802f5d7e",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "802dd117-3e5f-4e6a-8ae0-bf2c15267658",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "b6f1884a-29e7-4abb-b2eb-500d27c19d6a"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "0ab4391c-f465-41ed-bf9d-f6a35e0bb990",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "64c8dd5b-ab74-4ecf-a5f4-8a4cd4bd4889",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "1e43c9df-ed72-4c13-80a9-d3351f720709",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "79ef93ea-3e7f-4b5d-9c95-1bb1b4300f9b"
           }
         },
         {
-          "__guid": "4e861a79-ffff-49a9-b1a7-3d676a90342a",
+          "__guid": "06c2b0e7-f72d-4210-abd9-e1768def9b15",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41075,8 +39267,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-383.9697,454.9648,-473.9219"
               },
               {
                 "Target": {
@@ -41084,20 +39276,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "-0.1787399,0.0595958,0.9316674,0.3106384"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.142348,1.142348,1.142348"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "4e861a79-ffff-49a9-b1a7-3d676a90342a",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "f1e4393d-d837-46f9-a08c-11c718da14cc",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "0e2b05de-dee9-47da-9f76-9afa5f1fa926",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "667b9a36-dbea-4ed4-b2fb-e0ebe83ee9cb"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "06c2b0e7-f72d-4210-abd9-e1768def9b15",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "35fb25b4-99c0-4fdc-87a7-22a9e7f10118",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "70b7cada-542e-4e56-b520-69fcd118f9fe",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "d0a07be4-68f2-44d0-961b-6a83ba818980"
           }
         },
         {
-          "__guid": "1491a5f4-287d-4c8d-962e-7e6774e2589e",
+          "__guid": "e207e7d1-2bd7-4c04-8e61-e58ad0e69c43",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41109,8 +39317,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "183.2803,-41.79297,-368.918"
               },
               {
                 "Target": {
@@ -41118,20 +39326,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1346534,-0.131788,-0.70187,-0.6869345"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.070646,1.070646,1.070646"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "1491a5f4-287d-4c8d-962e-7e6774e2589e",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "d91d3012-6f84-4560-b4fa-406095f083c9",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "fca7eca2-9c5f-4b43-a3b0-97689159619f",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "dafabd1a-7279-4cdc-8783-64e3916c4548"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "e207e7d1-2bd7-4c04-8e61-e58ad0e69c43",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "8143d68f-de53-4e1c-9605-c371c1b9a515",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "4ff6ad9c-fc8b-4cd5-8a96-4701ab161d79",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "5821f200-5930-4802-a171-3024aef2828b"
           }
         },
         {
-          "__guid": "165775dc-1998-4111-b4d4-248b9709fdfc",
+          "__guid": "ca04ffb9-6b03-45b6-b3ff-92706f766b29",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41143,8 +39367,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "401.4639,-112.502,-328.3906"
               },
               {
                 "Target": {
@@ -41152,20 +39376,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1530291,-0.1099168,-0.7976521,-0.5729325"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.110926,1.110926,1.110926"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "165775dc-1998-4111-b4d4-248b9709fdfc",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "82d742df-1767-40d0-9131-d57188996307",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "b304e4b0-227e-4b95-9eba-343c8b222b68",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "28029767-4cf2-4ee9-bc38-abff35eb1076"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "ca04ffb9-6b03-45b6-b3ff-92706f766b29",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "145cf6e1-7199-4a66-a097-bab25e14346d",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "92c7441b-9aba-48f6-90b0-2b5b62ad069e",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "6247426c-d79f-4aa0-9c53-e9b38fac4b9f"
           }
         },
         {
-          "__guid": "b628bb4a-b498-4377-8470-33ca1eb370b9",
+          "__guid": "aa22a014-1d87-4f00-9c96-5c3316c3953a",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41177,8 +39417,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "190.4678,427.7578,-442.9336"
               },
               {
                 "Target": {
@@ -41186,20 +39426,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.05382636,-0.1805611,-0.2805657,-0.9411607"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.10727,1.10727,1.10727"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "b628bb4a-b498-4377-8470-33ca1eb370b9",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "ba61ea9a-e6a0-4226-b065-bce9ee84a93c",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "767afca2-7b18-4848-922b-7ebc0984aeb1",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "825c4d9b-fd63-4c3d-b6c8-8fd564941216"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "aa22a014-1d87-4f00-9c96-5c3316c3953a",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "88553195-efd1-4a31-98b1-2668eb3b2038",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "f7cdc225-1f9a-464a-b79a-e4343a84cd54",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "a1bdfb5d-8776-47ae-8fb3-9437d3c5edde"
           }
         },
         {
-          "__guid": "5f37da20-4e57-416f-9d32-d0c9b6811369",
+          "__guid": "1a8275e3-143c-49e9-8306-0a2eb4e96fe4",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41211,8 +39467,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "-29.03613,438.584,-452.5977"
               },
               {
                 "Target": {
@@ -41220,20 +39476,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1653766,-0.09027833,-0.8620126,-0.4705687"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.162257,1.162257,1.162257"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "5f37da20-4e57-416f-9d32-d0c9b6811369",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "ecab775c-4187-4875-a7a2-2dabdc99fb1b",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "95f7fed1-7394-4bc9-8665-448896c85ff4",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "fe11f143-4ec7-4fdc-bc5c-47c36e3fb90c"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "1a8275e3-143c-49e9-8306-0a2eb4e96fe4",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "0e3bf679-7c6a-4a6d-8b40-4836838885da",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "863c0946-a5be-47cc-bcbb-a583b247f6a4",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "c4ee6e62-ac72-471b-912b-0a16e54e53cb"
           }
         },
         {
-          "__guid": "b55033ec-d162-4b08-9876-07134b52d916",
+          "__guid": "4bb982df-06a4-4476-a6fe-dd77c0f62841",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41245,8 +39517,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "945.5264,-711.5586,-142.2422"
               },
               {
                 "Target": {
@@ -41254,20 +39526,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "-0.1009572,-0.1590825,0.5262313,-0.8292052"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.09595,1.09595,1.09595"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "b55033ec-d162-4b08-9876-07134b52d916",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "a658e99e-38b1-4caf-a026-1c0987acd429",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "8f8182e6-e5dd-4753-bb01-b63e0f372b8d",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "8cb462fb-b6ff-49db-a14a-10f6e88976c5"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "4bb982df-06a4-4476-a6fe-dd77c0f62841",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "159e814a-5e8a-467e-b2be-7d85efd178d5",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "b2cacfe7-3daf-4e3a-9c5c-f4883b8a15ee",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "f6227d67-10e4-4e16-8f3f-3fcfcd736c80"
           }
         },
         {
-          "__guid": "9c3add25-8f4e-4e43-98f7-df425649980a",
+          "__guid": "75476bda-f194-482f-8f5e-cb4b615a825e",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41279,8 +39567,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "790.3818,186.9863,-267.3906"
               },
               {
                 "Target": {
@@ -41288,20 +39576,36 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Value": "0.1345591,-0.1318842,-0.7013785,-0.6874363"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Scale",
+                "Value": "1.051644,1.051644,1.051644"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
+                },
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "9c3add25-8f4e-4e43-98f7-df425649980a",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "1c57da0b-57c2-4a11-baaa-25b294ba53e3",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "2cf6f899-1de1-40b7-ac0f-ee0d274ad747",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "3528bb66-335e-437a-a1e8-63b54b9a3995"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "75476bda-f194-482f-8f5e-cb4b615a825e",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "27097ad9-8429-449a-820f-a3e166545eef",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "c73b156a-f9f6-40b0-8db3-b844db03d037",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "95cc8c3c-b68d-43dc-bf07-0ed2676b0071"
           }
         },
         {
-          "__guid": "c42fa19e-1732-4cb0-9c49-618cf416ada2",
+          "__guid": "ea5d4291-4c64-4efa-bca4-f0daf08b1ad3",
           "__version": 2,
           "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
           "__PrefabInstancePatch": {
@@ -41313,8 +39617,8 @@
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Position",
+                "Value": "455.9248,295.0977,-364.8281"
               },
               {
                 "Target": {
@@ -41322,324 +39626,32 @@
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
                 "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "c42fa19e-1732-4cb0-9c49-618cf416ada2",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "e1a5fd74-0974-4b1c-a569-65361908bad7",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "13fb7232-87a3-42dc-a555-6c4a5a4f506b",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "08b1cb4f-6ad3-4de6-8226-0f55adffaa8f"
-          }
-        },
-        {
-          "__guid": "9eba3468-05d6-4e8b-8ff1-2cc685213bec",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Value": "0.1561635,-0.1054161,-0.81399,-0.5494732"
               },
               {
                 "Target": {
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "9eba3468-05d6-4e8b-8ff1-2cc685213bec",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "db61567a-8c50-4d2c-957e-8f55cd948701",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "19899d6c-a1fd-4280-9b3d-91f607a803c8",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "c12c3c6a-a264-43cb-a7aa-ed726fbdf044"
-          }
-        },
-        {
-          "__guid": "cd25ac4f-8ce7-4986-a459-a2150e7c2812",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Name",
-                "Value": "Untitled Object"
+                "Property": "Scale",
+                "Value": "1.003973,1.003973,1.003973"
               },
               {
                 "Target": {
                   "Type": "GameObject",
                   "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
                 },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
+                "Property": "Tags",
+                "Value": "clutter"
               }
             ],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "cd25ac4f-8ce7-4986-a459-a2150e7c2812",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "aef00fe2-f9f7-41b2-93ad-ced64595316c",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "c0e1346d-d8cf-4a15-8927-c22423269d61",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "099b5047-24d8-43c9-abe4-ddbf724807ed"
-          }
-        },
-        {
-          "__guid": "d9944668-7be3-452e-871b-9323b2924a66",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Name",
-                "Value": "Untitled Object"
-              },
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "d9944668-7be3-452e-871b-9323b2924a66",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "a44881df-c464-435a-90e9-f17f998ee721",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "76876b73-f8be-42ea-8f47-a6c6976fc049",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "08cb38eb-bf80-4a6f-b1d7-cf08249e721e"
-          }
-        },
-        {
-          "__guid": "61cf0e4d-c213-484d-b4b4-37f4edc28c19",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Name",
-                "Value": "Untitled Object"
-              },
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "61cf0e4d-c213-484d-b4b4-37f4edc28c19",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "e9a60077-2137-44bf-a62a-7418dfa48224",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "bf9bd72f-b19d-4a56-8386-97ce2d08b773",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "212ab681-1dc6-452c-877c-b9f05bd79eb2"
-          }
-        },
-        {
-          "__guid": "4848cecf-7b04-4b31-9c70-bade5e547ff0",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Name",
-                "Value": "Untitled Object"
-              },
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "4848cecf-7b04-4b31-9c70-bade5e547ff0",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "e16ebe2c-91af-41a4-a585-ea0362b4c241",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "49631ac4-c5d6-40a7-8081-47ed076e751f",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "3ea30934-7627-4f38-a279-4ad6f88fca21"
-          }
-        },
-        {
-          "__guid": "3b8c70b0-1740-46a0-9517-8648d8c2d9c9",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Name",
-                "Value": "Untitled Object"
-              },
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "3b8c70b0-1740-46a0-9517-8648d8c2d9c9",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "f422fd00-dfcd-4b0f-8c87-7f7aeec5eec2",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "6b101fb9-ea54-4989-90cb-ab64351f0459",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "85b7d9c5-c604-4f0b-9bc4-3da0278ce0e2"
-          }
-        },
-        {
-          "__guid": "40a214b0-dd2b-42c9-a03d-e82334d03d12",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "40a214b0-dd2b-42c9-a03d-e82334d03d12",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "2b8a4a61-f9f7-42d5-a839-78da1487b3a1",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "89b97cd0-26fd-40ce-80d8-4b4cad04836f",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "88882a93-f31b-4dd8-922c-4a85bdeb0a1c"
-          }
-        },
-        {
-          "__guid": "ffb01db7-1dbf-4b60-8f43-e2e14f092b5c",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "ffb01db7-1dbf-4b60-8f43-e2e14f092b5c",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "a6475c4c-17ed-48b9-bb31-0a5550374823",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "b943b7ae-1bb1-4f1e-8bd4-227686f9efb9",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "851c30c5-65aa-4b1e-b98d-e2d43b0aacc7"
-          }
-        },
-        {
-          "__guid": "7041bd6f-67dd-48a3-ae87-a1d934e21c66",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "7041bd6f-67dd-48a3-ae87-a1d934e21c66",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "baf5a50a-d792-4648-909e-0e6142a70060",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "302ab63f-469a-45b3-ae76-0fe350c5bab1",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "78b7bf65-0f02-4f7d-ac52-9dd374ec2e95"
-          }
-        },
-        {
-          "__guid": "750b4a8b-aa48-40d6-8926-0b0dec1d4fd3",
-          "__version": 2,
-          "__Prefab": "scenes/tests/terrain/rock_moss_01d.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "GameObject",
-                  "IdValue": "10328f98-a0cf-4fb1-b922-a596a32e1831"
-                },
-                "Property": "Rotation",
-                "Value": "0,0,0,1"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "10328f98-a0cf-4fb1-b922-a596a32e1831": "750b4a8b-aa48-40d6-8926-0b0dec1d4fd3",
-            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "19e985cb-c956-45a4-938b-7a55b6974e8a",
-            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "de1c9ddb-f7ae-452b-9803-8e72b77e7888",
-            "0f355153-57f0-42bf-9b45-77caf961eef3": "835dba5a-5bea-44aa-8e32-1ab406b5cf46"
+            "10328f98-a0cf-4fb1-b922-a596a32e1831": "ea5d4291-4c64-4efa-bca4-f0daf08b1ad3",
+            "04d35ecc-9bb5-470f-a9fc-2fa1e2b2c2e6": "3968ebca-98ff-42a1-94b5-2547dae1cbb0",
+            "d38dfe7d-e8d7-4069-b2bb-9cac508aee98": "93b7b065-4c59-49e4-b80f-a05d36f617c9",
+            "0f355153-57f0-42bf-9b45-77caf961eef3": "1ad8dc74-32af-4ace-8b49-d26e856dffb9"
           }
         }
       ]
@@ -41679,7 +39691,7 @@
           "OnComponentUpdate": null,
           "Seed": 5,
           "Storage": {
-            "$blob": "8e08fea4-7022-42d4-a18a-ed519d11f882"
+            "$blob": "53109a8b-f44e-4875-bcac-a25439fc55f3"
           }
         }
       ],
@@ -41747,7 +39759,7 @@
     "GameObjectSystems": {
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "2f0f62ec-f84a-486b-8163-63c8f71d4444"
+          "$blob": "ed6212e6-7cdd-406c-bf87-27c69cd920d0"
         }
       }
     }

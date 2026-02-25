@@ -35,23 +35,12 @@
   "TileSizeEnum": "Size512",
   "TileRadius": 4,
   "Scatterer": {
-    "__type": "TerrainMaterialScatterer",
-    "Scale": "1.47 1.2",
-    "Density": 0.01,
+    "Type": "SimpleScatterer",
+    "Scale": "0.8 1.2",
+    "Density": 0.008995999,
+    "PlaceOnGround": true,
     "HeightOffset": 0,
-    "AlignToNormal": false,
-    "RandomYaw": true,
-    "Mappings": [
-      {
-        "Material": "terrain/materials/terrain_grass_a.tmat",
-        "EntryIndices": [
-          0,
-          1,
-          2
-        ]
-      }
-    ],
-    "UseFallback": true
+    "AlignToNormal": false
   },
   "__references": [],
   "__version": 0
