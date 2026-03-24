@@ -21,6 +21,7 @@ CS
 
 	Texture2D<uint2> InputEdgeMap < Attribute( "InputEdgeMap" ); >;
 	Texture2D<float2> Mask < Attribute( "Mask" ); >;
+	Texture2D<float> MaskDepth < Attribute( "MaskDepth" ); >;
 	RWTexture2D<uint2> OutputEdgeMap < Attribute( "OutputEdgeMap" ); >;
 	int StepSize < Attribute( "StepSize" ); Default( 32 ); >;
 
@@ -37,8 +38,10 @@ CS
 			return;
 		
 		float currentRegionId = Mask.Load( int3( threadId.xy, 0 ) ).r;
+		float maskDepth = MaskDepth.Load( int3( threadId.xy, 0 ) ).r;
 		
-		if ( currentRegionId <= ID_EPSILON )
+		// Early-out: no mask geometry at this pixel (nothing rasterized here)
+		if ( currentRegionId <= ID_EPSILON || maskDepth <= 0.0 )
 		{
 			OutputEdgeMap[threadId.xy] = INVALID_EDGE;
 			return;
@@ -70,7 +73,7 @@ CS
 			
 			uint2 candidateEdge = InputEdgeMap.Load( int3( samplePos, 0 ) );
 			
-			if ( any( candidateEdge == INVALID_EDGE.x ) )
+			if ( any( candidateEdge == INVALID_EDGE ) )
 				continue;
 			
 			float candidateRegionId = Mask.Load( int3( int2( candidateEdge ), 0 ) ).r;

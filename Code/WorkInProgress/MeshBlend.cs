@@ -35,17 +35,8 @@ public sealed class MeshBlend : BasePostProcess<MeshBlend>
 	public MeshBlendDebugView DebugView { get; set; } = MeshBlendDebugView.None;
 
 	/// <summary>
-	/// Resolution downscale factor for intermediate buffers.
-	/// 1 = full resolution, 2 = half, 4 = quarter. Higher values are cheaper but coarser.
-	/// The resolve pass always runs at full resolution, reading the downscaled data
-	/// with coordinate scaling so color quality is preserved.
-	/// </summary>
-	[Property, Title( "Resolution Scale" ), Range( 1, 4, 1 )]
-	public int ResolutionScale { get; set; } = 1;
-
-	/// <summary>
-	/// Max JFA step size. Only needs to cover half of ScreenBlendRadius because
-	/// the resolve weight hits zero at 0.5 * ScreenBlendRadius. Fewer steps = fewer dispatches.
+	/// Max JFA step size — matches ScreenBlendRadius in the resolve shader.
+	/// JFA propagates edge info out to this distance in pixels.
 	/// </summary>
 	private const int MaxJfaDistance = 32;
 
@@ -65,17 +56,14 @@ public sealed class MeshBlend : BasePostProcess<MeshBlend>
 
 		commands.Reset();
 
-		int scale = Math.Clamp( ResolutionScale, 1, 4 );
-
 		var colorHandle = commands.Attributes.GrabFrameTexture( "ColorBuffer", false );
 
 		// Mask RT: R = normalized region ID, G = blend falloff. D24S8 for self-occlusion.
-		// sizeFactor controls resolution: 1 = full, 2 = half, 4 = quarter.
-		var maskRt = commands.GetRenderTarget( "MeshBlendMask", scale, ImageFormat.RG1616F, ImageFormat.D24S8, msaa: MultisampleAmount.MultisampleNone );
+		var maskRt = commands.GetRenderTarget( "MeshBlendMask", 1, ImageFormat.RG1616F, ImageFormat.D24S8, msaa: MultisampleAmount.MultisampleNone );
 
-		// Edge maps for JFA ping-pong (uint2 pixel coordinates) at reduced resolution
-		var edgeMapA = commands.GetRenderTarget( "MeshBlendEdgeA", scale, ImageFormat.RG3232, ImageFormat.None );
-		var edgeMapB = commands.GetRenderTarget( "MeshBlendEdgeB", scale, ImageFormat.RG3232, ImageFormat.None );
+		// Edge maps for JFA ping-pong (uint2 pixel coordinates)
+		var edgeMapA = commands.GetRenderTarget( "MeshBlendEdgeA", 1, ImageFormat.RG3232, ImageFormat.None );
+		var edgeMapB = commands.GetRenderTarget( "MeshBlendEdgeB", 1, ImageFormat.RG3232, ImageFormat.None );
 
 		// Pass 1: Rasterize blend targets to mask RT
 		commands.SetRenderTarget( maskRt );
@@ -91,23 +79,22 @@ public sealed class MeshBlend : BasePostProcess<MeshBlend>
 
 		// Pass 2: Edge detection via LDS-cached neighbor comparison
 		commands.Attributes.Set( "InputMask", maskRt.ColorTexture );
+		commands.Attributes.Set( "MaskDepth", maskRt.DepthTexture );
 		commands.Attributes.Set( "OutputEdgeMap", edgeMapA.ColorTexture );
 		commands.DispatchCompute( PrepareCs, maskRt.Size );
 		commands.ResourceBarrierTransition( edgeMapA, ResourceState.PixelShaderResource );
 
 		// Pass 3: JFA expansion (halving step size each pass)
-		// Scale down starting step: at reduced resolution each texel covers more screen space,
-		// so fewer steps are needed to reach the same full-res blend radius.
 		bool useAAsInput = true;
-		int jfaStartStep = Math.Max( MaxJfaDistance / scale, 1 );
 
-		for ( int step = jfaStartStep; step >= 1; step /= 2 )
+		for ( int step = MaxJfaDistance; step >= 1; step /= 2 )
 		{
 			var currentIn = useAAsInput ? edgeMapA : edgeMapB;
 			var currentOut = useAAsInput ? edgeMapB : edgeMapA;
 
 			commands.Attributes.Set( "InputEdgeMap", currentIn.ColorTexture );
 			commands.Attributes.Set( "Mask", maskRt.ColorTexture );
+			commands.Attributes.Set( "MaskDepth", maskRt.DepthTexture );
 			commands.Attributes.Set( "OutputEdgeMap", currentOut.ColorTexture );
 			commands.Attributes.Set( "StepSize", step );
 			commands.DispatchCompute( ExpandCs, maskRt.Size );
@@ -121,8 +108,8 @@ public sealed class MeshBlend : BasePostProcess<MeshBlend>
 		// Pass 4: Resolve blend via UV mirroring across seams (always at full resolution)
 		commands.Attributes.Set( "ColorBuffer", colorHandle.ColorTexture );
 		commands.Attributes.Set( "MaskTexture", maskRt.ColorTexture );
+		commands.Attributes.Set( "MaskDepth", maskRt.DepthTexture );
 		commands.Attributes.Set( "EdgeMap", finalEdgeMap.ColorTexture );
-		commands.Attributes.Set( "ResolutionScale", scale );
 
 		if ( DebugView != MeshBlendDebugView.None && DebugView != MeshBlendDebugView.Resolve )
 		{

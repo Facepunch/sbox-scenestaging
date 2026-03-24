@@ -20,6 +20,7 @@ CS
 	#include "common.fxc"
 
 	Texture2D<float2> InputMask < Attribute( "InputMask" ); >;
+	Texture2D<float> MaskDepth < Attribute( "MaskDepth" ); >;
 	RWTexture2D<uint2> OutputEdgeMap < Attribute( "OutputEdgeMap" ); >;
 
 	#define INVALID_EDGE uint2( 0xFFFFFFFF, 0xFFFFFFFF )
@@ -29,7 +30,8 @@ CS
 	#define TILE_BORDER 1
 	#define TILE_SIZE 10
 	
-	groupshared float g_Cache[TILE_SIZE * TILE_SIZE];
+	groupshared float g_CacheId[TILE_SIZE * TILE_SIZE];
+	groupshared float g_CacheDepth[TILE_SIZE * TILE_SIZE];
 
 	uint CoordToCache( int2 coord )
 	{
@@ -43,7 +45,7 @@ CS
 		uint2 texSize;
 		InputMask.GetDimensions( texSize.x, texSize.y );
 		
-		// Preload padded tile into LDS
+		// Preload padded tile into LDS (region ID + depth)
 		int2 tileOrigin = int2( groupId.xy ) * 8 - TILE_BORDER;
 		
 		for ( uint y = localId.y; y < TILE_SIZE; y += 8 )
@@ -51,8 +53,9 @@ CS
 			for ( uint x = localId.x; x < TILE_SIZE; x += 8 )
 			{
 				int2 texel = clamp( tileOrigin + int2( x, y ), int2( 0, 0 ), int2( texSize ) - int2( 1, 1 ) );
-				float regionId = InputMask.Load( int3( texel, 0 ) ).r;
-				g_Cache[CoordToCache( int2( x, y ) )] = regionId;
+				uint cacheIdx = CoordToCache( int2( x, y ) );
+				g_CacheId[cacheIdx] = InputMask.Load( int3( texel, 0 ) ).r;
+				g_CacheDepth[cacheIdx] = MaskDepth.Load( int3( texel, 0 ) ).r;
 			}
 		}
 		
@@ -62,9 +65,12 @@ CS
 			return;
 		
 		int2 localPos = int2( 1, 1 ) + int2( localId.xy );
-		float regionId = g_Cache[CoordToCache( localPos )];
+		uint centerIdx = CoordToCache( localPos );
+		float regionId = g_CacheId[centerIdx];
+		float maskDepth = g_CacheDepth[centerIdx];
 		
-		if ( regionId <= ID_EPSILON )
+		// Early-out: no mask geometry here (depth buffer wasn't written)
+		if ( regionId <= ID_EPSILON || maskDepth <= 0.0 )
 		{
 			OutputEdgeMap[threadId.xy] = INVALID_EDGE;
 			return;
@@ -84,7 +90,13 @@ CS
 		for ( uint i = 0; i < 8; i++ )
 		{
 			int2 neighborLocal = localPos + neighborDirs[i];
-			float neighborId = g_Cache[CoordToCache( neighborLocal )];
+			uint neighborIdx = CoordToCache( neighborLocal );
+			float neighborId = g_CacheId[neighborIdx];
+			float neighborDepth = g_CacheDepth[neighborIdx];
+			
+			// Only consider neighbors that also have mask geometry
+			if ( neighborDepth <= 0.0 )
+				continue;
 			
 			if ( abs( neighborId - regionId ) > ID_EPSILON && neighborId > ID_EPSILON )
 			{

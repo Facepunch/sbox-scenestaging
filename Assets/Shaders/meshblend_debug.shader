@@ -57,11 +57,12 @@ PS
 
     Texture2D g_tColorBuffer < Attribute( "ColorBuffer" ); SrgbRead( false ); >;
     Texture2D<float2> g_tMask < Attribute( "MaskTexture" ); >;
+    Texture2D<float> g_tMaskDepth < Attribute( "MaskDepth" ); >;
     Texture2D<uint2> g_tEdgeMap < Attribute( "EdgeMap" ); >;
     int g_nDebugMode < Attribute( "DebugMode" ); Default( 0 ); >;
-    int ResolutionScale < Attribute( "ResolutionScale" ); Default( 1 ); >;
 
     static const uint INVALID_EDGE_VALUE = 0xFFFFFFFF;
+    static const float ScreenBlendRadius = 32.0;
 
     // Hash a normalized region ID to a distinct color for visualization
     float3 RegionIdToColor( float id )
@@ -81,16 +82,20 @@ PS
     float4 MainPs( PixelInput input ) : SV_Target0
     {
         uint2 pixelCoord = uint2( input.vPositionSs.xy );
-        uint2 maskPixel = pixelCoord / uint2( max( ResolutionScale, 1 ), max( ResolutionScale, 1 ) );
-        float flScale = float( max( ResolutionScale, 1 ) );
 
         float3 originalColor = g_tColorBuffer.Load( int3( pixelCoord, 0 ) ).rgb;
+
+        // Depth from mask pass — pixels with no mask geometry have depth <= 0
+        float maskDepth = g_tMaskDepth.Load( int3( pixelCoord, 0 ) ).r;
 
         // 1 = Mask, 2 = Edges, 3 = JFA
         if ( g_nDebugMode == 1 )
         {
             // Mask: show region ID as color, blend falloff as brightness
-            float2 maskData = g_tMask.Load( int3( maskPixel, 0 ) );
+            if ( maskDepth <= 0.0 )
+                return float4( originalColor * 0.15, 1 ); // Very dark = no mask geometry
+
+            float2 maskData = g_tMask.Load( int3( pixelCoord, 0 ) );
             float regionId = maskData.r;
             float falloff = maskData.g;
 
@@ -102,20 +107,21 @@ PS
         }
         else if ( g_nDebugMode == 2 )
         {
+            if ( maskDepth <= 0.0 )
+                return float4( originalColor * 0.15, 1 );
+
             // Edges: highlight pixels that have a valid nearest edge
-            uint2 nearestEdge = g_tEdgeMap.Load( int3( maskPixel, 0 ) );
+            uint2 nearestEdge = g_tEdgeMap.Load( int3( pixelCoord, 0 ) );
             bool hasEdge = !any( nearestEdge == INVALID_EDGE_VALUE );
 
-            float2 maskData = g_tMask.Load( int3( maskPixel, 0 ) );
+            float2 maskData = g_tMask.Load( int3( pixelCoord, 0 ) );
             bool hasMask = maskData.r > 0;
 
             if ( !hasEdge )
                 return float4( originalColor * 0.3, 1 );
 
-            // Convert edge distance to full-res space
-            float2 nearestEdgeFullRes = ( float2( nearestEdge ) + 0.5 ) * flScale - 0.5;
-            float edgeDist = length( nearestEdgeFullRes - float2( pixelCoord ) );
-            if ( edgeDist < 1.5 * flScale )
+            float edgeDist = length( float2( nearestEdge ) - float2( pixelCoord ) );
+            if ( edgeDist < 1.5 )
                 return float4( 1.0, 1.0, 0.0, 1 ); // Edge pixel itself
 
             float3 edgeColor = hasMask ? float3( 1.0, 0.5, 0.0 ) : float3( 0.0, 0.5, 1.0 );
@@ -123,20 +129,30 @@ PS
         }
         else if ( g_nDebugMode == 3 )
         {
-            // JFA: visualize distance to nearest edge as smooth gradient
-            uint2 nearestEdge = g_tEdgeMap.Load( int3( maskPixel, 0 ) );
+            if ( maskDepth <= 0.0 )
+                return float4( originalColor * 0.15, 1 );
 
-            if ( any( nearestEdge == INVALID_EDGE_VALUE ) )
+            // JFA: visualize the actual blend weight used by the resolve pass
+            uint2 jfaEdgePacked = g_tEdgeMap.Load( int3( pixelCoord, 0 ) );
+
+            if ( any( jfaEdgePacked == INVALID_EDGE_VALUE ) )
                 return float4( originalColor * 0.3, 1 );
 
-            float2 nearestEdgeFullRes = ( float2( nearestEdge ) + 0.5 ) * flScale - 0.5;
-            float edgeDist = length( nearestEdgeFullRes - float2( pixelCoord ) );
-            float normalizedDist = saturate( edgeDist / 32.0 );
+            uint2 nearestEdge = jfaEdgePacked;
 
-            // Smooth white-to-black ramp so any JFA errors are obvious
-            float3 gradient = lerp( float3( 1, 1, 1 ), float3( 0, 0, 0 ), normalizedDist );
+            // Match the resolve shader's blend weight calculation
+            float2 maskData = g_tMask.Load( int3( pixelCoord, 0 ) );
+            float currentFalloff = maskData.g;
+            float edgeFalloff = g_tMask.Load( int3( nearestEdge, 0 ) ).g;
+            float blendFactor = ( currentFalloff + edgeFalloff ) * 0.5;
 
-            return float4( gradient, 1 );
+            float edgeDist = length( float2( nearestEdge ) - float2( pixelCoord ) );
+            float adjustedRadius = ScreenBlendRadius * blendFactor;
+            float falloff = 1.0 - saturate( edgeDist / max( adjustedRadius, 0.001 ) );
+            float blendWeight = 0.5 * smoothstep( 0.0, 1.0, falloff );
+
+            // White = full blend, black = no blend
+            return float4( blendWeight.xxx, 1 );
         }
 
         return float4( originalColor, 1 );
