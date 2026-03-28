@@ -13,20 +13,12 @@ public sealed partial class VolumetricMaterialRenderer : Renderer, ExecuteInEdit
     /// </summary>
     private NanoVDB VDB { get; set; }
 
-	[Property, MakeDirty, NVDBPath] public string VDBPath { get; set; }
+	[Property, NVDBPath] public string VDBPath { get; set; }
 
 
     List<GpuBuffer<uint>> GridsBuffer = new();
 
 	internal SceneObject _sceneObject;
-
-	protected override void OnDirty()
-	{
-		base.OnDirty();
-
-		_sceneObject?.Delete();
-		OnEnabled();
-	}
 
 	protected override void OnEnabled()
     {

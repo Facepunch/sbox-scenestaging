@@ -8,7 +8,7 @@
 	public class LatticeDeform : Component, Component.ExecuteInEditor
 	{
 		// This will be hidden from user once we have gizmos per segment
-		[Property, MakeDirty]
+		[Property]
 		public Vector3Int Segments
 		{
 			get => _segments;
@@ -28,7 +28,7 @@
 
 		// Needs to be a float4-aligned for ComputeBuffer
 		// Dirty doesn't seem to be called when list elements are changed
-		[Property, MakeDirty] public List<Vector4> Points { get; set; }
+		[Property] public List<Vector4> Points { get; set; }
 
 		GpuBuffer<Vector4> PointsBuffer;
 
@@ -60,11 +60,6 @@
 				parent.SceneObject.Attributes.Set( "LocalToLattice", Matrix.Identity );
 				parent.SceneObject.Attributes.Set( "Segments", Vector3Int.Zero );
 			}
-		}
-
-		protected override void OnDirty()
-		{
-			base.OnDirty();
 		}
 
 		public int Convert3DTo1D( int x, int y, int z )

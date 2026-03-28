@@ -10,14 +10,47 @@ public sealed class BobbleJoint : Joint
 
 	private float springDistance;
 
-	[Property, MakeDirty, Range( 0, 10 )]
-	public float Springiness { get; set; } = 1.0f;
+	[Property, Range( 0, 10 )]
+	public float Springiness 
+	{ 
+		get;
+		set
+		{
+			if ( field == value ) return;
+			field = value;
 
-	[Property, MakeDirty, Range( 0, 50 )]
-	public float SpringFrequency { get; set; } = 5.0f;
+			UpdateBallJoint();
+			UpdateSpringJoint();
+		}
+	} = 1.0f;
 
-	[Property, MakeDirty, Range( 0, 5 )]
-	public float Damping { get; set; } = 1.0f;
+	[Property, Range( 0, 50 )]
+	public float SpringFrequency
+	{
+		get;
+		set
+		{
+			if ( field == value ) return;
+			field = value;
+
+			UpdateBallJoint();
+			UpdateSpringJoint();
+		}
+	} = 5.0f;
+
+	[Property, Range( 0, 5 )]
+	public float Damping
+	{
+		get;
+		set
+		{
+			if ( field == value ) return;
+			field = value;
+
+			UpdateBallJoint();
+			UpdateSpringJoint();
+		}
+	} = 1.0f;
 
 	protected override PhysicsJoint CreateJoint( PhysicsPoint point1, PhysicsPoint point2 )
 	{
@@ -78,13 +111,5 @@ public sealed class BobbleJoint : Joint
 
 		springJoint?.Remove();
 		springJoint = null;
-	}
-
-	protected override void OnDirty()
-	{
-		base.OnDirty();
-
-		UpdateBallJoint();
-		UpdateSpringJoint();
 	}
 }

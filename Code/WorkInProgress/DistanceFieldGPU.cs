@@ -38,11 +38,6 @@ public sealed partial class DistanceFieldGPU : PostProcess, Component.ExecuteInE
 		Camera.RemoveCommandList( Commands );
 	}
 
-	protected override void OnDirty()
-	{
-		base.OnDirty();
-	}
-
 	protected override void OnPreRender()
 	{
 		base.OnPreRender();
