@@ -3,15 +3,56 @@ namespace Sandbox;
 /// <summary>
 /// Rectangle Light, missing features and doesn't play too nice with tiled optimizations yet
 /// </summary>
-[Title("Rectangular Light (SceneStaging)")]
-[Icon("light_mode")]
+[Title( "Rectangular Light (SceneStaging)" )]
+[Icon( "light_mode" )]
 [EditorHandle( "materials/gizmo/spotlight.png" )]
 public class RectLight : Light
 {
+	SceneSpotLight _so;
+
 	public new bool Shadows { get; set; } = false; // Override, right now no shadows for area lights
-	[Property, MakeDirty] public float Radius { get; set; } = 1000;
-	[Property, MakeDirty] public Texture Cookie { get; set; }
-	[Property, MakeDirty] public Vector2 Size { get; set; } = new( 100, 100 );
+
+	[Property]
+	public float Radius
+	{
+		get;
+		set
+		{
+			if ( field == value ) return;
+			field = value;
+
+			if ( _so.IsValid() )
+				_so.Radius = value;
+		}
+	} = 1000;
+
+	[Property]
+	public Texture Cookie
+	{
+		get;
+		set
+		{
+			if ( field == value ) return;
+			field = value;
+
+			if ( _so.IsValid() )
+				_so.LightCookie = value;
+		}
+	}
+
+	[Property]
+	public Vector2 Size
+	{
+		get;
+		set
+		{
+			if ( field == value ) return;
+			field = value;
+
+			if ( _so.IsValid() )
+				_so.ShapeSize = value / 2;
+		}
+	} = new( 100, 100 );
 
 	public RectLight()
 	{
@@ -20,8 +61,18 @@ public class RectLight : Light
 
 	protected override SceneLight CreateSceneObject()
 	{
-		var v = new SceneSpotLight( Scene.SceneWorld, WorldPosition, LightColor );
-		return v;
+		_so = new SceneSpotLight( Scene.SceneWorld, WorldPosition, LightColor )
+		{
+			Radius = Radius,
+			LightCookie = Cookie,
+			FallOff = 1,
+			ConeInner = 90,
+			ConeOuter = 90,
+			Shape = SceneLight.LightShape.Rectangle,
+			ShapeSize = Size / 2
+		};
+
+		return _so;
 	}
 
 	protected override void OnAwake()
@@ -31,29 +82,12 @@ public class RectLight : Light
 		base.OnAwake();
 	}
 
-	protected override void UpdateSceneObject( SceneLight o )
-	{
-		base.UpdateSceneObject( o );
-
-		o.Radius = Radius;
-		o.LightCookie = Cookie;
-
-		if ( o is SceneSpotLight spot )
-		{
-			spot.FallOff = 1;
-			spot.ConeInner = 90;
-			spot.ConeOuter = 90;
-			spot.Shape = SceneLight.LightShape.Rectangle;
-			spot.ShapeSize = Size / 2;
-		}
-	}
-
 	protected override void DrawGizmos()
 	{
 		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
 		Gizmo.Draw.Color = LightColor.WithAlpha( Gizmo.IsSelected ? 0.5f : 0.05f );
-		
+
 		var size = new Vector3( 0, Size.x, Size.y );
 		var box = new BBox( -size / 2, size / 2 );
 		Gizmo.Draw.LineBBox( new BBox( -size / 2, size / 2 ) );
@@ -65,6 +99,5 @@ public class RectLight : Light
 
 		Gizmo.Control.BoundingBox( "Size", box, out box );
 		Size = new Vector2( box.Size.y, box.Size.z );
-
 	}
 }
