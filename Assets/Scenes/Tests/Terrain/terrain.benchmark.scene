@@ -317,7 +317,7 @@
             "go": "65b456bc-e693-4184-9393-6291b0c593f6",
             "component_type": "SkinnedModelRenderer"
           },
-          "Clothing": null,
+          "Clothing": [],
           "ManualAge": 0.5,
           "ManualHeight": 1,
           "ManualTint": 0.5,
@@ -329,7 +329,7 @@
           "OnComponentUpdate": null,
           "RemoveUnownedItems": true,
           "Source": "Manual",
-          "WorkshopItems": null
+          "WorkshopItems": []
         },
         {
           "__type": "Sandbox.PlayerController",
@@ -875,7 +875,7 @@
           "FrameInterval": 5,
           "MaxDistance": 512,
           "Mode": "Baked",
-          "MultiBounce": false,
+          "MultiBounce": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
