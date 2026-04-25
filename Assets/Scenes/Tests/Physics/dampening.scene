@@ -3,18 +3,28 @@
   "GameObjects": [
     {
       "__guid": "fcd70732-df07-4578-b601-ab604cf06cc6",
+      "__version": 2,
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-849.0325,0,293.523",
-      "Rotation": "0,0.1305262,0,0.9914449",
+      "Position": "-849.032471,0,293.52301",
+      "Rotation": "0,0.1305262,0,0.991444886",
+      "Scale": "1,1,1",
       "Tags": "maincamera",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
           "__guid": "71179a94-6b5f-4ff5-8c40-6064b192f200",
+          "__enabled": true,
+          "Flags": 0,
           "BackgroundColor": "0,0,0,1",
           "ClearFlags": "All",
+          "EnablePostProcessing": true,
           "FieldOfView": 60,
           "FovAxis": "Horizontal",
           "IsMainCamera": true,
@@ -26,30 +36,102 @@
           "OnComponentUpdate": null,
           "Orthographic": false,
           "OrthographicHeight": 1204,
+          "PostProcessAnchor": null,
           "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
+          "RenderTexture": null,
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "414af303-8e0b-4956-bcc4-5a6e53000131",
+          "__enabled": true,
+          "Flags": 0,
+          "__version": 3,
+          "AutoExposureEnabled": true,
+          "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 3,
+          "MinimumExposure": 1,
+          "Mode": "AgX",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Rate": 1
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "9b4ebc63-1a36-4844-b507-a44a8000620c",
+          "__enabled": true,
+          "Flags": 0,
+          "__version": 1,
+          "Filter": "Bilinear",
+          "Gamma": 2.2,
+          "Mode": "Additive",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Strength": 1,
+          "Threshold": 1.5,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "392bbdfe-8be5-4991-a05a-957118f157e7",
+          "__enabled": true,
+          "Flags": 0,
+          "__version": 1,
+          "FalloffRange": 1,
+          "Intensity": 1,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 128,
+          "ThinCompensation": 5
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "8f680997-d5f1-461b-a5c8-bccac529297e",
+      "__version": 2,
       "Flags": 0,
       "Name": "Plane",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
       "Scale": "8,8,8",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "60d5d94f-90b8-4532-9395-4fce987b3174",
+          "__enabled": true,
+          "Flags": 0,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "LodOverride": null,
           "MaterialGroup": null,
           "MaterialOverride": null,
+          "Materials": null,
           "Model": "models/dev/plane.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -66,19 +148,30 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "1ad4701d-30fb-4bc3-930a-379bda3f947d",
+      "__version": 2,
       "Flags": 0,
       "Name": "Sun",
-      "Rotation": "-0.09960051,0.5648625,0.1422443,0.8067073",
+      "Position": "0,0,0",
+      "Rotation": "-0.0996005088,0.56486249,0.142244294,0.806707323",
+      "Scale": "1,1,1",
       "Tags": "light_directional,light",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
           "__guid": "c8ee369b-f634-4dac-a2bb-8c94279d03f4",
+          "__enabled": true,
+          "Flags": 0,
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
@@ -88,106 +181,345 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "ShadowBias": 0.0005,
+          "ShadowCascadeCount": 4,
+          "ShadowCascadeSplitRatio": 0.91,
+          "ShadowHardness": 0,
           "Shadows": true,
-          "SkyColor": "0,0,0,0"
+          "SkyColor": "0,0,0,0",
+          "Visualizer": {}
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c",
-      "Flags": 0,
-      "Name": "Cube",
-      "Position": "0,300,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 60,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,300,25"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "d4240117-e84e-448d-bce3-935d2e02dd2d",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "6a090d3f-37c1-484a-add7-0dcf8170fe31",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "496425f4-ba79-4b24-8611-f879a41d0e2f",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "4063dd47-c787-4f06-a17e-aabc83a77e3a",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "0e2cc758-b1ef-48cc-b86e-e634b309dcdd",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "73cc4432-33c1-4b61-94e3-d8e5ba52ccf3"
       }
     },
     {
       "__guid": "d3e0f3ae-3574-405b-9ca9-5036ad26fb53",
-      "Flags": 0,
-      "Name": "Cube (1)",
-      "Position": "0,200,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 45,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube (1)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,200,25"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "90af99ef-ed57-45de-89b5-ba24452a514f"
+            },
+            "Property": "UpdateRate",
+            "Value": 45
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "d3e0f3ae-3574-405b-9ca9-5036ad26fb53",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "d8cbf143-3bd7-4d85-88a1-aafd3a648009",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "6dc7b06a-9a6e-47cb-8ec3-9979a5857596",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "2fd95b7e-311a-4590-aed0-332ba34d1aa3",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "c8f8971a-24ce-4094-93bd-069836a82171",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "fda54e83-fd28-497d-9edf-13ee09d38cf1",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "47464c7d-d735-479d-8116-6a45ef0431c9"
       }
     },
     {
       "__guid": "863cb7e2-bb67-44db-98a4-5c7f45a2db38",
-      "Flags": 0,
-      "Name": "Cube (2)",
-      "Position": "0,100,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 30,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube (2)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,100,25"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "90af99ef-ed57-45de-89b5-ba24452a514f"
+            },
+            "Property": "UpdateRate",
+            "Value": 30
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "863cb7e2-bb67-44db-98a4-5c7f45a2db38",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "681935e8-b0da-490c-a930-8969b051093b",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "5c46ec31-70c5-4fb5-95a6-c0d506ab5020",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "9412c361-2c5f-4d02-ba2a-693744f89d68",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "448ee8c7-427d-4764-8aca-c9893fe5df4c",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "473cd7dc-f4ff-43a3-b0f2-116dedf0ddeb",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "7acd27b3-0b08-4451-9958-11dc7ae1ab02"
       }
     },
     {
       "__guid": "3e577e2b-cbfe-43c5-b9d0-4aa79a11f7e2",
-      "Flags": 0,
-      "Name": "Cube (3)",
-      "Position": "0,0,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 20,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube (3)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,0,25"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "90af99ef-ed57-45de-89b5-ba24452a514f"
+            },
+            "Property": "UpdateRate",
+            "Value": 20
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "3e577e2b-cbfe-43c5-b9d0-4aa79a11f7e2",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "9a863983-712f-4ffc-865e-c97231f07132",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "0baf07b0-eee2-45e7-bf1a-e136c35fa7a5",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "4f691da6-82d2-4e0a-95e0-3d355e98e1cf",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "8134414d-7954-4597-96dc-973790171b6b",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "90353fd9-aeca-40b6-afdf-53e25302e4dc",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "63d492aa-83ff-4278-97c1-f87e4db47b45"
       }
     },
     {
       "__guid": "b398dc46-b0b1-4bd3-a019-cfe4071c28cf",
-      "Flags": 0,
-      "Name": "Cube (4)",
-      "Position": "0,-100,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 15,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube (4)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,-100,25"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "90af99ef-ed57-45de-89b5-ba24452a514f"
+            },
+            "Property": "UpdateRate",
+            "Value": 15
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "b398dc46-b0b1-4bd3-a019-cfe4071c28cf",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "1c1e6f6f-b036-4bce-8714-df16882b76e8",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "e71e527c-15a6-471d-9106-986201690b76",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "4e68126f-2b5f-4b9e-b203-a2d346ac0ed5",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "94957621-48cc-4507-aea3-3cc5e6134a62",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "5c3757fa-40d9-499e-b75b-144e1b34be49",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "ccf6bd5c-25e2-46bd-8626-d61c28389342"
       }
     },
     {
       "__guid": "95d91255-469a-4bea-964d-8096c3fbc2b0",
-      "Flags": 0,
-      "Name": "Cube (5)",
-      "Position": "0,-200,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 10,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube (5)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,-200,25"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "90af99ef-ed57-45de-89b5-ba24452a514f"
+            },
+            "Property": "UpdateRate",
+            "Value": 10
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "95d91255-469a-4bea-964d-8096c3fbc2b0",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "59fc2d49-53d7-4e49-8560-5d0f55ebdda3",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "9708b79c-d43b-4484-bb64-9f58809c8b3f",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "83a04a63-c8aa-45fa-9f89-841ffc08f649",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "2512e950-b573-4f5f-9890-91c174d3a3f1",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "1dc3f943-59a4-4749-81ce-0209dd819d1b",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "49c1aba3-4a26-4882-b1e2-83bd9f8942f1"
       }
     },
     {
       "__guid": "3f338f2d-7a2f-40d8-bb16-43732943202c",
-      "Flags": 0,
-      "Name": "Cube (6)",
-      "Position": "0,-300,25",
-      "Enabled": true,
+      "__version": 2,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
-      "__PrefabVariables": {
-        "Update Rate": 5,
-        "Variance": 0
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Name",
+            "Value": "Cube (6)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c"
+            },
+            "Property": "Position",
+            "Value": "0,-300,25"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "90af99ef-ed57-45de-89b5-ba24452a514f"
+            },
+            "Property": "UpdateRate",
+            "Value": 5
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "ea03b447-f7d3-457b-8177-fd1fe5c74b1c": "3f338f2d-7a2f-40d8-bb16-43732943202c",
+        "647e94cb-6bce-44d1-a748-fd8d40a83bd0": "6d6e5a48-bd93-430d-8baa-c786111c1f00",
+        "90af99ef-ed57-45de-89b5-ba24452a514f": "18d47496-449c-4d6f-84b6-39e64a921e4c",
+        "891d40c1-2cbe-43de-926b-7924913e0dce": "50610e9a-acc1-4166-9113-7b70d04fca56",
+        "a92a9288-d25e-4559-96a4-8cd6da9d8818": "b29bdbc9-d30e-4cb2-bda4-bb4000bacdb6",
+        "6afa97e1-51e9-4fd1-9f61-96c62fe22c1e": "f8e022ad-35fa-41ac-96d1-78d317902617",
+        "57e9dfa4-7c35-4ca6-bf5f-f90d9954cbc4": "2287ba0b-4cb6-4068-9b0c-6dcd81ceb23b"
       }
     },
     {
       "__guid": "586837ac-5fcb-4ac6-b45a-b00f3554808a",
+      "__version": 2,
       "Flags": 0,
       "Name": "2D Skybox",
-      "Position": "-263.5615,-4.377548,188.7497",
+      "Position": "-263.561493,-4.37754822,188.749695",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
       "Tags": "skybox",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "475842c6-bbf6-46ba-bc55-478bc64739d1",
+          "__enabled": true,
+          "Flags": 0,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -196,20 +528,32 @@
           "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
-          "Tint": "1,1,1,1"
+          "Tint": "0.31628,0.08973,0.25964,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "330d6f6a-3eba-4617-985d-47048e6883b3",
+      "__version": 2,
       "Flags": 0,
       "Name": "Manager",
       "Position": "-1536,1024,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "DampenTestManager",
           "__guid": "9eaae853-a8b3-4a3a-b35e-76f91e25d6ce",
+          "__enabled": true,
+          "Flags": 0,
           "Damping": 0.2,
           "FrameRate": 120,
           "Frequency": 0.34,
@@ -223,23 +567,48 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "b16cc73d-1a0f-4714-91a0-ed21063f7052",
+      "__version": 2,
       "Flags": 0,
       "Name": "GameObject",
-      "Enabled": true
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
     },
     {
       "__guid": "54cafc91-4fa9-43ef-9870-46a853bca7e9",
+      "__version": 2,
       "Flags": 0,
       "Name": "Scene Information",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "9954b4dd-e215-4b07-b583-e3168d46fdb0",
+          "__enabled": true,
+          "Flags": 0,
           "Author": null,
           "Changes": "",
           "Description": "Test to make sure our dampening functions work correctly at any timestep",
@@ -254,18 +623,14 @@
           "Title": "Dampening",
           "Version": null
         }
-      ]
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
-    "FixedUpdateFrequency": 50,
-    "MaxFixedUpdates": 5,
-    "NetworkFrequency": 30,
     "NetworkInterpolation": true,
-    "PhysicsSubSteps": 1,
-    "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true,
+    "WantsSystemScene": true,
     "Metadata": {
       "Title": "Dampening",
       "Description": "Test to make sure our dampening functions work correctly at any timestep",
@@ -281,12 +646,24 @@
       "AgentStepSize": 18,
       "AgentMaxSlope": 40,
       "ExcludedBodies": "",
-      "IncludedBodies": ""
+      "IncludedBodies": "",
+      "DeferGeneration": false,
+      "CustomBounds": false
+    },
+    "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "bb86cade-b9c7-454c-9b03-b725fed3dd12"
+        }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      }
     }
   },
-  "ResourceVersion": 2,
+  "ResourceVersion": 3,
   "Title": "Dampening",
   "Description": "Test to make sure our dampening functions work correctly at any timestep",
   "__references": [],
-  "__version": 2
+  "__version": 3
 }
