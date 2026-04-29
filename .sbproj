@@ -9,7 +9,7 @@
   "PackageReferences": [],
   "EditorReferences": null,
   "Mounts": null,
-  "IsStandaloneOnly": false,
+  "IsStandaloneOnly": true,
   "Metadata": {
     "MaxPlayers": 8,
     "MinPlayers": 1,
@@ -29,6 +29,10 @@
     "StartupScene": "scenes/tests/menu.scene",
     "MapStartupScene": "scenes/tests/maploader.scene",
     "LaunchMode": "Normal",
-    "ControlModes": {}
+    "ControlModes": {
+      "Keyboard": false,
+      "VR": true,
+      "Gamepad": false
+    }
   }
 }
