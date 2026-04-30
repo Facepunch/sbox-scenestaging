@@ -38,7 +38,7 @@ public sealed class VRPlayerController : Component
         {
             if ( MathF.Abs( rightJoystick.x ) > SnapTurnThreshold && canSnapTurn )
             {
-                float turnAmount = rightJoystick.x > 0.0f ? -SnapTurnAngle : SnapTurnAngle;
+                float turnAmount = rightJoystick.x > 0.0f ? SnapTurnAngle : -SnapTurnAngle;
                 Transform.Rotation *= Rotation.FromYaw( turnAmount );
                 canSnapTurn = false;
             }
@@ -50,7 +50,7 @@ public sealed class VRPlayerController : Component
         else if ( MathF.Abs( rightJoystick.x ) > 0.1f ) // 加上 0.1f 的 Deadzone 防止搖桿飄移
         {
             // 在 S&box 中，Z 軸向上，Yaw 代表左右轉頭
-            float turnAmount = rightJoystick.x * TurnSpeed * Time.Delta;
+            float turnAmount = -rightJoystick.x * TurnSpeed * Time.Delta;
             Transform.Rotation *= Rotation.FromYaw( turnAmount );
         }
 
