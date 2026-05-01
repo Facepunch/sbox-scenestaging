@@ -6,7 +6,10 @@
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": null,
-  "PackageReferences": [],
+  "PackageReferences": [
+    "tft.tftvrfullbody",
+    "kori.vrphysics"
+  ],
   "EditorReferences": null,
   "Mounts": null,
   "IsStandaloneOnly": true,
@@ -33,6 +36,7 @@
       "Keyboard": false,
       "VR": true,
       "Gamepad": false
-    }
+    },
+    "ParentPackage": "tft.tftvrfullbody"
   }
 }

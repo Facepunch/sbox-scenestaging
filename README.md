@@ -25,3 +25,10 @@ This repository is the staging area for this system. S&box is evolving to the po
 - Open Hierachy and Scene windows
 - Open scene
 - Press play
+
+## Engineering Process
+
+- Workflow standard: `docs/ENGINEERING_WORKFLOW.md`
+- Default commands: `docs/DEFAULT_COMMANDS.md`
+- Spec template: `docs/specs/SPEC_TEMPLATE.md`
+- Changelog policy: `CHANGELOG.md`

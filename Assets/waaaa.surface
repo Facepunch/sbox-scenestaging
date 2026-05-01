@@ -1,0 +1,60 @@
+{
+  "BaseSurface": null,
+  "AudioSurface": "Rock",
+  "Description": null,
+  "Friction": 0.8,
+  "Elasticity": 0.25,
+  "Density": 2000,
+  "RollingResistance": 0,
+  "BounceThreshold": 40,
+  "FluidLinearDrag": 0.1,
+  "FluidAngularDrag": 0.1,
+  "Dampening": 0,
+  "ImpactEffects": {
+    "Regular": null,
+    "Bullet": null,
+    "BulletDecal": null,
+    "SoftParticles": null,
+    "SoftDecal": null,
+    "HardParticles": null,
+    "HardDecal": null
+  },
+  "ScrapeEffects": {
+    "RoughnessFactor": 0,
+    "RoughThreshold": 0,
+    "SmoothParticles": null,
+    "RoughParticles": null,
+    "SmoothDecal": null,
+    "RoughDecal": null
+  },
+  "Sounds": {
+    "FootLeft": null,
+    "FootRight": null,
+    "FootLaunch": null,
+    "FootLand": null,
+    "Bullet": null,
+    "ImpactHard": null,
+    "ImpactSoft": null,
+    "ScrapeRough": null,
+    "ScrapeSmooth": null
+  },
+  "PrefabCollection": {
+    "BulletImpact": null,
+    "BluntImpact": null
+  },
+  "SoundCollection": {
+    "FootLeft": null,
+    "FootRight": null,
+    "FootLaunch": null,
+    "FootLand": null,
+    "Bullet": null,
+    "ImpactHard": null,
+    "ImpactSoft": null,
+    "ScrapeRough": null,
+    "ScrapeSmooth": null,
+    "Break": null
+  },
+  "Tags": null,
+  "__references": [],
+  "__version": 0
+}

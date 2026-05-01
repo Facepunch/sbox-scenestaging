@@ -136,6 +136,31 @@
           "SnapTurnThreshold": 0.5,
           "TurnSpeed": 120,
           "UseSnapTurn": false
+        },
+        {
+          "__type": "VRFallbackSimulator",
+          "__guid": "8b2959eb-f9b0-4f63-9ca7-f2885b731c49",
+          "__enabled": true,
+          "Flags": 0,
+          "CameraRig": {
+            "_type": "gameobject",
+            "go": "421c18f7-33c1-493c-8483-49cbf8b19822"
+          },
+          "LeftHand": {
+            "_type": "gameobject",
+            "go": "27cffa28-046b-49fd-8d98-a1247b845418"
+          },
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "ReachDistance": 30,
+          "RightHand": {
+            "_type": "gameobject",
+            "go": "d5fe9b06-4f25-44fc-a8f2-891a1f43b164"
+          }
         }
       ],
       "Children": [
@@ -239,7 +264,7 @@
               "Flags": 0,
               "Name": "Left Hand",
               "Position": "0,5.22228479,0",
-              "Rotation": "0,0,0,0",
+              "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
               "Enabled": true,
@@ -273,7 +298,7 @@
                   "Flags": 0,
                   "Name": "Left Hand Model",
                   "Position": "-4,0,0",
-                  "Rotation": "0,0.707107008,0,0.707106471",
+                  "Rotation": "0,0.707045078,0,0.707168519",
                   "Scale": "1,1,1",
                   "Tags": "",
                   "Enabled": true,
@@ -341,6 +366,32 @@
                       },
                       "Tint": "1,1,1,1",
                       "UseAnimGraph": true
+                    },
+                    {
+                      "__type": "Sandbox.SphereCollider",
+                      "__guid": "731c61f6-a64d-4c17-bce4-04de717cf14f",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "Center": "0,0,0",
+                      "ColliderFlags": 0,
+                      "Elasticity": null,
+                      "Friction": null,
+                      "IsTrigger": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnObjectTriggerEnter": null,
+                      "OnObjectTriggerExit": null,
+                      "OnTriggerEnter": null,
+                      "OnTriggerExit": null,
+                      "Radius": 8,
+                      "RollingResistance": null,
+                      "Static": false,
+                      "Surface": null,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
@@ -386,8 +437,8 @@
                   "__version": 2,
                   "Flags": 0,
                   "Name": "Right Hand Model",
-                  "Position": "-4,0,0",
-                  "Rotation": "0,0.707107008,0,0.707106471",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,0",
                   "Scale": "1,1,1",
                   "Tags": "",
                   "Enabled": true,
@@ -455,6 +506,32 @@
                       },
                       "Tint": "1,1,1,1",
                       "UseAnimGraph": true
+                    },
+                    {
+                      "__type": "Sandbox.SphereCollider",
+                      "__guid": "27180315-012e-4023-b32e-67b41986bc1f",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "Center": "0,0,0",
+                      "ColliderFlags": 0,
+                      "Elasticity": null,
+                      "Friction": null,
+                      "IsTrigger": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnObjectTriggerEnter": null,
+                      "OnObjectTriggerExit": null,
+                      "OnTriggerEnter": null,
+                      "OnTriggerExit": null,
+                      "Radius": 8,
+                      "RollingResistance": null,
+                      "Static": false,
+                      "Surface": null,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ],
                   "Children": []
@@ -464,6 +541,78 @@
           ]
         }
       ]
+    },
+    {
+      "__guid": "47e8d445-3c91-43c5-8103-8a2b87d75ddc",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "-73.7471924,0.455200195,-73.4545135",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c80ab86a-c5e5-4e76-86bc-6a2f2cb6f74d",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "6fe55c88-26b0-483e-bb69-a5ff6c4a4b3f",
+          "__enabled": true,
+          "Flags": 0,
+          "Center": "0,0,0",
+          "ColliderFlags": 0,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
@@ -489,9 +638,6 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
@@ -501,6 +647,9 @@
         "Storage": {
           "$blob": "62640cce-befa-4a5a-a98c-d7fe39b5d4db"
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },
