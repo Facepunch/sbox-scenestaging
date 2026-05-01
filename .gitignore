@@ -1,7 +1,6 @@
-
-# This file describes files and paths that should not be tracked by Git version control
-# https://git-scm.com/docs/gitignore
-
+# ==========================================
+# 1. S&box 官方標準設定 (Official)
+# ==========================================
 # Auto-generated code editor files
 .vs/*
 .vscode/*
@@ -27,3 +26,17 @@ Code/testbed.csproj.user
 Libraries/*/.bin
 *.user
 *.slnx
+
+# ==========================================
+# 2. 開發環境與編輯器補充設定 (Supplementary)
+# ==========================================
+# 地圖編輯器(Hammer)產生的暫存與備份檔
+*.vdb
+*.vclck
+*.bak
+*.log
+local/
+
+# 作業系統預設生成的暫存檔 (Windows / macOS)
+.DS_Store
+Thumbs.db
