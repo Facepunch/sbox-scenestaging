@@ -496,7 +496,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			arms.Parent = viewmodel;
 
 			var model = arms.Components.Create<SkinnedModelRenderer>();
-			model.Model = Model.Load( "models/first_person/first_person_arms.vmdl" );
+			model.Model = Model.Load( "models/first_person/first_person_arms_preview.vmdl" );
 			model.BoneMergeTarget = modelRender;
 			model.RenderOptions.Overlay = true;
 			model.RenderOptions.Game = false;
