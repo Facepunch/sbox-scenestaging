@@ -53,6 +53,7 @@
 - `Code/test/VR/VRPlayerRig.cs`：玩家根上集中啟用位移、桌面雙手模擬、左右 `VRGrabber`
 - `Code/VRLogic/VRInteractionRules.cs`：插槽 id／距離純邏輯（供 `VRSocket` 與單元測試）
 - `Code/test/VR/VRGrabber.cs`：VR 抓取/釋放（FixedJoint + 丟擲速度）
+- `Code/test/VR/VRGhostHandTarget.cs`：幽靈目標（無剛體；對齊 grip／attachment，供日後彈簧關節追蹤）
 - `Code/test/VR/Grabbable.cs`：可選標記可抓物，支援 Inspector 注入或快取 `Rigidbody`（與 `VRGrabber` 混合解析搭配）
 - `Code/test/VR/Socketable.cs`：標記可插槽物、插槽 ID、可選 Attach 對齊點
 - `Code/test/VR/VRSocket.cs`：插槽 Trigger、吸附半徑、放手後與 `VRGrabber` 銜接的吸附、可選低速自動吸附

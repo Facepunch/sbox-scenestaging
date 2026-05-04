@@ -32,10 +32,30 @@ public sealed class VRPlayerController : Component
     {
         if ( Controller == null ) return;
 
+        var inVr = Game.IsRunningInVR;
+        Vector2 rightJoystick;
+        Vector2 leftJoystick;
+        Rotation headRot;
+
+        if ( inVr )
+        {
+            rightJoystick = Input.VR.RightHand.Joystick.Value;
+            leftJoystick = Input.VR.LeftHand.Joystick.Value;
+            headRot = Input.VR.Head.Rotation;
+        }
+        else
+        {
+            // PC／桌面：無 Input.VR；位移用鍵盤 AnalogMove，視線用主攝影機。
+            // 左右轉身通常由 VRFallbackSimulator 處理滑鼠，此處右搖桿設為零以免重複旋轉。
+            leftJoystick = Input.AnalogMove;
+            var cam = Scene.Camera;
+            headRot = cam.IsValid() ? cam.WorldTransform.Rotation : Transform.WorldRotation;
+            rightJoystick = default;
+        }
+
         // ==========================================
         // 1. 右手搖桿：控制視角轉向 (Rotation)
         // ==========================================
-        var rightJoystick = Input.VR.RightHand.Joystick.Value;
 
         if ( EnableRightStickTurn && UseSnapTurn )
         {
@@ -60,11 +80,8 @@ public sealed class VRPlayerController : Component
         // ==========================================
         // 2. 左手搖桿：控制物理移動 (Translation)
         // ==========================================
-        var leftJoystick = Input.VR.LeftHand.Joystick.Value;
 
-        // 取得頭盔目前的旋轉，讓我們可以「朝著眼睛看的方向」前進
-        var headRot = Input.VR.Head.Rotation;
-        
+        // 取得視線方向（VR 為頭盔；PC 為主攝影機／本體）
         // 抹除 Z 軸，避免玩家低頭看地板時，往前推搖桿會往地下鑽
         var forward = headRot.Forward.WithZ( 0 ).Normal;
         var right = headRot.Right.WithZ( 0 ).Normal;

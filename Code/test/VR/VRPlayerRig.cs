@@ -1,7 +1,7 @@
 using Sandbox;
 
 /// <summary>
-/// VR 玩家根節點：集中啟用／停用位移、桌面模擬與雙手抓取，並可選自動串接 <see cref="CharacterController"/>。
+/// VR 玩家根節點：集中啟用／停用位移、桌面模擬、雙手抓取與幽靈目標，並可選自動串接 <see cref="CharacterController"/>。
 /// </summary>
 public sealed class VRPlayerRig : Component
 {
@@ -16,6 +16,9 @@ public sealed class VRPlayerRig : Component
 
 	[Property, Group( "Features" )]
 	public bool EnableRightGrab { get; set; } = true;
+
+	[Property, Group( "Features" ), Description( "子階層所有 VRGhostHandTarget（武器幽靈追蹤目標）。" )]
+	public bool EnableGhostTargets { get; set; } = true;
 
 	[Property, Group( "Auto wire" ), Description( "為同物件上的 VRPlayerController 填入 CharacterController（若尚未指定）。" )]
 	public bool AutoWireCharacterController { get; set; } = true;
@@ -48,5 +51,8 @@ public sealed class VRPlayerRig : Component
 		{
 			grabber.Enabled = grabber.IsLeftHand ? EnableLeftGrab : EnableRightGrab;
 		}
+
+		foreach ( var ghost in Components.GetAll<VRGhostHandTarget>( FindMode.EnabledInSelfAndDescendants ) )
+			ghost.Enabled = EnableGhostTargets;
 	}
 }

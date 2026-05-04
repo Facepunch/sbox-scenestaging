@@ -124,6 +124,7 @@
             "go": "9e9d237a-c20f-40f7-b569-ab9be5766351",
             "component_type": "CharacterController"
           },
+          "EnableRightStickTurn": true,
           "MoveSpeed": 100,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -169,6 +170,7 @@
           "Flags": 0,
           "AutoWireCharacterController": true,
           "EnableDesktopFallback": true,
+          "EnableGhostTargets": true,
           "EnableLeftGrab": true,
           "EnableLocomotion": true,
           "EnableRightGrab": true,
@@ -432,6 +434,53 @@
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "__guid": "c0ffee01-0001-4000-8001-000000000001",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "GhostTarget_Left",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "VRGhostHandTarget",
+                      "__guid": "c0ffee01-0001-4000-8001-000000000002",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AttachmentName": "weapon_hold",
+                      "HandRenderer": {
+                        "_type": "component",
+                        "component_id": "7b61afa7-32f1-4687-a0a8-f0896f368389",
+                        "go": "da3bd340-d220-413b-a844-95f8329a32dd",
+                        "component_type": "SkinnedModelRenderer"
+                      },
+                      "IsLeftHand": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "ShowDebugGizmo": false,
+                      "SyncInFixedUpdate": true,
+                      "TransformSource": {
+                        "_type": "gameobject",
+                        "go": "27cffa28-046b-49fd-8d98-a1247b845418"
+                      },
+                      "UseAimPose": false,
+                      "UseVrInputDirect": true
+                    }
+                  ],
+                  "Children": []
                 }
               ]
             },
@@ -592,6 +641,53 @@
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "__guid": "c0ffee02-0002-4000-8002-000000000001",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "GhostTarget_Right",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "VRGhostHandTarget",
+                      "__guid": "c0ffee02-0002-4000-8002-000000000002",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AttachmentName": "weapon_hold",
+                      "HandRenderer": {
+                        "_type": "component",
+                        "component_id": "7663b01a-1bd4-46aa-b576-578b406a736d",
+                        "go": "01bfb8ea-d52a-4104-a4eb-22cdb57da0c5",
+                        "component_type": "SkinnedModelRenderer"
+                      },
+                      "IsLeftHand": false,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "ShowDebugGizmo": false,
+                      "SyncInFixedUpdate": true,
+                      "TransformSource": {
+                        "_type": "gameobject",
+                        "go": "d5fe9b06-4f25-44fc-a8f2-891a1f43b164"
+                      },
+                      "UseAimPose": false,
+                      "UseVrInputDirect": true
+                    }
+                  ],
+                  "Children": []
                 }
               ]
             }
@@ -604,9 +700,9 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Cube",
-      "Position": "-73.7471924,0.455200195,-73.4545135",
+      "Position": "-21.5708046,305.798279,57.9768982",
       "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Scale": "0.371815711,0.371815711,0.371815711",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -665,7 +761,7 @@
           "RollingResistance": null,
           "Scale": "50,50,50",
           "Static": false,
-          "Surface": null,
+          "Surface": "waaaa.surface",
           "SurfaceVelocity": "0,0,0"
         },
         {
@@ -674,11 +770,23 @@
           "__enabled": true,
           "Flags": 0,
           "AngularDamping": 0,
+          "EnableImpactDamage": true,
+          "EnhancedCcd": false,
           "Gravity": true,
+          "GravityScale": 1,
+          "ImpactDamage": 0,
           "LinearDamping": 0,
-          "Locking": {},
+          "Locking": {
+            "X": false,
+            "Y": false,
+            "Z": false,
+            "Pitch": false,
+            "Yaw": false,
+            "Roll": false
+          },
           "MassCenterOverride": "0,0,0",
           "MassOverride": 0,
+          "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -695,13 +803,13 @@
           "__guid": "f2a3b4c5-d6e7-4890-b123-456789abcdef",
           "__enabled": true,
           "Flags": 0,
-          "OverrideBody": null,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
-          "OnComponentUpdate": null
+          "OnComponentUpdate": null,
+          "OverrideBody": null
         }
       ],
       "Children": []

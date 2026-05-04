@@ -8,7 +8,7 @@
 
 **Goals**
 
-- 提供根節點 `VRPlayerRig` 以控制是否啟用：位移、桌面雙手模擬、左右手 `VRGrabber`。
+- 提供根節點 `VRPlayerRig` 以控制是否啟用：位移、桌面雙手模擬、左右手 `VRGrabber`、子階層 `VRGhostHandTarget`。
 - 以 `EnableRightStickTurn` 合併原「僅移動」用途，移除 `VRMovement`。
 - 將插槽可接受性與距離判斷抽成 `VRLogic.VRInteractionRules`，供 `VRSocket` 與測試共用。
 - 在規格與程式中固定本專案依賴的引擎 VR API 清單與延伸閱讀連結。
@@ -42,6 +42,7 @@
 | 手 | `Joystick.Value` | 搖桿 2D |
 | 手 | `Grip.Value` | 抓取 |
 | 手 | `Velocity` | 放開時套到剛體 |
+| 手（姿態） | `VRController.Transform` / `AimTransform` | 世界空間 grip／瞄準姿態（見 `Sandbox.Engine.xml`）；`VRGhostHandTarget` 可選直接讀取 |
 
 **官方／參考文件（延伸閱讀）**
 
@@ -57,7 +58,7 @@
 ### `VRPlayerRig`
 
 - **掛載位置**：與 `CharacterController`、`VRPlayerController`、`VRFallbackSimulator` 同一玩家根物件。
-- **行為**：`OnAwake` 呼叫 `ApplyFeatureToggles()`：依旗標設定 `VRPlayerController.Enabled`、`VRFallbackSimulator.Enabled`，以及子階層所有 `VRGrabber.Enabled`（依 `IsLeftHand` 區分左右）。
+- **行為**：`OnAwake` 呼叫 `ApplyFeatureToggles()`：依旗標設定 `VRPlayerController.Enabled`、`VRFallbackSimulator.Enabled`，子階層所有 `VRGrabber.Enabled`（依 `IsLeftHand` 區分左右），以及子階層所有 `VRGhostHandTarget.Enabled`（`EnableGhostTargets`）。
 - **Auto wire**：若 `AutoWireCharacterController` 且 `VRPlayerController.Controller` 未設定，則指定同物件上之 `CharacterController`。
 
 ### `VRPlayerController`
@@ -72,6 +73,13 @@
 ### `VRSocket`
 
 - `IdsMatch` / 距離檢查改呼叫 `VRInteractionRules`，行為與重構前一致。
+
+### `VRGhostHandTarget`
+
+- **用途**：無剛體、無碰撞之空物件元件，每幀寫入世界 Transform，作為日後彈簧關節追蹤的「幽靈手／目標點」。
+- **來源**：可選 `TransformSource`（與 `VRTrackedObject`／`VRFallbackSimulator` 相容）；若 `UseVrInputDirect` 且 `Game.IsRunningInVR`，則使用 `Input.VR.LeftHand`／`RightHand` 的 `Transform` 或 `AimTransform`。
+- **Attachment**：可選與 `VRGrabber` 相同之 `HandRenderer` + `AttachmentName`，有則優先對齊該 attachment。
+- **場景**：`test.vr.scene` 於左右手追蹤根下各一子物件 `GhostTarget_Left`／`GhostTarget_Right`。
 
 ## Test strategy
 
