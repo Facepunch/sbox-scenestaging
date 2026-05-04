@@ -23,6 +23,9 @@ public sealed class VRPlayerController : Component
     [Property, Group("Movement")]
     public float SnapTurnResetThreshold { get; set; } = 0.2f;
 
+    [Property, Group( "Movement" ), Description( "關閉時僅保留左手搖桿位移（取代已移除的 VRMovement）。" )]
+    public bool EnableRightStickTurn { get; set; } = true;
+
     private bool canSnapTurn = true;
 
     protected override void OnUpdate()
@@ -33,8 +36,8 @@ public sealed class VRPlayerController : Component
         // 1. 右手搖桿：控制視角轉向 (Rotation)
         // ==========================================
         var rightJoystick = Input.VR.RightHand.Joystick.Value;
-        
-        if ( UseSnapTurn )
+
+        if ( EnableRightStickTurn && UseSnapTurn )
         {
             if ( MathF.Abs( rightJoystick.x ) > SnapTurnThreshold && canSnapTurn )
             {
@@ -47,7 +50,7 @@ public sealed class VRPlayerController : Component
                 canSnapTurn = true;
             }
         }
-        else if ( MathF.Abs( rightJoystick.x ) > 0.1f ) // 加上 0.1f 的 Deadzone 防止搖桿飄移
+        else if ( EnableRightStickTurn && MathF.Abs( rightJoystick.x ) > 0.1f ) // 加上 0.1f 的 Deadzone 防止搖桿飄移
         {
             // 在 S&box 中，Z 軸向上，Yaw 代表左右轉頭
             float turnAmount = -rightJoystick.x * TurnSpeed * Time.Delta;

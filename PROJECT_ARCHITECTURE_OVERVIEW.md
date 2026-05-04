@@ -49,8 +49,9 @@
 
 ### VR 相關（最近重點）
 
-- `Code/test/VR/VRPlayerController.cs`：VR 轉向（平滑/瞬轉）+ 頭向移動 + 重力控制
-- `Code/test/VR/VRMovement.cs`：基本 VR 位移控制
+- `Code/test/VR/VRPlayerController.cs`：VR 轉向（平滑/瞬轉）+ 頭向移動 + 重力控制；`EnableRightStickTurn` 可關閉右手轉向、僅保留位移
+- `Code/test/VR/VRPlayerRig.cs`：玩家根上集中啟用位移、桌面雙手模擬、左右 `VRGrabber`
+- `Code/VRLogic/VRInteractionRules.cs`：插槽 id／距離純邏輯（供 `VRSocket` 與單元測試）
 - `Code/test/VR/VRGrabber.cs`：VR 抓取/釋放（FixedJoint + 丟擲速度）
 - `Code/test/VR/Grabbable.cs`：可選標記可抓物，支援 Inspector 注入或快取 `Rigidbody`（與 `VRGrabber` 混合解析搭配）
 - `Code/test/VR/Socketable.cs`：標記可插槽物、插槽 ID、可選 Attach 對齊點
@@ -104,7 +105,8 @@
 .\Code\test\VR\VRSocket.cs
 .\Code\test\VR\VRFallbackSimulator.cs
 .\Code\test\VR\VRPlayerController.cs
-.\Code\test\VR\VRMovement.cs
+.\Code\test\VR\VRPlayerRig.cs
+.\Code\VRLogic\VRInteractionRules.cs
 .\Libraries\isotope.gitversioncontrol\Editor\VersionCont.Git.cs
 .\Libraries\isotope.gitversioncontrol\Editor\VersionCont.cs
 .\Libraries\facepunch.shatterglass\Code\Glass.cs

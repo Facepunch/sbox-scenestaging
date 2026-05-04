@@ -161,6 +161,23 @@
             "_type": "gameobject",
             "go": "d5fe9b06-4f25-44fc-a8f2-891a1f43b164"
           }
+        },
+        {
+          "__type": "VRPlayerRig",
+          "__guid": "7f2a4c8e-1b0d-4a6f-9c3e-2d5f8a1b4c6d",
+          "__enabled": true,
+          "Flags": 0,
+          "AutoWireCharacterController": true,
+          "EnableDesktopFallback": true,
+          "EnableLeftGrab": true,
+          "EnableLocomotion": true,
+          "EnableRightGrab": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         }
       ],
       "Children": [
@@ -392,6 +409,26 @@
                       "Static": false,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
+                    },
+                    {
+                      "__type": "VRGrabber",
+                      "__guid": "a3c5e7d9-2f4b-4a6c-8e1a-0b2c3d4e5f6a",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AttachmentName": "weapon_hold",
+                      "HandRenderer": {
+                        "_type": "component",
+                        "component_id": "7b61afa7-32f1-4687-a0a8-f0896f368389",
+                        "go": "da3bd340-d220-413b-a844-95f8329a32dd",
+                        "component_type": "SkinnedModelRenderer"
+                      },
+                      "IsLeftHand": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null
                     }
                   ],
                   "Children": []
@@ -532,6 +569,26 @@
                       "Static": false,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
+                    },
+                    {
+                      "__type": "VRGrabber",
+                      "__guid": "b4d6e8f0-3a5c-4b7d-9f2b-1c2d3e4f5a6b",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AttachmentName": "weapon_hold",
+                      "HandRenderer": {
+                        "_type": "component",
+                        "component_id": "7663b01a-1bd4-46aa-b576-578b406a736d",
+                        "go": "01bfb8ea-d52a-4104-a4eb-22cdb57da0c5",
+                        "component_type": "SkinnedModelRenderer"
+                      },
+                      "IsLeftHand": false,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null
                     }
                   ],
                   "Children": []
@@ -610,6 +667,41 @@
           "Static": false,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "e1f2a3b4-c5d6-4789-a012-3456789abcde",
+          "__enabled": true,
+          "Flags": 0,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Grabbable",
+          "__guid": "f2a3b4c5-d6e7-4890-b123-456789abcdef",
+          "__enabled": true,
+          "Flags": 0,
+          "OverrideBody": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         }
       ],
       "Children": []

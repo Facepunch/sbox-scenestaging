@@ -1,4 +1,5 @@
 using Sandbox;
+using VRLogic;
 
 /// <summary>
 /// VR 插槽：以 Trigger 偵測候選物，並在放開 Grip（或低速進入）時將帶有 <see cref="Socketable"/> 的物件鎖到插槽。
@@ -65,16 +66,17 @@ public sealed class VRSocket : Component, Component.ITriggerListener
 
     bool IdsMatch( Socketable socketable )
     {
-        if ( string.IsNullOrEmpty( AcceptId ) )
-            return true;
-        return string.Equals( socketable.SocketId, AcceptId, System.StringComparison.Ordinal );
+        return VRInteractionRules.SocketAccepts( AcceptId, socketable?.SocketId );
     }
 
     bool DistanceAllowsSnap( GameObject item, Socketable socketable )
     {
         var slotPos = GetSlotWorldTransform().Position;
         var attach = socketable.GetAttachWorldPosition();
-        return (attach - slotPos).Length <= SnapRadius;
+        return VRInteractionRules.IsWithinRadius(
+            attach.x, attach.y, attach.z,
+            slotPos.x, slotPos.y, slotPos.z,
+            SnapRadius );
     }
 
     void TrySnapAfterGripRelease( GameObject item )

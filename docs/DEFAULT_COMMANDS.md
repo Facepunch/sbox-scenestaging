@@ -27,6 +27,12 @@ dotnet build .\sbox-scenestaging.sln -c Debug
 dotnet test .\sbox-scenestaging.sln -c Debug --no-build
 ```
 
+### Run VR logic unit tests only (no s&box / net10 toolchain required)
+
+```powershell
+dotnet test .\Code\UnitTests\VRLogic.UnitTests\VRLogic.UnitTests.csproj -c Debug
+```
+
 ### Release Build (Optional)
 
 ```powershell
