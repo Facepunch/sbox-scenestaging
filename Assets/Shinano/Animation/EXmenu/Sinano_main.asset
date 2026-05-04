@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: Sinano_main
+  m_EditorClassIdentifier: 
+  controls:
+  - name: Facial_set
+    icon: {fileID: 2800000, guid: 2e15f60602810d745866d8a8618ac313, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 3eea7643cb594aa4eb7ff8a5cef17bb8, type: 2}
+    subParameters: []
+    labels: []
+  - name: Facial_patrs
+    icon: {fileID: 2800000, guid: 7a53f19c2031c014a8cf3fb39ffe9e8f, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 587ff11cc08443046bbeed36ac034dda, type: 2}
+    subParameters: []
+    labels: []
+  - name: Costume_menu
+    icon: {fileID: 2800000, guid: e1dd103af0769524facc2cad0155a757, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: c8cff0ee72790344bacc11c9ffb49aa7, type: 2}
+    subParameters: []
+    labels: []
+  - name: Hair_menu
+    icon: {fileID: 2800000, guid: b345edaa56dd90d4684a208095093442, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 45d81dfab10d77a4685bb349bba670e4, type: 2}
+    subParameters: []
+    labels: []
+  - name: Body_menu
+    icon: {fileID: 2800000, guid: 915741d904a4d5142ad43578e8c41be6, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: e22f7ed1d81fd1a4289ca91a995b547f, type: 2}
+    subParameters: []
+    labels: []
+  - name: Other
+    icon: {fileID: 2800000, guid: fd19358199e675d41ba0c18c0e3944b6, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 707b564a5514919449c43e4c96ba108d, type: 2}
+    subParameters: []
+    labels: []

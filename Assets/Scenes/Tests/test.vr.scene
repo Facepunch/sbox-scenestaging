@@ -613,6 +613,70 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "70b7d4ff-d9b1-4910-867d-33ee65c36419",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "shinano",
+      "Position": "19.0137329,334.850525,0.000406327745",
+      "Rotation": "0,0,0,1",
+      "Scale": "50,50,50",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "4086a52b-e41d-4178-8b84-947666d7e17b",
+          "__enabled": true,
+          "Flags": 0,
+          "AnimationGraph": null,
+          "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
+          "CreateAttachments": false,
+          "CreateBoneObjects": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "shinano/fbx/shinano.vmdl",
+          "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "PlaybackRate": 1,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Sequence": {
+            "Name": null,
+            "Looping": true,
+            "Blending": false
+          },
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
@@ -638,6 +702,9 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
@@ -647,9 +714,6 @@
         "Storage": {
           "$blob": "62640cce-befa-4a5a-a98c-d7fe39b5d4db"
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       }
     }
   },

@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: Sinano_facial_parts
+  m_EditorClassIdentifier: 
+  controls:
+  - name: Cheek
+    icon: {fileID: 2800000, guid: db30d75e7c34e60409eda841e7f8ecc0, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Heart_eye
+    icon: {fileID: 2800000, guid: 37d0e35f3c3886d4d9c3f2d426048d94, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 2
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Kirakira_eye
+    icon: {fileID: 2800000, guid: 735167b40e318b7439980d285df3c465, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 3
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Sweat
+    icon: {fileID: 2800000, guid: 676761e39b32ff64d96cb1361462181d, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 4
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Tear
+    icon: {fileID: 2800000, guid: af4f9455ec9671b42ab4feca719f271d, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 5
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Dead_eye
+    icon: {fileID: 2800000, guid: 04bbd66dd2f9432468d70880c51ad683, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 6
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Guruguru_eye
+    icon: {fileID: 2800000, guid: b72507b92e299d7429ee717b00faf696, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 7
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: White_eye
+    icon: {fileID: 2800000, guid: efb7f3305d79d4a44891376d7bf7136f, type: 3}
+    type: 102
+    parameter:
+      name: F_Parts
+    value: 8
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []

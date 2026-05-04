@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: Sinano_costume
+  m_EditorClassIdentifier: 
+  controls:
+  - name: Sweater_OFF
+    icon: {fileID: 2800000, guid: 06c9fedadcfb8f1449b0a2e7f657dfa8, type: 3}
+    type: 102
+    parameter:
+      name: Sweater
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Dress_OFF
+    icon: {fileID: 2800000, guid: 10ce4e6b145f0a34b97752d5a0e155a3, type: 3}
+    type: 102
+    parameter:
+      name: Dress
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Skirt_OFF
+    icon: {fileID: 2800000, guid: 1fa8ff3224332cf45bf85425823928fc, type: 3}
+    type: 102
+    parameter:
+      name: Skirt
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Tights_OFF
+    icon: {fileID: 2800000, guid: 2b6bd9bebba275a4d9456de1f2a3ff52, type: 3}
+    type: 102
+    parameter:
+      name: Tights
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Boots_OFF
+    icon: {fileID: 2800000, guid: 62b06dba52a0b5641bb6c58912ecb0d9, type: 3}
+    type: 102
+    parameter:
+      name: Boots
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
