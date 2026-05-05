@@ -1,122 +1,168 @@
 using Sandbox;
+using VRLogic;
 
 /// <summary>
-/// VR 手部抓取：依 Grip 建立 <see cref="FixedJoint"/>，並可選用 SkinnedModelRenderer 的 attachment 對齊物體。
+/// VR 手部抓取（Interactor）：Hover 由 Trigger 驅動；Attach／Release 在 <see cref="OnFixedUpdate"/> 執行以對齊物理步。
+/// 可選用 <see cref="SkinnedModelRenderer.GetAttachment"/> 對齊 ModelDoc attachment，再建立 <see cref="FixedJoint"/>。
 /// </summary>
 /// <remarks>
-/// 編輯器設定檢核：
-/// <list type="bullet">
-/// <item>將此元件掛在左手或右手對應的 GameObject，並以 <see cref="IsLeftHand"/> 區分左右。</item>
-/// <item>同一隻手（或子階層）需有 <b>Trigger</b> 的 Collider，才會收到 <see cref="Component.ITriggerListener"/> 事件。</item>
-/// <item><see cref="HandRenderer"/> 請指定含 <see cref="SkinnedModelRenderer"/> 的物件；<see cref="AttachmentName"/> 須與 ModelDoc attachment 名稱完全一致（含大小寫）。</item>
-/// <item>可抓物需具備 <see cref="Rigidbody"/>：優先使用同物件上的 <see cref="Grabbable"/>（可 Inspector 注入或啟用時快取），否則先找本體剛體，再以 <see cref="FindMode.EnabledInSelfAndDescendants"/> 保底。</item>
-/// <item>關節建立在掛載此元件的 GameObject 上，該物件通常也需具備適當物理本體，關節行為才穩定。</item>
-/// </list>
+/// 編輯器設定檢核：見原類別註解；<see cref="AttachmentName"/> 預設與 <see cref="VrInteractionConstants.DefaultGripAttachmentName"/> 一致。
 /// </remarks>
 public sealed class VRGrabber : Component, Component.ITriggerListener
 {
-    [Property, Group( "VR 設定" ), Description( "勾選表示此元件掛在左手；未勾選表示右手。" )]
-    public bool IsLeftHand { get; set; } = false;
+	[Property, Group( "VR 設定" ), Description( "勾選表示此元件掛在左手；未勾選表示右手。" )]
+	public bool IsLeftHand { get; set; }
 
-    [Property, Group( "吸附設定" ), Description( "手部模型上的 SkinnedModelRenderer，用來讀取 ModelDoc attachment。" )]
-    public SkinnedModelRenderer HandRenderer { get; set; }
+	[Property, Group( "吸附設定" )]
+	public SkinnedModelRenderer HandRenderer { get; set; }
 
-    [Property, Group( "吸附設定" ), Description( "ModelDoc 中 attachment 名稱（例如 weapon_hold），須與模型完全一致。" )]
-    public string AttachmentName { get; set; } = "weapon_hold";
+	[Property, Group( "吸附設定" ), Description( "ModelDoc attachment 名稱；須與模型完全一致（含大小寫）。" )]
+	public string AttachmentName { get; set; } = VrInteractionConstants.DefaultGripAttachmentName;
 
-    private GameObject _touchingObject;
-    private GameObject _heldObject;
-    private FixedJoint _grabJoint;
+	[Property, Group( "輸入" )]
+	public float GripPressThreshold { get; set; } = VrInteractionConstants.DefaultGripPressThreshold;
 
-    protected override void OnUpdate()
-    {
-        var hand = IsLeftHand ? Input.VR.LeftHand : Input.VR.RightHand;
+	[Property, Group( "輸入" )]
+	public float GripReleaseThreshold { get; set; } = VrInteractionConstants.DefaultGripReleaseThreshold;
 
-        if ( hand.Grip.Value > 0.5f && _heldObject == null && _touchingObject != null )
-        {
-            GrabObject( _touchingObject );
-        }
-        else if ( hand.Grip.Value < 0.2f && _heldObject != null )
-        {
-            ReleaseObject();
-        }
-    }
+	/// <summary>Idle：無候選；Hovering：Trigger 內有物；Holding：已建立關節。</summary>
+	public GrabInteractorState State { get; private set; } = GrabInteractorState.Idle;
 
-    public static bool TryResolveRigidbody( GameObject root, out Rigidbody rb )
-    {
-        if ( root.Components.TryGet<Grabbable>( out var grabbable ) && grabbable.TryGetBody( out rb ) )
-            return true;
+	GameObject _touchingObject;
+	GameObject _heldObject;
+	FixedJoint _grabJoint;
 
-        if ( root.Components.TryGet<Rigidbody>( out rb ) && rb.IsValid() )
-            return true;
+	GameObject _pendingGrabTarget;
+	bool _pendingRelease;
+	Vector3 _releaseLinearVelocity;
 
-        rb = root.Components.Get<Rigidbody>( FindMode.EnabledInSelfAndDescendants );
-        return rb.IsValid();
-    }
+	protected override void OnUpdate()
+	{
+		var hand = IsLeftHand ? Input.VR.LeftHand : Input.VR.RightHand;
+		var grip = hand.Grip.Value;
 
-    void GrabObject( GameObject obj )
-    {
-        if ( obj == null ) return;
+		if ( GrabInteractionRules.ShouldStartGrab( grip, GripPressThreshold, _heldObject is not null, _touchingObject is not null ) )
+			_pendingGrabTarget = _touchingObject;
 
-        _heldObject = obj;
+		if ( GrabInteractionRules.ShouldReleaseGrab( grip, GripReleaseThreshold, _heldObject is not null ) )
+		{
+			_pendingRelease = true;
+			_releaseLinearVelocity = hand.Velocity;
+		}
 
-        if ( HandRenderer != null && !string.IsNullOrEmpty( AttachmentName ) )
-        {
-            var attachmentTx = HandRenderer.GetAttachment( AttachmentName );
+		UpdatePresentationState();
+	}
 
-            if ( attachmentTx.HasValue )
-            {
-                obj.Transform.Position = attachmentTx.Value.Position;
-                obj.Transform.Rotation = attachmentTx.Value.Rotation;
+	protected override void OnFixedUpdate()
+	{
+		if ( _pendingRelease )
+		{
+			_pendingGrabTarget = null;
+			_pendingRelease = false;
+			ReleaseObjectInternal();
+		}
 
-                if ( TryResolveRigidbody( obj, out var rb ) )
-                {
-                    rb.Velocity = Vector3.Zero;
-                    rb.AngularVelocity = Vector3.Zero;
-                }
-            }
-        }
+		if ( _pendingGrabTarget is not null && _heldObject is null )
+		{
+			var hand = IsLeftHand ? Input.VR.LeftHand : Input.VR.RightHand;
+			if ( hand.Grip.Value < GripPressThreshold )
+			{
+				_pendingGrabTarget = null;
+				return;
+			}
 
-        _grabJoint = Components.Create<FixedJoint>();
-        _grabJoint.Body = obj;
-    }
+			var target = _pendingGrabTarget;
+			_pendingGrabTarget = null;
+			GrabObjectInternal( target );
+		}
+	}
 
-    void ReleaseObject()
-    {
-        var released = _heldObject;
+	void UpdatePresentationState()
+	{
+		if ( _heldObject is not null )
+			State = GrabInteractorState.Holding;
+		else if ( _touchingObject is not null )
+			State = GrabInteractorState.Hovering;
+		else
+			State = GrabInteractorState.Idle;
+	}
 
-        if ( _grabJoint != null )
-        {
-            _grabJoint.Destroy();
-        }
+	public static bool TryResolveRigidbody( GameObject root, out Rigidbody rb )
+	{
+		if ( root.Components.TryGet<Grabbable>( out var grabbable ) && grabbable.TryGetBody( out rb ) )
+			return true;
 
-        if ( released != null && TryResolveRigidbody( released, out var rb ) )
-        {
-            var hand = IsLeftHand ? Input.VR.LeftHand : Input.VR.RightHand;
-            // 手部角速度為 Angles；Rigidbody 需 Vector3，此處只傳遞線速度，角速度清零避免型別錯誤。
-            rb.Velocity = hand.Velocity;
-            rb.AngularVelocity = Vector3.Zero;
-        }
+		if ( root.Components.TryGet<Rigidbody>( out rb ) && rb.IsValid() )
+			return true;
 
-        if ( released != null )
-            VRSocket.NotifyGripReleased( Scene, released );
+		rb = root.Components.Get<Rigidbody>( FindMode.EnabledInSelfAndDescendants );
+		return rb.IsValid();
+	}
 
-        _heldObject = null;
-    }
+	void GrabObjectInternal( GameObject obj )
+	{
+		if ( obj is null || !obj.IsValid() )
+			return;
 
-    void ITriggerListener.OnTriggerEnter( Collider other )
-    {
-        if ( TryResolveRigidbody( other.GameObject, out _ ) )
-        {
-            _touchingObject = other.GameObject;
-        }
-    }
+		_heldObject = obj;
 
-    void ITriggerListener.OnTriggerExit( Collider other )
-    {
-        if ( _touchingObject == other.GameObject )
-        {
-            _touchingObject = null;
-        }
-    }
+		if ( HandRenderer is not null && !string.IsNullOrEmpty( AttachmentName ) )
+		{
+			var attachmentTx = HandRenderer.GetAttachment( AttachmentName );
+
+			if ( attachmentTx.HasValue )
+			{
+				obj.Transform.Position = attachmentTx.Value.Position;
+				obj.Transform.Rotation = attachmentTx.Value.Rotation;
+
+				if ( TryResolveRigidbody( obj, out var rb ) )
+				{
+					rb.Velocity = Vector3.Zero;
+					rb.AngularVelocity = Vector3.Zero;
+				}
+			}
+		}
+
+		_grabJoint = Components.Create<FixedJoint>();
+		_grabJoint.Body = obj;
+	}
+
+	void ReleaseObjectInternal()
+	{
+		var released = _heldObject;
+
+		_grabJoint?.Destroy();
+		_grabJoint = null;
+
+		if ( released is not null && released.IsValid() && TryResolveRigidbody( released, out var rb ) )
+		{
+			rb.Velocity = AlyxFeelTuningDefaults.PreferHandLinearVelocityOnRelease ? _releaseLinearVelocity : rb.Velocity;
+			rb.AngularVelocity = Vector3.Zero;
+		}
+
+		if ( released is not null && released.IsValid() )
+			GripReleaseNotification.Publish?.Invoke( Scene, released );
+
+		_heldObject = null;
+	}
+
+	void ITriggerListener.OnTriggerEnter( Collider other )
+	{
+		if ( TryResolveRigidbody( other.GameObject, out _ ) )
+			_touchingObject = other.GameObject;
+	}
+
+	void ITriggerListener.OnTriggerExit( Collider other )
+	{
+		if ( _touchingObject == other.GameObject )
+			_touchingObject = null;
+	}
+}
+
+/// <summary>VR 抓取 Interactor 高階狀態（細節仍以物理與 Trigger 為準）。</summary>
+public enum GrabInteractorState
+{
+	Idle,
+	Hovering,
+	Holding
 }

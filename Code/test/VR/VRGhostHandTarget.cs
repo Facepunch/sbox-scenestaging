@@ -1,7 +1,8 @@
 using Sandbox;
 
 /// <summary>
-/// 幽靈目標：無剛體、無碰撞，每幀將自身世界 Transform 對齊「真實手把／握持點」，供日後彈簧關節等追蹤。
+/// 幽靈目標（呈現層）：無剛體、無碰撞，每幀將自身世界 Transform 對齊「真實手把／握持點」，供日後彈簧關節等追蹤。
+/// 不負責 Hover／抓取／關節；互動請用 <see cref="VRGrabber"/>（Interactor）。
 /// </summary>
 /// <remarks>
 /// 預設以 <see cref="TransformSource"/>（通常為已掛 <see cref="Sandbox.VR.VRTrackedObject"/> 或由 <see cref="VRFallbackSimulator"/> 驅動的手根）為來源，桌面與真 VR 一致。

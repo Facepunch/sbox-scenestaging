@@ -1,0 +1,11 @@
+# VR / testbed：現階段僅跑單元測試（與 docs/specs/2026-05-05-vr-interaction-stack.md 一致）。
+# 注意：testbed.unittest.csproj 含對本機 Steam sbox 路徑之 ProjectReference；無 SDK 的 Runner 會失敗，請使用已安裝 sbox 的代理或自建 Runner。
+
+stages:
+  - test
+
+unit_tests:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  script:
+    - dotnet test "UnitTests/testbed.unittest.csproj" -c Release

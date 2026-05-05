@@ -1,22 +1,23 @@
 {
   "publish": {
-    "Enabled": true,
+    "Enabled": false,
     "ProjectConfig": {
-      "Title": "rock_cliffs_atlas",
+      "Title": "Shader Lighting Normal",
       "Type": "material",
-      "Org": "rust",
-      "Ident": "rock_cliffs_atlas",
+      "Org": "local",
+      "Ident": "shaderlightingnormal",
       "Schema": 0,
       "IncludeSourceFiles": false,
       "Resources": null,
       "PackageReferences": null,
       "EditorReferences": [
+        "pilgrim.terrystart#11488",
         "facepunch.v_m4a1#109633"
       ],
       "Mounts": null,
       "IsStandaloneOnly": false,
       "Metadata": {
-        "SingleAssetSource": "models/rocks/rock_cliffs_atlas.vmat"
+        "SingleAssetSource": "scenes/tests/rendering/shader_lighting_normal.vmat"
       }
     }
   }

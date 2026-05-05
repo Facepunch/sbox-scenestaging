@@ -33,9 +33,9 @@
     "MapStartupScene": "scenes/tests/maploader.scene",
     "LaunchMode": "Normal",
     "ControlModes": {
-      "Keyboard": false,
+      "Keyboard": true,
       "VR": true,
-      "Gamepad": false
+      "Gamepad": true
     },
     "ParentPackage": "tft.tftvrfullbody"
   }

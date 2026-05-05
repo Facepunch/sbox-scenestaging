@@ -2,7 +2,8 @@ using Sandbox;
 using VRLogic;
 
 /// <summary>
-/// VR 插槽：以 Trigger 偵測候選物，並在放開 Grip（或低速進入）時將帶有 <see cref="Socketable"/> 的物件鎖到插槽。
+/// VR 插槽（Socket／槽位狀態）：以 Trigger 偵測候選物，並在放開 Grip（或低速進入）時將帶有 <see cref="Socketable"/> 的物件鎖到插槽。
+/// 不負責手部 Hover／關節；與 <see cref="VRGrabber"/> 透過 <see cref="NotifyGripReleased"/> 或 <see cref="GripReleaseNotification"/> 銜接。
 /// </summary>
 public sealed class VRSocket : Component, Component.ITriggerListener
 {

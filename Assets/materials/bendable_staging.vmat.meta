@@ -1,11 +1,11 @@
 {
   "publish": {
-    "Enabled": true,
+    "Enabled": false,
     "ProjectConfig": {
-      "Title": "rock_cliffs_atlas",
+      "Title": "Bendable Staging",
       "Type": "material",
-      "Org": "rust",
-      "Ident": "rock_cliffs_atlas",
+      "Org": "local",
+      "Ident": "bendablestaging",
       "Schema": 0,
       "IncludeSourceFiles": false,
       "Resources": null,
@@ -16,7 +16,7 @@
       "Mounts": null,
       "IsStandaloneOnly": false,
       "Metadata": {
-        "SingleAssetSource": "models/rocks/rock_cliffs_atlas.vmat"
+        "SingleAssetSource": "materials/bendable_staging.vmat"
       }
     }
   }

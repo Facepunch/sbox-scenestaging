@@ -1,107 +1,187 @@
 using Sandbox;
+using VRLogic;
 
+/// <summary>
+/// VR／桌面本體移動：轉向於 <see cref="OnUpdate"/>；位移、跳躍、摩擦與加速於 <see cref="OnFixedUpdate"/> 與雙手物理一致。
+/// </summary>
 public sealed class VRPlayerController : Component
 {
-    [Property, Group("Components")] 
-    public CharacterController Controller { get; set; }
+	[Property, Group( "Components" )]
+	public CharacterController Controller { get; set; }
 
-    [Property, Group("Movement")] 
-    public float MoveSpeed { get; set; } = 100.0f;
-    
-    [Property, Group("Movement")] 
-    public float TurnSpeed { get; set; } = 120.0f; // 每秒旋轉的角度
+	[Property, Group( "Movement" )]
+	public float MoveSpeed { get; set; } = 100.0f;
 
-    [Property, Group("Movement")]
-    public bool UseSnapTurn { get; set; } = false;
+	[Property, Group( "Movement" )]
+	public float TurnSpeed { get; set; } = 120.0f;
 
-    [Property, Group("Movement")]
-    public float SnapTurnAngle { get; set; } = 45.0f;
+	[Property, Group( "Movement" )]
+	public bool UseSnapTurn { get; set; }
 
-    [Property, Group("Movement")]
-    public float SnapTurnThreshold { get; set; } = 0.5f;
+	[Property, Group( "Movement" )]
+	public float SnapTurnAngle { get; set; } = 45.0f;
 
-    [Property, Group("Movement")]
-    public float SnapTurnResetThreshold { get; set; } = 0.2f;
+	[Property, Group( "Movement" )]
+	public float SnapTurnThreshold { get; set; } = 0.5f;
 
-    [Property, Group( "Movement" ), Description( "關閉時僅保留左手搖桿位移（取代已移除的 VRMovement）。" )]
-    public bool EnableRightStickTurn { get; set; } = true;
+	[Property, Group( "Movement" )]
+	public float SnapTurnResetThreshold { get; set; } = 0.2f;
 
-    private bool canSnapTurn = true;
+	[Property, Group( "Movement" ), Description( "關閉時僅保留搖桿位移，不處理右手轉向。" )]
+	public bool EnableRightStickTurn { get; set; } = true;
 
-    protected override void OnUpdate()
-    {
-        if ( Controller == null ) return;
+	[Property, Group( "Movement" )]
+	public float JumpStrength { get; set; } = 300f;
 
-        var inVr = Game.IsRunningInVR;
-        Vector2 rightJoystick;
-        Vector2 leftJoystick;
-        Rotation headRot;
+	[Property, Group( "Movement" )]
+	public float GroundFriction { get; set; } = 6f;
 
-        if ( inVr )
-        {
-            rightJoystick = Input.VR.RightHand.Joystick.Value;
-            leftJoystick = Input.VR.LeftHand.Joystick.Value;
-            headRot = Input.VR.Head.Rotation;
-        }
-        else
-        {
-            // PC／桌面：無 Input.VR；位移用鍵盤 AnalogMove，視線用主攝影機。
-            // 左右轉身通常由 VRFallbackSimulator 處理滑鼠，此處右搖桿設為零以免重複旋轉。
-            leftJoystick = Input.AnalogMove;
-            var cam = Scene.Camera;
-            headRot = cam.IsValid() ? cam.WorldTransform.Rotation : Transform.WorldRotation;
-            rightJoystick = default;
-        }
+	[Property, Group( "Movement" )]
+	public float AirFriction { get; set; } = 0.2f;
 
-        // ==========================================
-        // 1. 右手搖桿：控制視角轉向 (Rotation)
-        // ==========================================
+	[Property, Group( "Movement" )]
+	public float AirWishMax { get; set; } = 50f;
 
-        if ( EnableRightStickTurn && UseSnapTurn )
-        {
-            if ( MathF.Abs( rightJoystick.x ) > SnapTurnThreshold && canSnapTurn )
-            {
-                float turnAmount = rightJoystick.x > 0.0f ? SnapTurnAngle : -SnapTurnAngle;
-                Transform.Rotation *= Rotation.FromYaw( turnAmount );
-                canSnapTurn = false;
-            }
-            else if ( MathF.Abs( rightJoystick.x ) < SnapTurnResetThreshold )
-            {
-                canSnapTurn = true;
-            }
-        }
-        else if ( EnableRightStickTurn && MathF.Abs( rightJoystick.x ) > 0.1f ) // 加上 0.1f 的 Deadzone 防止搖桿飄移
-        {
-            // 在 S&box 中，Z 軸向上，Yaw 代表左右轉頭
-            float turnAmount = -rightJoystick.x * TurnSpeed * Time.Delta;
-            Transform.Rotation *= Rotation.FromYaw( turnAmount );
-        }
+	[Property, Group( "Movement" ), Description( "啟用後以 Input.Down(\"duck\") 切換蹲伏高度（與 Walker 風格類似）。" )]
+	public bool EnableCrouch { get; set; }
 
-        // ==========================================
-        // 2. 左手搖桿：控制物理移動 (Translation)
-        // ==========================================
+	[Property, Group( "Movement" )]
+	public float StandHeight { get; set; } = 64f;
 
-        // 取得視線方向（VR 為頭盔；PC 為主攝影機／本體）
-        // 抹除 Z 軸，避免玩家低頭看地板時，往前推搖桿會往地下鑽
-        var forward = headRot.Forward.WithZ( 0 ).Normal;
-        var right = headRot.Right.WithZ( 0 ).Normal;
+	[Property, Group( "Movement" )]
+	public float CrouchHeight { get; set; } = 36f;
 
-        // 根據搖桿的 X (左右) 和 Y (前後) 結合頭盔方向計算出最終移動向量
-        Vector3 wishVelocity = (forward * leftJoystick.y) + (right * leftJoystick.x);
-        wishVelocity *= MoveSpeed;
+	bool canSnapTurn = true;
+	RealTimeSince lastJump;
+	bool crouching;
 
-        // 簡單的重力模擬
-        if ( !Controller.IsOnGround )
-        {
-            wishVelocity = wishVelocity.WithZ( Controller.Velocity.z - 400.0f * Time.Delta );
-        }
-        else
-        {
-            wishVelocity = wishVelocity.WithZ( 0.0f );
-        }
+	protected override void OnUpdate()
+	{
+		if ( Controller is null )
+			return;
 
-        // 呼叫 CharacterController 進行移動並處理碰撞
-        Controller.Velocity = wishVelocity;
-        Controller.Move();
-    }
+		var inVr = Game.IsRunningInVR;
+		Vector2 rightJoystick;
+		Vector2 leftJoystick;
+
+		if ( inVr )
+		{
+			rightJoystick = Input.VR.RightHand.Joystick.Value;
+			leftJoystick = Input.VR.LeftHand.Joystick.Value;
+		}
+		else
+		{
+			leftJoystick = Input.AnalogMove;
+			rightJoystick = default;
+		}
+
+		if ( EnableRightStickTurn && UseSnapTurn )
+		{
+			if ( MathF.Abs( rightJoystick.x ) > SnapTurnThreshold && canSnapTurn )
+			{
+				float turnAmount = rightJoystick.x > 0.0f ? SnapTurnAngle : -SnapTurnAngle;
+				Transform.Rotation *= Rotation.FromYaw( turnAmount );
+				canSnapTurn = false;
+			}
+			else if ( MathF.Abs( rightJoystick.x ) < SnapTurnResetThreshold )
+			{
+				canSnapTurn = true;
+			}
+		}
+		else if ( EnableRightStickTurn && MathF.Abs( rightJoystick.x ) > 0.1f )
+		{
+			float turnAmount = -rightJoystick.x * TurnSpeed * Time.Delta;
+			Transform.Rotation *= Rotation.FromYaw( turnAmount );
+		}
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		if ( Controller is null )
+			return;
+
+		var inVr = Game.IsRunningInVR;
+		Vector2 leftJoystick;
+		Rotation headRot;
+
+		if ( inVr )
+		{
+			leftJoystick = Input.VR.LeftHand.Joystick.Value;
+			headRot = Input.VR.Head.Rotation;
+		}
+		else
+		{
+			leftJoystick = Input.AnalogMove;
+			var cam = Scene.Camera;
+			headRot = cam.IsValid() ? cam.WorldTransform.Rotation : Transform.Rotation;
+		}
+
+		if ( EnableCrouch )
+			UpdateCrouch();
+
+		var forward = headRot.Forward;
+		var right = headRot.Right;
+		var wish = LocomotionWishRules.ComputePlanarWishFromHeadAxes( forward, right, leftJoystick, MoveSpeed );
+
+		var cc = Controller;
+		var halfGravity = Scene.PhysicsWorld.Gravity * Time.Delta * 0.5f;
+
+		if ( cc.IsOnGround && lastJump > 0.3f && Input.Pressed( "jump" ) )
+		{
+			lastJump = 0;
+			cc.Punch( Vector3.Up * JumpStrength );
+		}
+
+		wish = wish.WithZ( 0 );
+
+		cc.ApplyFriction( cc.IsOnGround ? GroundFriction : AirFriction );
+
+		if ( cc.IsOnGround )
+		{
+			cc.Velocity = cc.Velocity.WithZ( 0 );
+			cc.Accelerate( wish );
+		}
+		else
+		{
+			cc.Velocity += halfGravity;
+			cc.Accelerate( wish.ClampLength( AirWishMax ) );
+		}
+
+		cc.Move();
+
+		if ( !cc.IsOnGround )
+			cc.Velocity += halfGravity;
+		else
+			cc.Velocity = cc.Velocity.WithZ( 0 );
+	}
+
+	void UpdateCrouch()
+	{
+		var wishDuck = Input.Down( "duck" );
+		if ( wishDuck == crouching )
+			return;
+
+		if ( wishDuck )
+		{
+			Controller.Height = CrouchHeight;
+			crouching = true;
+			if ( !Controller.IsOnGround )
+			{
+				var duckDelta = StandHeight - CrouchHeight;
+				Controller.MoveTo( Transform.Position + Vector3.Up * duckDelta, false );
+				Transform.ClearLerp();
+			}
+			return;
+		}
+
+		if ( !wishDuck && crouching )
+		{
+			var tr = Controller.TraceDirection( Vector3.Up * (StandHeight - CrouchHeight) );
+			if ( tr.Hit )
+				return;
+
+			Controller.Height = StandHeight;
+			crouching = false;
+		}
+	}
 }
