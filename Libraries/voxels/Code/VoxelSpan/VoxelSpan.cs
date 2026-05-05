@@ -31,7 +31,7 @@ public readonly ref struct VoxelSpan<T>
 		Size = size;
 		Stride = stride;
 
-		Source = source[..(GetSourceIndex( size.x - 1, size.y, size.z ) + 1)];
+		Source = source[..GetSourceIndex( size.x, size.y - 1, size.z - 1 )];
 	}
 
 	internal int GetSourceIndex( int x, int y, int z ) => x + y * Stride.x + z * Stride.y;
@@ -57,7 +57,7 @@ public readonly ref struct VoxelSpan<T>
 		}
 
 		var start = GetSourceIndex( offset );
-		var end = GetSourceIndex( offset.x + size.x - 1, offset.y + size.y, offset.z + size.z ) + 1;
+		var end = GetSourceIndex( offset.x + size.x, offset.y + size.y - 1, offset.z + size.z - 1 );
 
 		return new VoxelSpan<T>( Source.Slice( start, end - start ), size, Stride );
 	}
