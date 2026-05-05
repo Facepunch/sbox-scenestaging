@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Voxels.Rendering;
+namespace Voxels;
 
-public abstract class VoxelMeshGenerator
+public abstract class VoxelMeshWriter
 {
 
 }
