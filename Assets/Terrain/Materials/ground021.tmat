@@ -5,11 +5,12 @@
   "HeightImage": "terrain/materials/textures/ground021_4k-jpg_displacement.jpg",
   "AOImage": "terrain/materials/textures/ground021_4k-jpg_ambientocclusion.jpg",
   "UVScale": 8,
-  "UVRotation": 0,
-  "Metalness": 0,
+  "Metalness": 1,
   "NormalStrength": 1,
-  "HeightBlendStrength": 1,
-  "Surface": "surfaces/brick.surface",
+  "HeightBlendStrength": 3.709375,
+  "DisplacementScale": 5.052083,
+  "NoTiling": false,
+  "Surface": null,
   "__references": [],
   "__version": 0
 }
