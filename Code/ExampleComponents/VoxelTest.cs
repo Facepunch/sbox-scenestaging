@@ -1,18 +1,13 @@
-﻿using System.Diagnostics;
-using Sandbox.Utility;
-using Voxels;
-using Voxels.Rendering;
+﻿using Voxels.Rendering;
 
 namespace Sandbox;
 
 public sealed class VoxelTest : Component, Component.ExecuteInEditor
 {
-	private byte[] _voxelArray;
-
 	private SceneCubicVoxelsObject _sceneObject;
 
 	[Property]
-	public Vector3Int Size { get; set; } = 8;
+	public Vector3Int Size { get; set; } = 32;
 
 	[Property]
 	public int Seed { get; set; } = 12379162;
@@ -27,20 +22,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	[Button]
 	public void Run()
 	{
-		_voxelArray = new byte[Size.x * Size.y * Size.z];
-
-		var voxelSpan = new VoxelSpan<byte>( _voxelArray, Size );
-
-		var field = Noise.SimplexField( new Noise.FractalParameters( Seed ) );
-		var timer = Stopwatch.StartNew();
-
-		var groundLevel = Size.z / 2;
-
-		field.Sample( voxelSpan, BBox.FromPositionAndSize( 0f, 64f ),  (pos, value) => value > ((float)pos.z / Size.z).Clamp( 0.25f, 1f ) ? (byte)1 : (byte)0 );
-
-		Log.Info( $"Generating: {timer.Elapsed.TotalMilliseconds:F2} ms" );
-
-		_sceneObject?.SetVoxels( voxelSpan );
+		_sceneObject?.Generate( Size, Seed );
 	}
 
 	protected override void OnEnabled()

@@ -28,8 +28,8 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Seed": 1341260833,
-          "Size": "32,32,32"
+          "Seed": 1372930552,
+          "Size": "128,128,128"
         }
       ],
       "Children": []
@@ -69,12 +69,12 @@
       "Children": []
     },
     {
-      "__guid": "eece37c1-c623-4c5c-8fb0-bf82c087a57f",
+      "__guid": "5cb725bf-fd73-4e59-9dc4-91a6d8075f85",
       "__version": 2,
       "Flags": 0,
       "Name": "Sun",
-      "Position": "3923.25366,-268.707825,1668.0498",
-      "Rotation": "-0.157559052,0.588018358,0.205334947,0.766320467",
+      "Position": "479.260773,2327.63257,2528.97925",
+      "Rotation": "-0.0652631,0.495722443,0.113039002,0.858616471",
       "Scale": "1,1,1",
       "Tags": "light_directional,light",
       "Enabled": true,
@@ -86,7 +86,7 @@
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
-          "__guid": "2fab39f8-e849-4922-9aac-a7814ecf7408",
+          "__guid": "492df075-fe42-4f5b-a35c-a355b27aabdb",
           "__enabled": true,
           "Flags": 0,
           "FogMode": "Enabled",

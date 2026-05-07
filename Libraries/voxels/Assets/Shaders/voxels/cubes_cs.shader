@@ -17,7 +17,7 @@ CS
         uint PackedVertices[6];
     };
 
-    StructuredBuffer<uint> VoxelData < Attribute("VoxelData"); >;
+    StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
     uint3 VoxelOffset < Attribute("VoxelOffset"); >;
     uint2 VoxelStride < Attribute("VoxelStride"); >;
 
@@ -25,14 +25,7 @@ CS
 
     Voxel GetVoxel(uint3 index)
     {
-        uint byteIndex = index.x + VoxelStride.x * index.y + VoxelStride.y * index.z;
-        uint packed = VoxelData[byteIndex >> 2];
-
-        Voxel v;
-
-        v.Value = (packed >> ((byteIndex & 0x3) * 8)) & 0xff;
-
-        return v;
+        return VoxelData[index.x + VoxelStride.x * index.y + VoxelStride.y * index.z];
     }
 
     uint PackVertex(uint3 position, CubeFace face, uint2 texCoord)

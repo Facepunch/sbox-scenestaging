@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
-using Sandbox;
+﻿using Sandbox;
+using Sandbox.UI;
+using System;
+using System.Diagnostics;
 
 namespace Voxels.Rendering;
 
@@ -33,6 +35,7 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 		}
 	}
 
+	private GpuBuffer<uint>? _voxelBuffer;
 	private GpuBuffer<CompressedVertex>? _vertexBuffer;
 	private int _vertexCount;
 
@@ -42,35 +45,52 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 		Flags.IsOpaque = true;
 	}
 
-	public void SetVoxels( ReadOnlyVoxelSpan<byte> span, int margin = 1 )
+	public void Generate( Vector3Int size, int seed )
 	{
 		var timer = Stopwatch.StartNew();
 
-		var innerSize = span.Size - margin * 2;
-		var maxFaces = innerSize.x * innerSize.y * innerSize.z * 3;
+		var sizeWithMargin = size + 2;
+		var voxelCount = sizeWithMargin.x * sizeWithMargin.y * sizeWithMargin.z;
+
+		if ( _voxelBuffer is null || _voxelBuffer.ElementCount != voxelCount )
+		{
+			_voxelBuffer?.Dispose();
+			_voxelBuffer = new GpuBuffer<uint>( voxelCount );
+		}
+
+		var procGenCompute = new ComputeShader( "Shaders/procgen/caveworld.shader" );
+
+		procGenCompute.Attributes.Set( "VoxelData", _voxelBuffer );
+		procGenCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 1, 1, 1 ) );
+		procGenCompute.Attributes.Set( "VoxelStride", new Vector2Int( sizeWithMargin.x, sizeWithMargin.x * sizeWithMargin.y ) );
+
+		var random = new Random( seed );
+
+		procGenCompute.Attributes.Set( "WorldOrigin", new Vector3( random.VectorInSquare( 16384f ), 0f ) );
+
+		procGenCompute.Dispatch( size.x, size.y, size.z );
+
+		var maxFaces = size.x * size.y * size.z * 3;
 		var maxVertices = maxFaces * 6;
 
 		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < maxVertices )
 		{
 			_vertexBuffer = new GpuBuffer<CompressedVertex>( maxVertices, GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex | GpuBuffer.UsageFlags.Append );
 		}
-		
+
 		_vertexBuffer.SetCounterValue( 0 );
 
-		using var voxelBuffer = new GpuBuffer<uint>( span.Source.Length, GpuBuffer.UsageFlags.Structured, "Voxels" );
+		var buildMeshCompute = new ComputeShader( "Shaders/voxels/cubes_cs.shader" );
+
+		buildMeshCompute.Attributes.Set( "FaceBuffer", _vertexBuffer );
+		buildMeshCompute.Attributes.Set( "VoxelData", _voxelBuffer );
+		buildMeshCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 1, 1, 1 ) );
+		buildMeshCompute.Attributes.Set( "VoxelStride", new Vector2Int( sizeWithMargin.x, sizeWithMargin.x * sizeWithMargin.y ) );
+
+		buildMeshCompute.Dispatch( size.x, size.y, size.z );
+
 		using var countBuffer = new GpuBuffer<uint>( 1 );
 
-		voxelBuffer.SetData( span.Source );
-
-		var compute = new ComputeShader( "Shaders/voxels/cubes_cs.shader" );
-
-		compute.Attributes.Set( "FaceBuffer", _vertexBuffer );
-		compute.Attributes.Set( "VoxelData", voxelBuffer );
-		compute.Attributes.Set( "VoxelOffset", new Vector3Int( margin, margin, margin ) );
-		compute.Attributes.Set( "VoxelStride", span.Stride );
-
-		compute.Dispatch( innerSize.x, innerSize.y, innerSize.z );
-		
 		_vertexBuffer.CopyStructureCount( countBuffer );
 
 		uint[] countData = [0];
@@ -79,12 +99,12 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 
 		_vertexCount = (int)countData[0] * 6;
 
-		Log.Info( $"Building Mesh: {timer.Elapsed.TotalMilliseconds:F2} ms" );
+		Log.Info( $"Generated in {timer.Elapsed.TotalMilliseconds:F2}ms" );
 	}
 
 	public override void RenderSceneObject()
 	{
-		if ( _vertexBuffer is null ) return;
+		if ( _vertexBuffer is null || _vertexCount == 0 ) return;
 
 		Graphics.Draw( _vertexBuffer, Material, attributes: Attributes, vertexCount: _vertexCount );
 	}
