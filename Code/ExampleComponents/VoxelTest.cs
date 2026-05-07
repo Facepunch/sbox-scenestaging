@@ -1,4 +1,5 @@
-﻿using Sandbox.Utility;
+﻿using System.Diagnostics;
+using Sandbox.Utility;
 using Voxels;
 using Voxels.Rendering;
 
@@ -13,6 +14,16 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	[Property]
 	public Vector3Int Size { get; set; } = 8;
 
+	[Property]
+	public int Seed { get; set; } = 12379162;
+
+	[Button]
+	public void RandomizeSeed()
+	{
+		Seed = Random.Shared.Next();
+		Run();
+	}
+
 	[Button]
 	public void Run()
 	{
@@ -20,9 +31,14 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 
 		var voxelSpan = new VoxelSpan<byte>( _voxelArray, Size );
 
-		var field = Noise.SimplexField( new Noise.FractalParameters( Random.Shared.Next() ) );
+		var field = Noise.SimplexField( new Noise.FractalParameters( Seed ) );
+		var timer = Stopwatch.StartNew();
 
-		field.Sample( voxelSpan, BBox.FromPositionAndSize( 0f, 64f ),  x => x < 0.5f ? (byte)0 : (byte)1 );
+		var groundLevel = Size.z / 2;
+
+		field.Sample( voxelSpan, BBox.FromPositionAndSize( 0f, 64f ),  (pos, value) => value > ((float)pos.z / Size.z).Clamp( 0.25f, 1f ) ? (byte)1 : (byte)0 );
+
+		Log.Info( $"Generating: {timer.Elapsed.TotalMilliseconds:F2} ms" );
 
 		_sceneObject?.SetVoxels( voxelSpan );
 	}

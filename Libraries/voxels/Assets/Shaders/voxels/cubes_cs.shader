@@ -17,7 +17,7 @@ CS
         uint PackedVertices[6];
     };
 
-    StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
+    StructuredBuffer<uint> VoxelData < Attribute("VoxelData"); >;
     uint3 VoxelOffset < Attribute("VoxelOffset"); >;
     uint2 VoxelStride < Attribute("VoxelStride"); >;
 
@@ -25,7 +25,14 @@ CS
 
     Voxel GetVoxel(uint3 index)
     {
-        return VoxelData[index.x + VoxelStride.x * index.y + VoxelStride.y * index.z];
+        uint byteIndex = index.x + VoxelStride.x * index.y + VoxelStride.y * index.z;
+        uint packed = VoxelData[byteIndex >> 2];
+
+        Voxel v;
+
+        v.Value = (packed >> ((byteIndex & 0x3) * 8)) & 0xff;
+
+        return v;
     }
 
     uint PackVertex(uint3 position, CubeFace face, uint2 texCoord)
@@ -43,20 +50,20 @@ CS
         uint3 faceOrigin = origin + CubeFaceOffsets[face];
         CubeFaceBasis basis = CubeFaceBases[face];
 
-        uint v00 = PackVertex(origin, face, uint2(0, 0));
-        uint v10 = PackVertex(origin + basis.TangentU, face, uint2(1, 0));
-        uint v01 = PackVertex(origin + basis.TangentV, face, uint2(0, 1));
-        uint v11 = PackVertex(origin + basis.TangentU + basis.TangentV, face, uint2(1, 1));
+        uint v00 = PackVertex(faceOrigin, face, uint2(0, 0));
+        uint v10 = PackVertex(faceOrigin + basis.TangentU, face, uint2(1, 0));
+        uint v01 = PackVertex(faceOrigin + basis.TangentV, face, uint2(0, 1));
+        uint v11 = PackVertex(faceOrigin + basis.TangentU + basis.TangentV, face, uint2(1, 1));
 
         CompressedFace o;
 
         o.PackedVertices[0] = v00;
-        o.PackedVertices[1] = v01;
-        o.PackedVertices[2] = v10;
+        o.PackedVertices[1] = v10;
+        o.PackedVertices[2] = v01;
 
         o.PackedVertices[3] = v01;
-        o.PackedVertices[4] = v11;
-        o.PackedVertices[5] = v10;
+        o.PackedVertices[4] = v10;
+        o.PackedVertices[5] = v11;
 
         FaceBuffer.Append(o);
     }

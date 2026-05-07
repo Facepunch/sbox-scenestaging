@@ -7,7 +7,7 @@ public static class NoiseExtensions
 {
 	extension( INoiseField field )
 	{
-		public void Sample<T>( VoxelSpan<T> dst, BBox domain, Func<float, T> map )
+		public void Sample<T>( VoxelSpan<T> dst, BBox domain, Func<Vector3Int, float, T> map )
 		{
 			var domainScale = domain.Size / dst.Size;
 			
@@ -19,7 +19,7 @@ public static class NoiseExtensions
 					{
 						var sample = field.Sample( domain.Mins + new Vector3( x, y, z ) * domainScale );
 
-						dst[x, y, z] = map( sample );
+						dst[x, y, z] = map( new Vector3Int( x, y, z ), sample );
 					}
 				}
 			}

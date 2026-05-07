@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Diagnostics;
 using Sandbox;
-using Sandbox.Rendering;
 
 namespace Voxels.Rendering;
 
@@ -34,31 +33,59 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 		}
 	}
 
-	private readonly GpuBuffer<CompressedVertex> _vertexBuffer;
+	private GpuBuffer<CompressedVertex>? _vertexBuffer;
+	private int _vertexCount;
 
 	public SceneCubicVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
 	{
-		_vertexBuffer = new GpuBuffer<CompressedVertex>( 6, GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex | GpuBuffer.UsageFlags.Append );
-		_vertexBuffer.SetData( new List<CompressedVertex>
-		{
-			new( new Vector3Int( 0, 0, 0 ), CubeFace.PosX, new Vector2Int( 0, 0 ) ),
-			new( new Vector3Int( 0, 1, 0 ), CubeFace.PosX, new Vector2Int( 1, 0 ) ),
-			new( new Vector3Int( 0, 0, 1 ), CubeFace.PosX, new Vector2Int( 0, 1 ) ),
-			new( new Vector3Int( 0, 1, 0 ), CubeFace.PosX, new Vector2Int( 1, 0 ) ),
-			new( new Vector3Int( 0, 1, 1 ), CubeFace.PosX, new Vector2Int( 1, 1 ) ),
-			new( new Vector3Int( 0, 0, 1 ), CubeFace.PosX, new Vector2Int( 0, 1 ) )
-		} );
+		Flags.CastShadows = true;
+		Flags.IsOpaque = true;
 	}
 
-	public void SetVoxels( ReadOnlyVoxelSpan<byte> span )
+	public void SetVoxels( ReadOnlyVoxelSpan<byte> span, int margin = 1 )
 	{
-		var voxelBuffer = new GpuBuffer<uint>( span.Source.Length, GpuBuffer.UsageFlags.Structured, "Voxels" );
+		var timer = Stopwatch.StartNew();
+
+		var innerSize = span.Size - margin * 2;
+		var maxFaces = innerSize.x * innerSize.y * innerSize.z * 3;
+		var maxVertices = maxFaces * 6;
+
+		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < maxVertices )
+		{
+			_vertexBuffer = new GpuBuffer<CompressedVertex>( maxVertices, GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex | GpuBuffer.UsageFlags.Append );
+		}
+		
+		_vertexBuffer.SetCounterValue( 0 );
+
+		using var voxelBuffer = new GpuBuffer<uint>( span.Source.Length, GpuBuffer.UsageFlags.Structured, "Voxels" );
+		using var countBuffer = new GpuBuffer<uint>( 1 );
 
 		voxelBuffer.SetData( span.Source );
+
+		var compute = new ComputeShader( "Shaders/voxels/cubes_cs.shader" );
+
+		compute.Attributes.Set( "FaceBuffer", _vertexBuffer );
+		compute.Attributes.Set( "VoxelData", voxelBuffer );
+		compute.Attributes.Set( "VoxelOffset", new Vector3Int( margin, margin, margin ) );
+		compute.Attributes.Set( "VoxelStride", span.Stride );
+
+		compute.Dispatch( innerSize.x, innerSize.y, innerSize.z );
+		
+		_vertexBuffer.CopyStructureCount( countBuffer );
+
+		uint[] countData = [0];
+
+		countBuffer.GetData( countData );
+
+		_vertexCount = (int)countData[0] * 6;
+
+		Log.Info( $"Building Mesh: {timer.Elapsed.TotalMilliseconds:F2} ms" );
 	}
 
 	public override void RenderSceneObject()
 	{
-		Graphics.Draw( _vertexBuffer, Material, attributes: Attributes );
+		if ( _vertexBuffer is null ) return;
+
+		Graphics.Draw( _vertexBuffer, Material, attributes: Attributes, vertexCount: _vertexCount );
 	}
 }

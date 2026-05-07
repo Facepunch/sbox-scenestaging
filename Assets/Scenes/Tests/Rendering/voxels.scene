@@ -28,7 +28,8 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Size": "8,8,8"
+          "Seed": 1341260833,
+          "Size": "32,32,32"
         }
       ],
       "Children": []
@@ -66,6 +67,47 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "eece37c1-c623-4c5c-8fb0-bf82c087a57f",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "3923.25366,-268.707825,1668.0498",
+      "Rotation": "-0.157559052,0.588018358,0.205334947,0.766320467",
+      "Scale": "1,1,1",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "2fab39f8-e849-4922-9aac-a7814ecf7408",
+          "__enabled": true,
+          "Flags": 0,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "ShadowBias": 0.0005,
+          "ShadowCascadeCount": 4,
+          "ShadowCascadeSplitRatio": 0.91,
+          "ShadowHardness": 0,
+          "Shadows": true,
+          "SkyColor": "0,0,0,0",
+          "Visualizer": {}
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
@@ -88,17 +130,17 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
-        }
-      },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
       },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
+        }
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
         }
       }
     }
