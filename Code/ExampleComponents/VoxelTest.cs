@@ -1,11 +1,13 @@
 ﻿using Sandbox.Utility;
 using Voxels;
+using Voxels.Rendering;
 
 namespace Sandbox;
 
-public sealed class VoxelTest : Component
+public sealed class VoxelTest : Component, Component.ExecuteInEditor
 {
 	private byte[] _voxelArray;
+	private SceneCubicVoxelsObject _sceneObject;
 
 	[Property]
 	public Vector3Int Size { get; set; } = 8;
@@ -19,30 +21,25 @@ public sealed class VoxelTest : Component
 
 		var field = Noise.SimplexField( new Noise.FractalParameters( Random.Shared.Next() ) );
 
-		field.Sample( voxelSpan, BBox.FromPositionAndSize( 0f, 64f ), x => (byte)(x * 256f).Clamp( 0f, 255f ) );
+		field.Sample( voxelSpan, BBox.FromPositionAndSize( 0f, 64f ),  x => x < 0.5f ? (byte)0 : (byte)1 );
+
+		_sceneObject?.SetVoxels( voxelSpan );
 	}
 
-	protected override void DrawGizmos()
+	protected override void OnEnabled()
 	{
-		if ( _voxelArray is null ) return;
+		_sceneObject ??= new SceneCubicVoxelsObject( Scene.SceneWorld );
+	}
 
-		var voxelSpan = new VoxelSpan<byte>( _voxelArray, Size );
+	protected override void OnDisabled()
+	{
+		_sceneObject?.Delete();
+		_sceneObject = null;
+	}
 
-		const float spacing = 32f;
-
-		for ( var z = 0; z < voxelSpan.Size.z; z++ )
-		{
-			for ( var y = 0; y < voxelSpan.Size.y; y++ )
-			{
-				for ( var x = 0; x < voxelSpan.Size.x; x++ )
-				{
-					var pos = new Vector3( x, y, z ) * spacing;
-					var radius = (voxelSpan[x, y, z] - 127.5f) / 128f * spacing * 2f;
-
-					Gizmo.Draw.Color = radius < 0f ? Color.Blue : Color.Yellow;
-					Gizmo.Draw.LineSphere( pos, Math.Abs( radius ) );
-				}
-			}
-		}
+	protected override void OnDestroy()
+	{
+		_sceneObject?.Delete();
+		_sceneObject = null;
 	}
 }
