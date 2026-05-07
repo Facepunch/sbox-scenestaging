@@ -17,6 +17,7 @@ public readonly ref struct ReadOnlyVoxelSpan<T>
 	public Vector2Int Stride { get; }
 
 	public bool IsEmpty => Source.IsEmpty;
+	public bool IsTightlyPacked => Stride.x == Size.x && Stride.y == Size.x * Size.y;
 
 	public ReadOnlyVoxelSpan( ReadOnlySpan<T> source, Vector3Int size )
 		: this( source, size, new Vector2Int( size.x, size.x * size.y ) )

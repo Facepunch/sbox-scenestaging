@@ -7,6 +7,7 @@ namespace Sandbox;
 public sealed class VoxelTest : Component, Component.ExecuteInEditor
 {
 	private byte[] _voxelArray;
+
 	private SceneCubicVoxelsObject _sceneObject;
 
 	[Property]

@@ -21,9 +21,9 @@ enum QuadCorner
 
 struct CubeFaceBasis
 {
-    float3 Normal;
-    float3 TangentU;
-    float3 TangentV;
+    int3 Normal;
+    int3 TangentU;
+    int3 TangentV;
 };
 
 static const CubeFaceBasis CubeFaceBases[6] =
@@ -38,14 +38,14 @@ static const CubeFaceBasis CubeFaceBases[6] =
     { float3(0, 0, +1), float3(+1, 0, 0), float3(0, +1, 0) }
 };
 
-/*
-struct CubeVertex
+static const uint3 CubeFaceOffsets[6] =
 {
-    uint Packed;
+    uint3(0, 1, 0),
+    uint3(1, 0, 0),
 
-    __init(uint3 position, CubeFace face, QuadCorner corner)
-    {
-        Packed = ((position.x & 0xff) << 24) | ((position.y & 0xff) << 16) | ((position.z & 0xff) << 8) | ((face & 0x7) << 2) | (corner & 0x3);
-    }
+    uint3(0, 0, 0),
+    uint3(1, 1, 0),
+
+    uint3(0, 1, 0),
+    uint3(0, 0, 1)
 };
-*/

@@ -38,7 +38,7 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 
 	public SceneCubicVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
 	{
-		_vertexBuffer = new GpuBuffer<CompressedVertex>( 6, GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex );
+		_vertexBuffer = new GpuBuffer<CompressedVertex>( 6, GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex | GpuBuffer.UsageFlags.Append );
 		_vertexBuffer.SetData( new List<CompressedVertex>
 		{
 			new( new Vector3Int( 0, 0, 0 ), CubeFace.PosX, new Vector2Int( 0, 0 ) ),
@@ -48,13 +48,17 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 			new( new Vector3Int( 0, 1, 1 ), CubeFace.PosX, new Vector2Int( 1, 1 ) ),
 			new( new Vector3Int( 0, 0, 1 ), CubeFace.PosX, new Vector2Int( 0, 1 ) )
 		} );
-
-		RenderCommandList = new CommandList( "CubeVoxels" );
-		RenderCommandList.Draw( _vertexBuffer, Material, attributes: Attributes );
 	}
 
 	public void SetVoxels( ReadOnlyVoxelSpan<byte> span )
 	{
-		
+		var voxelBuffer = new GpuBuffer<uint>( span.Source.Length, GpuBuffer.UsageFlags.Structured, "Voxels" );
+
+		voxelBuffer.SetData( span.Source );
+	}
+
+	public override void RenderSceneObject()
+	{
+		Graphics.Draw( _vertexBuffer, Material, attributes: Attributes );
 	}
 }
