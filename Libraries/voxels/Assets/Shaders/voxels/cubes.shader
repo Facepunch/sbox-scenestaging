@@ -35,6 +35,8 @@ VS
 {
     #include "common/vertex.hlsl"
 
+    int3 WorldOrigin < Attribute("WorldOrigin"); > ;
+
     struct CompressedVertexInput
     {
         uint Packed : TEXCOORD0;
@@ -74,7 +76,7 @@ VS
 
         VertexInput o;
 
-        o.vPositionOs = i.GetPosition() * 32.0;
+        o.vPositionOs = (int3(i.GetPosition()) + WorldOrigin) * 32.0;
         o.vTexCoord = texCoord;
         o.vNormalOs = float4(basis.Normal, 0);
         o.vTangentUOs_flTangentVSign = float4(basis.TangentU, 1);

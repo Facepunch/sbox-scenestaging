@@ -39,14 +39,26 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 	private GpuBuffer<CompressedVertex>? _vertexBuffer;
 	private int _vertexCount;
 
+	public Vector3Int WorldOrigin
+	{
+		get;
+		set
+		{
+			field = value;
+			Attributes.Set( "WorldOrigin", value );
+		}
+	}
+
 	public SceneCubicVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
 	{
 		Flags.CastShadows = true;
 		Flags.IsOpaque = true;
 	}
 
-	public void Generate( Vector3Int size, int seed )
+	public void Generate( Vector3Int size, Vector3Int offset, int seed )
 	{
+		WorldOrigin = offset;
+
 		var timer = Stopwatch.StartNew();
 
 		var sizeWithMargin = size + 2;
@@ -61,14 +73,15 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 		var procGenCompute = new ComputeShader( "Shaders/procgen/caveworld.shader" );
 
 		procGenCompute.Attributes.Set( "VoxelData", _voxelBuffer );
-		procGenCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 1, 1, 1 ) );
+		procGenCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
 		procGenCompute.Attributes.Set( "VoxelStride", new Vector2Int( sizeWithMargin.x, sizeWithMargin.x * sizeWithMargin.y ) );
 
 		var random = new Random( seed );
+		var seedOffset = new Vector3Int( random.Next( -1024, 1024 ), random.Next( -1024, 1024 ), 0 );
 
-		procGenCompute.Attributes.Set( "WorldOrigin", new Vector3( random.VectorInSquare( 16384f ), 0f ) );
+		procGenCompute.Attributes.Set( "WorldOrigin", offset + seedOffset + 1 );
 
-		procGenCompute.Dispatch( size.x, size.y, size.z );
+		procGenCompute.Dispatch( sizeWithMargin.x, sizeWithMargin.y, sizeWithMargin.z );
 
 		var maxFaces = size.x * size.y * size.z * 3;
 		var maxVertices = maxFaces * 6;
@@ -105,6 +118,8 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 	public override void RenderSceneObject()
 	{
 		if ( _vertexBuffer is null || _vertexCount == 0 ) return;
+
+		Attributes.Set( "WorldOrigin", Position );
 
 		Graphics.Draw( _vertexBuffer, Material, attributes: Attributes, vertexCount: _vertexCount );
 	}

@@ -4,10 +4,16 @@ namespace Sandbox;
 
 public sealed class VoxelTest : Component, Component.ExecuteInEditor
 {
-	private SceneCubicVoxelsObject _sceneObject;
+	private readonly Dictionary<Vector3Int, SceneCubicVoxelsObject> _chunks = new();
 
 	[Property]
-	public Vector3Int Size { get; set; } = 32;
+	public Vector3Int ChunkCount { get; set; } = new Vector3Int( 16, 16, 4 );
+
+	[Property]
+	public Vector3Int ChunkSize { get; set; } = 32;
+
+	[Property]
+	public Vector3Int Offset { get; set; }
 
 	[Property]
 	public int Seed { get; set; } = 12379162;
@@ -16,29 +22,77 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	public void RandomizeSeed()
 	{
 		Seed = Random.Shared.Next();
-		Run();
+		UpdateChunks();
 	}
 
 	[Button]
-	public void Run()
+	public void UpdateChunks()
 	{
-		_sceneObject?.Generate( Size, Seed );
+		_ = UpdateChunksAsync();
+	}
+
+	private async Task UpdateChunksAsync()
+	{
+		var min = -ChunkCount / 2;
+
+		min.z = 0;
+
+		var max = min + ChunkCount;
+
+		var toRemove = _chunks.Keys
+			.Where( pos => pos.x < min.x || pos.y < min.y || pos.z < min.z || pos.x >= max.x || pos.y >= max.y || pos.z >= max.z )
+			.ToArray();
+
+		foreach ( var pos in toRemove )
+		{
+			_chunks.Remove( pos, out var chunk );
+			chunk?.Delete();
+		}
+
+		var toGenerate = Enumerable.Range( min.x, ChunkCount.x )
+			.SelectMany( x => Enumerable.Range( min.y, ChunkCount.y )
+				.SelectMany( y => Enumerable.Range( min.z, ChunkCount.z )
+					.Select( z => new Vector3Int( x, y, z ) ) ) )
+			.Shuffle()
+			.ToArray();
+
+		foreach ( var pos in toGenerate )
+		{
+			if ( !_chunks.TryGetValue( pos, out var chunk ) )
+			{
+				chunk = _chunks[pos] = new SceneCubicVoxelsObject( Scene.SceneWorld );
+			}
+
+			await Task.MainThread();
+
+			chunk.Generate( ChunkSize, ChunkSize * pos, Seed );
+
+			await Task.Yield();
+		}
 	}
 
 	protected override void OnEnabled()
 	{
-		_sceneObject ??= new SceneCubicVoxelsObject( Scene.SceneWorld );
+		UpdateChunks();
 	}
 
 	protected override void OnDisabled()
 	{
-		_sceneObject?.Delete();
-		_sceneObject = null;
+		Clear();
 	}
 
 	protected override void OnDestroy()
 	{
-		_sceneObject?.Delete();
-		_sceneObject = null;
+		Clear();
+	}
+
+	private void Clear()
+	{
+		foreach ( var chunk in _chunks.Values )
+		{
+			chunk.Delete();
+		}
+
+		_chunks.Clear();
 	}
 }
