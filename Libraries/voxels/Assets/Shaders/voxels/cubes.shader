@@ -18,7 +18,7 @@ MODES
 COMMON
 {
     #include "common/shared.hlsl"
-    #include "Shaders/voxels/cubes_common.hlsl"
+    #include "Shaders/voxels/cubes/common.hlsl"
 }
 
 struct VertexInput
@@ -37,56 +37,15 @@ VS
 
     int3 WorldOrigin < Attribute("WorldOrigin"); > ;
 
-    struct CompressedVertexInput
+    PixelInput MainVs(CubeVertex v)
     {
-        uint Packed : TEXCOORD0;
+        VertexInput i;
 
-        uint3 GetPosition()
-        {
-            return uint3(Packed & 0xff, (Packed >> 8) & 0xff, (Packed >> 16) & 0xff);
-        }
+        i.vPositionOs = (v.Position + WorldOrigin) * 32.0;
+        i.vTexCoord = v.TexCoord;
+        i.vNormalOs = float4(v.Normal, 0);
+        i.vTangentUOs_flTangentVSign = v.Tangent;
 
-        uint GetFace()
-        {
-            return (Packed >> 24) & 0x7;
-        }
-
-        uint GetCorner()
-        {
-            return (Packed >> 27) & 0x3;
-        }
-
-        int2 GetTexCoord()
-        {
-            uint corner = GetCorner();
-
-            return int2(corner & 1, (int(corner) >> 1) & 1);
-        }
-
-        CubeFaceBasis GetBasis()
-        {
-            return CubeFaceBases[GetFace()];
-        }
-    };
-
-    VertexInput DecompressVertex(CompressedVertexInput i)
-    {
-        float2 texCoord = i.GetTexCoord();
-        CubeFaceBasis basis = i.GetBasis();
-
-        VertexInput o;
-
-        o.vPositionOs = (int3(i.GetPosition()) + WorldOrigin) * 32.0;
-        o.vTexCoord = texCoord;
-        o.vNormalOs = float4(basis.Normal, 0);
-        o.vTangentUOs_flTangentVSign = float4(basis.TangentU, 1);
-
-        return o;
-    }
-
-    PixelInput MainVs(CompressedVertexInput compressed)
-    {
-        VertexInput i = DecompressVertex(compressed);
         PixelInput o = ProcessVertex(i);
 
         return FinalizeVertex( o );

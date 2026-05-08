@@ -23,7 +23,7 @@
           "__enabled": true,
           "Flags": 0,
           "ChunkCount": "16,16,4",
-          "ChunkSize": "32,32,32",
+          "ChunkSize": "64,64,64",
           "Offset": "0,0,0",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -31,7 +31,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Seed": 1517488714
+          "Seed": 1111706459
         }
       ],
       "Children": []
@@ -110,6 +110,46 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "53db9d4b-714f-4f13-863c-aeccfba27a45",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Cubemap Fog",
+      "Position": "-1681.05493,11656.8135,1445.26721",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.CubemapFog",
+          "__guid": "919ec140-cb9f-408e-b0e2-ddd9f5e19da4",
+          "__enabled": true,
+          "Flags": 0,
+          "Blur": 0,
+          "EndDistance": 32768,
+          "FalloffExponent": 2,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Sky": "materials/skybox/skybox_day_01.vmat",
+          "StartDistance": 0,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
@@ -132,11 +172,6 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
-        }
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
@@ -144,6 +179,11 @@
       },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
+        }
       }
     }
   },

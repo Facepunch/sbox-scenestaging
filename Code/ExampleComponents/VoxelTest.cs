@@ -34,9 +34,6 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	private async Task UpdateChunksAsync()
 	{
 		var min = -ChunkCount / 2;
-
-		min.z = 0;
-
 		var max = min + ChunkCount;
 
 		var toRemove = _chunks.Keys
@@ -65,7 +62,15 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 
 			await Task.MainThread();
 
-			chunk.Generate( ChunkSize, ChunkSize * pos, Seed );
+			try
+			{
+				chunk.Generate( ChunkSize, ChunkSize * pos, Seed );
+				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
+			}
+			catch ( Exception ex )
+			{
+				Log.Error( ex );
+			}
 
 			await Task.Yield();
 		}

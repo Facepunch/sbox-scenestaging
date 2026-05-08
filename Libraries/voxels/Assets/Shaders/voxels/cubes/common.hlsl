@@ -1,4 +1,4 @@
-enum CubeFace
+enum CubeNormal
 {
     NEG_X,
     POS_X,
@@ -17,6 +17,20 @@ enum QuadCorner
 
     X0_Y1,
     X1_Y1
+};
+
+struct CubeFace
+{
+    int3 Position;
+    int Normal;
+};
+
+struct CubeVertex
+{
+    float3 Position : POSITION < Semantic(PosXyz); >;
+    float3 Normal : NORMAL;
+    float4 Tangent : TANGENT < Semantic(TangentU_SignV); >;
+    float2 TexCoord : TEXCOORD0;
 };
 
 struct CubeFaceBasis
@@ -38,14 +52,14 @@ static const CubeFaceBasis CubeFaceBases[6] =
     { float3(0, 0, +1), float3(+1, 0, 0), float3(0, +1, 0) }
 };
 
-static const uint3 CubeFaceOffsets[6] =
+static const float3 CubeFaceOffsets[6] =
 {
-    uint3(0, 1, 0),
-    uint3(1, 0, 0),
+    float3(0, 1, 0),
+    float3(1, 0, 0),
 
-    uint3(0, 0, 0),
-    uint3(1, 1, 0),
+    float3(0, 0, 0),
+    float3(1, 1, 0),
 
-    uint3(0, 1, 0),
-    uint3(0, 0, 1)
+    float3(0, 1, 0),
+    float3(0, 0, 1)
 };
