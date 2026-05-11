@@ -3,11 +3,13 @@ using System;
 
 namespace Voxels.Rendering;
 
-public sealed class SceneCubicVoxelsObject : SceneCustomObject
+internal readonly record struct RenderVertex( [field: VertexLayout.Position] Vector3 Position );
+
+public sealed class SceneVoxelsObject : SceneCustomObject
 {
 	private static Material Material { get; } = Material.FromShader( "Shaders/voxels/cubes.shader" );
 
-	private GpuBuffer<CubeVertex>? _vertexBuffer;
+	private GpuBuffer<RenderVertex>? _vertexBuffer;
 	private GpuBuffer<uint>? _indexBuffer;
 	private int _vertexCount;
 	private int _indexCount;
@@ -40,7 +42,7 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
-	public SceneCubicVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
+	public SceneVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
 	{
 		VoxelSize = 32f;
 
@@ -106,24 +108,20 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 	internal void ClearMesh()
 	{
 		_vertexCount = 0;
-		_indexCount = 0;
 
 		_vertexBuffer?.Dispose();
-		_indexBuffer?.Dispose();
-
 		_vertexBuffer = null;
-		_indexBuffer = null;
 	}
 
-	internal (GpuBuffer<CubeVertex> Vertex, GpuBuffer<uint> Index) PrepareMeshBuffers( int faceCount )
+	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( int vertexCount, int indexCount )
 	{
-		_vertexCount = faceCount * 4;
-		_indexCount = faceCount * 6;
+		_vertexCount = vertexCount;
+		_indexCount = indexCount;
 
 		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < _vertexCount )
 		{
 			_vertexBuffer?.Dispose();
-			_vertexBuffer = new GpuBuffer<CubeVertex>( _vertexCount.NextPowerOf2,
+			_vertexBuffer = new GpuBuffer<RenderVertex>( _vertexCount.NextPowerOf2,
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex );
 		}
 

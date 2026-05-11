@@ -47,7 +47,7 @@ CS
 
             Voxel v;
 
-            v.Value = 1;
+            v.Value = uint(lerp(0, 255, saturate(density)));
 
             SetVoxel(VoxelOffset + localPos, v);
         }

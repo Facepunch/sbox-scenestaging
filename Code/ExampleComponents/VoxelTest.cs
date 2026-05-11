@@ -4,7 +4,7 @@ namespace Sandbox;
 
 public sealed class VoxelTest : Component, Component.ExecuteInEditor
 {
-	private readonly Dictionary<Vector3Int, SceneCubicVoxelsObject> _chunks = new();
+	private readonly Dictionary<Vector3Int, SceneVoxelsObject> _chunks = new();
 
 	[Property]
 	public float VoxelSize { get; set; } = 32f;
@@ -109,7 +109,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		{
 			if ( !_chunks.TryGetValue( pos, out var chunk ) )
 			{
-				chunk = _chunks[pos] = new SceneCubicVoxelsObject( Scene.SceneWorld );
+				chunk = _chunks[pos] = new SceneVoxelsObject( Scene.SceneWorld );
 			}
 
 			await Task.MainThread();

@@ -7,6 +7,20 @@ public sealed class VoxelEditTest : Component, Component.ExecuteInEditor
 	[Property]
 	public float Radius { get; set; } = 1024f;
 
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		Transform.OnTransformChanged += Subtract;
+	}
+
+	protected override void OnDisabled()
+	{
+		base.OnDisabled();
+
+		Transform.OnTransformChanged -= Subtract;
+	}
+
 	[Button]
 	public void Subtract()
 	{
