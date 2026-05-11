@@ -71,7 +71,8 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 
 		if ( _countBuffer is null || _countBuffer.ElementCount < maxParallelChunks )
 		{
-			_countBuffer ??= new GpuBuffer<uint>( maxParallelChunks );
+			_countBuffer?.Dispose();
+			_countBuffer = new GpuBuffer<uint>( maxParallelChunks );
 		}
 
 		_countBuffer.SetData( _firstIndices );
