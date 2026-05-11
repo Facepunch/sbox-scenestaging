@@ -15,8 +15,10 @@ CS
     StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
     uint3 VoxelOffset < Attribute("VoxelOffset"); >;
     uint2 VoxelStride < Attribute("VoxelStride"); >;
+    uint BatchIndex < Attribute("BatchIndex"); >;
 
-    AppendStructuredBuffer<CubeFace> FaceBuffer < Attribute("FaceBuffer"); >;
+    RWStructuredBuffer<CubeFace> FaceBuffer < Attribute("FaceBuffer"); >;
+    RWStructuredBuffer<uint> FaceCount < Attribute("FaceCount"); >;
 
     Voxel GetVoxel(uint3 index)
     {
@@ -30,7 +32,10 @@ CS
         face.Position = position;
         face.Normal = int(normal);
 
-        FaceBuffer.Append(face);
+        uint faceIndex;
+        InterlockedAdd(FaceCount[BatchIndex], 1, faceIndex);
+
+        FaceBuffer[faceIndex] = face;
     }
 
     [numthreads( 1, 1, 1 )]

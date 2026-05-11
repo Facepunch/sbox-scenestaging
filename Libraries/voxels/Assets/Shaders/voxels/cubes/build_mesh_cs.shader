@@ -13,13 +13,14 @@ CS
     };
 
     StructuredBuffer<CubeFace> FaceBuffer < Attribute("FaceBuffer"); > ;
+    uint FirstFaceIndex < Attribute("FirstFaceIndex"); > ;
     RWStructuredBuffer<CubeVertex> VertexBuffer < Attribute("VertexBuffer"); > ;
     RWStructuredBuffer<uint> IndexBuffer < Attribute("IndexBuffer"); > ;
 
     [numthreads( 1, 1, 1 )]
     void MainCs(uint dispatchId : SV_DispatchThreadID)
     {
-        CubeFace face = FaceBuffer[dispatchId];
+        CubeFace face = FaceBuffer[dispatchId + FirstFaceIndex];
         CubeFaceBasis basis = CubeFaceBases[face.Normal];
 
         CubeVertex v00;

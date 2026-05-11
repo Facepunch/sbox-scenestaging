@@ -14,7 +14,7 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 	private GpuBuffer<CubeFace>? _faceBuffer;
 	private GpuBuffer<uint>? _countBuffer;
 
-	private readonly uint[] _countArray = [0];
+	private uint[]? _countArray;
 
 	public VoxelRenderingSystem( Scene scene ) : base( scene )
 	{
@@ -33,54 +33,84 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 		return chunkSize.x * chunkSize.y * chunkSize.z * 6;
 	}
 
+	private readonly List<SceneCubicVoxelsObject> _updatingChunks = new();
+	private readonly List<uint> _firstIndices = new();
+
 	private void UpdateChunks()
 	{
-		while ( _dirtyChunkQueue.TryDequeue( out var chunk ) )
+		const int maxParallelChunks = 16;
+
+		var maxTotalFaces = 0;
+
+		_updatingChunks.Clear();
+		_firstIndices.Clear();
+
+		while ( _updatingChunks.Count < maxParallelChunks && _dirtyChunkQueue.TryDequeue( out var chunk ) )
 		{
 			_dirtyChunkSet.Remove( chunk );
 
 			if ( !chunk.IsValid() ) continue;
 			if ( chunk.Size == default ) continue;
-			if ( chunk.VoxelBuffer is not { } voxelBuffer ) continue;
+			if ( chunk.VoxelBuffer is null ) continue;
+
+			_updatingChunks.Add( chunk );
+
+			_firstIndices.Add( (uint)maxTotalFaces );
 
 			var maxFaces = GetMaxFaceCount( chunk.Size );
 
-			if ( _faceBuffer is null || _faceBuffer.ElementCount < maxFaces )
-			{
-				_faceBuffer?.Dispose();
-				_faceBuffer = new GpuBuffer<CubeFace>( maxFaces.NextPowerOf2,
-					GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Append, "CompressedFaces" );
-			}
+			maxTotalFaces += maxFaces;
+		}
 
-			_countBuffer ??= new GpuBuffer<uint>( 1 );
+		if ( _updatingChunks.Count == 0 ) return;
 
-			_faceBuffer.SetCounterValue( 0 );
+		if ( _faceBuffer is null || _faceBuffer.ElementCount < maxTotalFaces )
+		{
+			_faceBuffer?.Dispose();
+			_faceBuffer = new GpuBuffer<CubeFace>( maxTotalFaces.NextPowerOf2, GpuBuffer.UsageFlags.Structured, "CompressedFaces" );
+		}
 
-			_appendFacesCompute ??= new ComputeShader( "Shaders/voxels/cubes/append_faces_cs.shader" );
+		if ( _countBuffer is null || _countBuffer.ElementCount < maxParallelChunks )
+		{
+			_countBuffer ??= new GpuBuffer<uint>( maxParallelChunks );
+		}
 
-			_appendFacesCompute.Attributes.Set( "FaceBuffer", _faceBuffer );
-			_appendFacesCompute.Attributes.Set( "VoxelData", voxelBuffer );
+		_countBuffer.SetData( _firstIndices );
+
+		_appendFacesCompute ??= new ComputeShader( "Shaders/voxels/cubes/append_faces_cs.shader" );
+
+		_appendFacesCompute.Attributes.Set( "FaceBuffer", _faceBuffer );
+		_appendFacesCompute.Attributes.Set( "FaceCount", _countBuffer );
+
+		foreach ( var chunk in _updatingChunks )
+		{
+			_appendFacesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer! );
 			_appendFacesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
 			_appendFacesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
 
 			_appendFacesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
+		}
 
-			_faceBuffer.CopyStructureCount( _countBuffer );
-			_countBuffer.GetData( _countArray );
+		if ( _countArray is null || _countArray.Length < maxParallelChunks )
+		{
+			_countArray = new uint[maxParallelChunks];
+		}
 
-			var faceCount = (int)_countArray[0];
+		_countBuffer.GetData( _countArray );
 
-			if ( faceCount <= 0 )
-			{
-				chunk.ClearMesh();
-				continue;
-			}
+		_buildMeshCompute ??= new ComputeShader( "Shaders/voxels/cubes/build_mesh_cs.shader" );
+
+		_buildMeshCompute.Attributes.Set( "FaceBuffer", _faceBuffer );
+
+		for ( var i = 0; i < _updatingChunks.Count; i++ )
+		{
+			var chunk = _updatingChunks[i];
+			var firstIndex = _firstIndices[i];
+			var faceCount = (int)(_countArray[i] - firstIndex);
 
 			var buffers = chunk.PrepareMeshBuffers( faceCount );
 
-			_buildMeshCompute ??= new ComputeShader( "Shaders/voxels/cubes/build_mesh_cs.shader" );
-
-			_buildMeshCompute.Attributes.Set( "FaceBuffer", _faceBuffer );
+			_buildMeshCompute.Attributes.Set( "FirstFaceIndex", firstIndex );
 			_buildMeshCompute.Attributes.Set( "VertexBuffer", buffers.Vertex );
 			_buildMeshCompute.Attributes.Set( "IndexBuffer", buffers.Index );
 
