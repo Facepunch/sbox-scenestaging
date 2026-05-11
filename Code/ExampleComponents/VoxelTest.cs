@@ -7,6 +7,9 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	private readonly Dictionary<Vector3Int, SceneCubicVoxelsObject> _chunks = new();
 
 	[Property]
+	public float VoxelSize { get; set; } = 32f;
+
+	[Property]
 	public Vector3Int ChunkCount { get; set; } = new Vector3Int( 16, 16, 4 );
 
 	[Property]
@@ -29,6 +32,55 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	public void UpdateChunks()
 	{
 		_ = UpdateChunksAsync();
+	}
+
+	public void Subtract( Vector3 position, float radius )
+	{
+		var localPosition = position / VoxelSize;
+		var localRadius = radius / VoxelSize;
+
+		var localMin = new Vector3Int(
+			(localPosition.x - localRadius).FloorToInt(),
+			(localPosition.y - localRadius).FloorToInt(),
+			(localPosition.z - localRadius).FloorToInt() );
+
+		var localMax = new Vector3Int(
+			(localPosition.x + localRadius).CeilToInt(),
+			(localPosition.y + localRadius).CeilToInt(),
+			(localPosition.z + localRadius).CeilToInt() );
+
+		var chunkMin = GetChunkIndex( localMin - 1 );
+		var chunkMax = GetChunkIndex( localMax ) + 1;
+
+		for ( var cz = chunkMin.z; cz < chunkMax.z; cz++ )
+		{
+			for ( var cy = chunkMin.y; cy < chunkMax.y; cy++ )
+			{
+				for ( var cx = chunkMin.x; cx < chunkMax.x; cx++ )
+				{
+					var chunkIndex = new Vector3Int( cx, cy, cz );
+
+					if ( !_chunks.TryGetValue( chunkIndex, out var chunk ) ) continue;
+
+					chunk.Subtract( localPosition - chunkIndex * ChunkSize, localRadius );
+					Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
+				}
+			}
+		}
+	}
+
+	private Vector3Int GetChunkIndex( Vector3Int localIndex )
+	{
+		return new Vector3Int(
+			GetChunkIndexComponent( localIndex.x, ChunkSize.x ),
+			GetChunkIndexComponent( localIndex.y, ChunkSize.y ),
+			GetChunkIndexComponent( localIndex.z, ChunkSize.z ) );
+	}
+
+	private static int GetChunkIndexComponent( int local, int chunkSize )
+	{
+		if ( local >= 0 ) return local / chunkSize;
+		return (local - chunkSize + 1) / chunkSize;
 	}
 
 	private async Task UpdateChunksAsync()
@@ -64,6 +116,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 
 			try
 			{
+				chunk.VoxelSize = VoxelSize;
 				chunk.Generate( ChunkSize, ChunkSize * pos, Seed );
 				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
 			}

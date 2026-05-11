@@ -7,11 +7,6 @@ CS
 {
     #include "Shaders/voxels/cubes/common.hlsl"
 
-    struct Voxel
-    {
-        uint Value;
-    };
-
     StructuredBuffer<CubeFace> FaceBuffer < Attribute("FaceBuffer"); > ;
     uint FirstFaceIndex < Attribute("FirstFaceIndex"); > ;
     RWStructuredBuffer<CubeVertex> VertexBuffer < Attribute("VertexBuffer"); > ;

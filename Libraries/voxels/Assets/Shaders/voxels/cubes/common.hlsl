@@ -1,3 +1,8 @@
+struct Voxel
+{
+    uint Value;
+};
+
 enum CubeNormal
 {
     NEG_X,

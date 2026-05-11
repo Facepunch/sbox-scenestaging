@@ -36,12 +36,13 @@ VS
     #include "common/vertex.hlsl"
 
     int3 WorldOrigin < Attribute("WorldOrigin"); > ;
+    float VoxelSize < Attribute("VoxelSize"); > ;
 
     PixelInput MainVs(CubeVertex v)
     {
         VertexInput i;
 
-        i.vPositionOs = (v.Position + WorldOrigin) * 32.0;
+        i.vPositionOs = (v.Position + WorldOrigin) * VoxelSize;
         i.vTexCoord = v.TexCoord;
         i.vNormalOs = float4(v.Normal, 0);
         i.vTangentUOs_flTangentVSign = v.Tangent;

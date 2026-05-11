@@ -22,7 +22,18 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 		}
 	}
 
+	public float VoxelSize
+	{
+		get;
+		set
+		{
+			field = value;
+			Attributes.Set( "VoxelSize", value );
+		}
+	}
+
 	public Vector3Int Size { get; private set; }
+	public Vector3Int SizeWithMargin { get; private set; }
 
 	internal Vector3Int Offset { get; private set; }
 	internal Vector2Int Stride { get; private set; }
@@ -31,19 +42,24 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 
 	public SceneCubicVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
 	{
+		VoxelSize = 32f;
+
 		Flags.CastShadows = true;
 		Flags.IsOpaque = true;
 	}
 
+	private static ComputeShader? _generateCompute;
+
 	public void Generate( Vector3Int size, Vector3Int offset, int seed )
 	{
-		Bounds = new BBox( offset * 32f, (offset + size) * 32f );
+		Bounds = new BBox( offset * VoxelSize, (offset + size) * VoxelSize );
 
 		var sizeWithMargin = size + 2;
 		var voxelCount = sizeWithMargin.x * sizeWithMargin.y * sizeWithMargin.z;
 
 		WorldOrigin = offset;
 		Size = size;
+		SizeWithMargin = sizeWithMargin;
 		Offset = 1;
 		Stride = new Vector2Int( sizeWithMargin.x, sizeWithMargin.x * sizeWithMargin.y );
 
@@ -55,19 +71,36 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 
 		VoxelBuffer.Clear();
 
-		var procGenCompute = new ComputeShader( "Shaders/procgen/caveworld.shader" );
+		_generateCompute ??= new ComputeShader( "Shaders/procgen/caveworld.shader" );
 
-		procGenCompute.Attributes.Set( "VoxelData", VoxelBuffer );
-		procGenCompute.Attributes.Set( "VoxelSize", sizeWithMargin );
-		procGenCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
-		procGenCompute.Attributes.Set( "VoxelStride", Stride );
+		_generateCompute.Attributes.Set( "VoxelData", VoxelBuffer );
+		_generateCompute.Attributes.Set( "VoxelSize", sizeWithMargin );
+		_generateCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
+		_generateCompute.Attributes.Set( "VoxelStride", Stride );
 
 		var random = new Random( seed );
 		var seedOffset = new Vector3Int( random.Next( -1024, 1024 ), random.Next( -1024, 1024 ), 0 );
 
-		procGenCompute.Attributes.Set( "WorldOrigin", offset + seedOffset + 1 );
+		_generateCompute.Attributes.Set( "WorldOrigin", offset + seedOffset + 1 );
 
-		procGenCompute.Dispatch( sizeWithMargin.x, sizeWithMargin.y, 1 );
+		_generateCompute.Dispatch( sizeWithMargin.x, sizeWithMargin.y, 1 );
+	}
+
+	private static ComputeShader? _editCompute;
+
+	public void Subtract( Vector3 localPosition, float localRadius )
+	{
+		_editCompute ??= new ComputeShader( "Shaders/voxels/cubes/edit_cs.shader" );
+
+		_editCompute.Attributes.Set( "VoxelData", VoxelBuffer );
+		_editCompute.Attributes.Set( "VoxelSize", SizeWithMargin );
+		_editCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
+		_editCompute.Attributes.Set( "VoxelStride", Stride );
+
+		_editCompute.Attributes.Set( "EditOrigin", localPosition );
+		_editCompute.Attributes.Set( "EditRadius", localRadius );
+
+		_editCompute.Dispatch( SizeWithMargin.x, SizeWithMargin.y, SizeWithMargin.z );
 	}
 
 	internal void ClearMesh()
