@@ -37,6 +37,8 @@ public sealed class SceneCubicVoxelsObject : SceneCustomObject
 
 	public void Generate( Vector3Int size, Vector3Int offset, int seed )
 	{
+		Bounds = new BBox( offset * 32f, (offset + size) * 32f );
+
 		var sizeWithMargin = size + 2;
 		var voxelCount = sizeWithMargin.x * sizeWithMargin.y * sizeWithMargin.z;
 

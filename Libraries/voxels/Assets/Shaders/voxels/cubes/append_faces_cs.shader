@@ -14,8 +14,8 @@ CS
 
     StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
     uint3 VoxelOffset < Attribute("VoxelOffset"); >;
-    uint2 VoxelStride < Attribute("VoxelStride"); >;
-    uint BatchIndex < Attribute("BatchIndex"); >;
+    uint2 VoxelStride < Attribute("VoxelStride"); > ;
+    uint ChunkIndex < Attribute("ChunkIndex"); >;
 
     RWStructuredBuffer<CubeFace> FaceBuffer < Attribute("FaceBuffer"); >;
     RWStructuredBuffer<uint> FaceCount < Attribute("FaceCount"); >;
@@ -33,7 +33,7 @@ CS
         face.Normal = int(normal);
 
         uint faceIndex;
-        InterlockedAdd(FaceCount[BatchIndex], 1, faceIndex);
+        InterlockedAdd(FaceCount[ChunkIndex], 1, faceIndex);
 
         FaceBuffer[faceIndex] = face;
     }

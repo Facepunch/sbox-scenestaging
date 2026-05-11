@@ -1,5 +1,4 @@
-﻿using System;
-using Sandbox;
+﻿using Sandbox;
 using System.Collections.Generic;
 
 namespace Voxels.Rendering;
@@ -40,7 +39,7 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 	{
 		const int maxParallelChunks = 16;
 
-		var maxTotalFaces = 0;
+		var maxTotalFaces = 0U;
 
 		_updatingChunks.Clear();
 		_firstIndices.Clear();
@@ -55,11 +54,11 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 
 			_updatingChunks.Add( chunk );
 
-			_firstIndices.Add( (uint)maxTotalFaces );
+			_firstIndices.Add( maxTotalFaces );
 
 			var maxFaces = GetMaxFaceCount( chunk.Size );
 
-			maxTotalFaces += maxFaces;
+			maxTotalFaces = (uint)(maxTotalFaces + maxFaces);
 		}
 
 		if ( _updatingChunks.Count == 0 ) return;
@@ -67,7 +66,7 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 		if ( _faceBuffer is null || _faceBuffer.ElementCount < maxTotalFaces )
 		{
 			_faceBuffer?.Dispose();
-			_faceBuffer = new GpuBuffer<CubeFace>( maxTotalFaces.NextPowerOf2, GpuBuffer.UsageFlags.Structured, "CompressedFaces" );
+			_faceBuffer = new GpuBuffer<CubeFace>( ((int) maxTotalFaces).NextPowerOf2, GpuBuffer.UsageFlags.Structured, "FaceBuffer" );
 		}
 
 		if ( _countBuffer is null || _countBuffer.ElementCount < maxParallelChunks )
@@ -79,11 +78,16 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 
 		_appendFacesCompute ??= new ComputeShader( "Shaders/voxels/cubes/append_faces_cs.shader" );
 
+		_faceBuffer.Clear();
+
 		_appendFacesCompute.Attributes.Set( "FaceBuffer", _faceBuffer );
 		_appendFacesCompute.Attributes.Set( "FaceCount", _countBuffer );
 
-		foreach ( var chunk in _updatingChunks )
+		for ( var i = 0; i < _updatingChunks.Count; i++ )
 		{
+			var chunk = _updatingChunks[i];
+
+			_appendFacesCompute.Attributes.Set( "ChunkIndex", i );
 			_appendFacesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer! );
 			_appendFacesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
 			_appendFacesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
@@ -108,9 +112,15 @@ public sealed class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem
 			var firstIndex = _firstIndices[i];
 			var faceCount = (int)(_countArray[i] - firstIndex);
 
+			if ( faceCount == 0 )
+			{
+				chunk.ClearMesh();
+				continue;
+			}
+
 			var buffers = chunk.PrepareMeshBuffers( faceCount );
 
-			_buildMeshCompute.Attributes.Set( "FirstFaceIndex", firstIndex );
+			_buildMeshCompute.Attributes.Set( "FirstFaceIndex", (int)firstIndex );
 			_buildMeshCompute.Attributes.Set( "VertexBuffer", buffers.Vertex );
 			_buildMeshCompute.Attributes.Set( "IndexBuffer", buffers.Index );
 
