@@ -94,7 +94,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	private static ComputeShader? _editCompute;
 
-	public void Subtract( Vector3 localPosition, float localRadius )
+	public void Subtract( Capsule capsule )
 	{
 		_editCompute ??= new ComputeShader( "Shaders/voxels/edit_cs.shader" );
 
@@ -103,8 +103,9 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_editCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
 		_editCompute.Attributes.Set( "VoxelStride", Stride );
 
-		_editCompute.Attributes.Set( "EditOrigin", localPosition );
-		_editCompute.Attributes.Set( "EditRadius", localRadius );
+		_editCompute.Attributes.Set( "EditOriginA", capsule.CenterA );
+		_editCompute.Attributes.Set( "EditOriginB", capsule.CenterB );
+		_editCompute.Attributes.Set( "EditRadius", capsule.Radius );
 
 		_editCompute.Dispatch( SizeWithMargin.x, SizeWithMargin.y, SizeWithMargin.z );
 	}

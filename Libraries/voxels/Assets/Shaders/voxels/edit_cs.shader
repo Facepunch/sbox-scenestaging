@@ -15,7 +15,8 @@ CS
     uint2 VoxelStride < Attribute("VoxelStride"); >;
     uint3 VoxelSize < Attribute("VoxelSize"); >;
 
-    float3 EditOrigin < Attribute("EditOrigin"); >;
+    float3 EditOriginA < Attribute("EditOriginA"); > ;
+    float3 EditOriginB < Attribute("EditOriginB"); > ;
     float EditRadius < Attribute("EditRadius"); > ;
 
     void SetVoxel(uint3 index, Voxel voxel)
@@ -28,11 +29,21 @@ CS
         return VoxelData[index.x + VoxelStride.x * index.y + VoxelStride.y * index.z];
     }
 
+    float GetEditDistance(float3 pos)
+    {
+        float3 diff = EditOriginB - EditOriginA;
+        float capsuleLengthSq = dot(diff, diff);
+        float along = saturate(dot(pos - EditOriginA, diff) / capsuleLengthSq);
+        float3 closest = lerp(EditOriginA, EditOriginB, along);
+
+        return length(pos - closest) - EditRadius;
+    }
+
     [numthreads( 1, 1, 1 )]
     void MainCs(uint3 dispatchId: SV_DispatchThreadID)
     {
         int3 localPos = int3(dispatchId);
-        float distance = length(localPos - EditOrigin) - EditRadius;
+        float distance = GetEditDistance(localPos);
 
         if (distance < 1.0)
         {

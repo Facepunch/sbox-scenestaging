@@ -7,9 +7,13 @@ public sealed class VoxelEditTest : Component, Component.ExecuteInEditor
 	[Property]
 	public float Radius { get; set; } = 1024f;
 
+	private Vector3 _prevPos;
+
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
+
+		_prevPos = WorldPosition;
 
 		Transform.OnTransformChanged += Subtract;
 	}
@@ -24,7 +28,13 @@ public sealed class VoxelEditTest : Component, Component.ExecuteInEditor
 	[Button]
 	public void Subtract()
 	{
-		Scene.Get<VoxelTest>().Subtract( WorldPosition, Radius );
+		if ( _prevPos.AlmostEqual( WorldPosition, 1f ) )
+		{
+			return;
+		}
+
+		Scene.Get<VoxelTest>().Subtract( new Capsule( _prevPos, WorldPosition, Radius ) );
+		_prevPos = WorldPosition;
 	}
 
 	protected override void DrawGizmos()

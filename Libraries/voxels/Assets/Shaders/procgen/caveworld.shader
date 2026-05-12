@@ -29,10 +29,10 @@ CS
     {
         float2 worldPos2d = (WorldOrigin.xy + int2(dispatchId.xy)) / 128.0;
 
-        float biome = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 0.5 + 0.625), 2);
+        float biome = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 0.5 + 0.625), 4);
         float caveyness = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 4.0 - 1.0), 4);
-        float baseHeight = FractalSimplexNoise3D(float3(worldPos2d, 0.0), 5);
-        float height = lerp(baseHeight * 0.01 - 0.5, baseHeight * 0.25 + 0.75, biome);
+        float baseHeight = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 0.0), 4) * 0.5 + 0.5), 4);
+        float height = lerp(baseHeight * 0.1 + 0.25, baseHeight * 0.75 + 1.5, biome);
 
         for (int z = 0; z < VoxelSize.z; z++)
         {
@@ -42,7 +42,7 @@ CS
 
             if (underground <= 0.0) break;
 
-            float density = saturate((FractalSimplexNoise3D(worldPos * float3(0.5, 0.5, 1.0), 5) + lerp(0.5, 0.125, caveyness)) * 16.0);
+            float density = saturate((FractalSimplexNoise3D(worldPos * float3(0.5, 0.5, 1.0), 5) + lerp(0.4, 0.0625, caveyness)) * 16.0);
 
             if (density < 0.0) continue;
 

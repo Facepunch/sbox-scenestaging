@@ -34,20 +34,24 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		_ = UpdateChunksAsync();
 	}
 
-	public void Subtract( Vector3 position, float radius )
+	public void Subtract( Capsule capsule )
 	{
-		var localPosition = position / VoxelSize;
-		var localRadius = radius / VoxelSize;
+		var localCapsule = new Capsule(
+			capsule.CenterA / VoxelSize,
+			capsule.CenterB / VoxelSize,
+			capsule.Radius / VoxelSize );
+
+		var localBounds = localCapsule.Bounds;
 
 		var localMin = new Vector3Int(
-			(localPosition.x - localRadius).FloorToInt(),
-			(localPosition.y - localRadius).FloorToInt(),
-			(localPosition.z - localRadius).FloorToInt() );
+			localBounds.Mins.x.FloorToInt(),
+			localBounds.Mins.y.FloorToInt(),
+			localBounds.Mins.z.FloorToInt() );
 
 		var localMax = new Vector3Int(
-			(localPosition.x + localRadius).CeilToInt(),
-			(localPosition.y + localRadius).CeilToInt(),
-			(localPosition.z + localRadius).CeilToInt() );
+			localBounds.Maxs.x.CeilToInt(),
+			localBounds.Maxs.y.CeilToInt(),
+			localBounds.Maxs.z.CeilToInt() );
 
 		var chunkMin = GetChunkIndex( localMin - 1 );
 		var chunkMax = GetChunkIndex( localMax + 1 ) + 1;
@@ -62,7 +66,9 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 
 					if ( !_chunks.TryGetValue( chunkIndex, out var chunk ) ) continue;
 
-					chunk.Subtract( localPosition - chunkIndex * ChunkSize, localRadius );
+					var offset = chunkIndex * ChunkSize;
+
+					chunk.Subtract( new Capsule( localCapsule.CenterA - offset, localCapsule.CenterB - offset, localCapsule.Radius ) );
 					Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
 				}
 			}

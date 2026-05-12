@@ -22,7 +22,7 @@
           "__guid": "fc396b94-cb37-41b6-852a-b492123f56d8",
           "__enabled": true,
           "Flags": 0,
-          "ChunkCount": "16,16,4",
+          "ChunkCount": "16,16,8",
           "ChunkSize": "64,64,64",
           "Offset": "0,0,0",
           "OnComponentDestroy": null,
@@ -65,7 +65,7 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
-          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "SkyMaterial": "materials/skybox/skybox_dark_01.vmat",
           "Tint": "1,1,1,1"
         }
       ],
@@ -104,7 +104,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Sky": "materials/skybox/skybox_day_01.vmat",
+          "Sky": "materials/skybox/skybox_dark_01.vmat",
           "StartDistance": 0,
           "Tint": "1,1,1,1"
         }
@@ -116,7 +116,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Brush",
-      "Position": "26223.1152,-23547.9199,-1628.58557",
+      "Position": "169.179443,6255.20361,2433.05737",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -139,6 +139,47 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "Radius": 512
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "aea3def3-bdf5-4e69-9e90-bf9e3df1f43c",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,0",
+      "Rotation": "0.0579417236,0.223159894,-0.244538724,0.941829681",
+      "Scale": "1,1,1",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "d77e0f33-0935-4119-964f-7e78ed5f29a7",
+          "__enabled": true,
+          "Flags": 0,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "ShadowBias": 0.0005,
+          "ShadowCascadeCount": 4,
+          "ShadowCascadeSplitRatio": 0.91,
+          "ShadowHardness": 0,
+          "Shadows": true,
+          "SkyColor": "0,0,0,0",
+          "Visualizer": {}
         }
       ],
       "Children": []
