@@ -22,7 +22,7 @@
           "__guid": "fc396b94-cb37-41b6-852a-b492123f56d8",
           "__enabled": true,
           "Flags": 0,
-          "ChunkCount": "4,4,4",
+          "ChunkCount": "8,8,4",
           "ChunkSize": "64,64,64",
           "Offset": "0,0,0",
           "OnComponentDestroy": null,
@@ -31,7 +31,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Seed": 1753994140,
+          "Seed": 362458543,
           "VoxelSize": 32
         }
       ],
@@ -205,18 +205,18 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
         }
       },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
+        }
       }
     }
   },

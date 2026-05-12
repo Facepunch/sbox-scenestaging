@@ -19,7 +19,7 @@ partial class VoxelRenderingSystem
 		public static VertexData EF { get; } = new( new Vector3Int( 0, 0, 1 ), VoxelEdge.AB );
 		public static VertexData EG { get; } = new( new Vector3Int( 0, 0, 1 ), VoxelEdge.AC );
 		public static VertexData FH { get; } = new( new Vector3Int( 1, 0, 1 ), VoxelEdge.AC );
-		public static VertexData GH { get; } = new( new Vector3Int( 0, 1, 1 ), VoxelEdge.AE );
+		public static VertexData GH { get; } = new( new Vector3Int( 0, 1, 1 ), VoxelEdge.AB );
 	}
 
 	private GpuBuffer<MarchingCubesLookupEntry> GenerateMarchingCubesLookupTable()

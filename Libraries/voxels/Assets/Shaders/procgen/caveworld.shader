@@ -29,25 +29,26 @@ CS
     {
         float2 worldPos2d = (WorldOrigin.xy + int2(dispatchId.xy)) / 128.0;
 
-        float biome = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 0.5 + 0.625), 4);
+        float biome = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 0.5 + 0.625), 2);
         float caveyness = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 4.0 - 1.0), 8);
-        float baseHeight = FractalSimplexNoise3D(float3(worldPos2d, 0.0), 4);
+        float baseHeight = FractalSimplexNoise3D(float3(worldPos2d, 0.0), 5);
         float height = lerp(baseHeight * 0.01 - 0.5, baseHeight * 0.25 + 0.75, biome);
 
         for (int z = 0; z < VoxelSize.z; z++)
         {
             int3 localPos = int3(dispatchId.xy, z);
             float3 worldPos = (WorldOrigin + localPos) / 128.0;
+            float underground = saturate((height - worldPos.z) * 32.0);
 
-            if (height < worldPos.z) break;
+            if (underground <= 0.0) break;
 
-            float density = FractalSimplexNoise3D(worldPos * float3(0.5, 0.5, 1.5), 6) + lerp(0.5, 0.125, caveyness);
+            float density = saturate((FractalSimplexNoise3D(worldPos * float3(0.5, 0.5, 1.0), 5) + lerp(0.5, 0.125, caveyness)) * 32.0);
 
             if (density < 0.0) continue;
 
             Voxel v;
 
-            v.Value = uint(lerp(0, 255, saturate(density)));
+            v.Value = uint(lerp(0, 255, density * underground));
 
             SetVoxel(VoxelOffset + localPos, v);
         }

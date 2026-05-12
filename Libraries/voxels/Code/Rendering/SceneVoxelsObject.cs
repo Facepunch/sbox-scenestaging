@@ -142,15 +142,14 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	public override void RenderSceneObject()
 	{
-		if ( _vertexBuffer is null || _indexBuffer is null || _indexCount == 0 ) return;
+		if ( _vertexBuffer is null || _indexBuffer is null || _vertexCount == 0 ) return;
 
 		Attributes.Set( "WorldOrigin", Position );
 
 		Graphics.Draw(
 			vertexBuffer: _vertexBuffer,
-			indexBuffer: _indexBuffer,
 			material: Material,
 			attributes: Attributes,
-			indexCount: (int)_indexCount );
+			vertexCount: (int)_vertexCount );
 	}
 }

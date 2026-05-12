@@ -65,7 +65,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	{
 		chunkSize += 1;
 
-		return chunkSize.x * chunkSize.y * chunkSize.z * 3;
+		return chunkSize.x * chunkSize.y * chunkSize.z * 3 * 5;
 	}
 
 	private static int GetMaxTriangleCount( Vector3Int chunkSize )
@@ -86,7 +86,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 	private void UpdateChunks()
 	{
-		const int maxParallelChunks = 1;
+		const int maxParallelChunks = 2;
 
 		var maxTotalVertices = 0U;
 		var maxTotalIndices = 0U;
@@ -131,26 +131,26 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		// Find vertices
 		//
 
-		_findVerticesCompute ??= new ComputeShader( "Shaders/marching_cubes/find_vertices_cs.shader" );
+		//_findVerticesCompute ??= new ComputeShader( "Shaders/marching_cubes/find_vertices_cs.shader" );
 
-		_findVerticesCompute.Attributes.Set( "VertexBuffer", _vertexBuffer );
-		_findVerticesCompute.Attributes.Set( "VertexIndexMap", _vertexIndexMap );
-		_findVerticesCompute.Attributes.Set( "ResultBuffer", _resultBuffer );
+		//_findVerticesCompute.Attributes.Set( "VertexBuffer", _vertexBuffer );
+		//_findVerticesCompute.Attributes.Set( "VertexIndexMap", _vertexIndexMap );
+		//_findVerticesCompute.Attributes.Set( "ResultBuffer", _resultBuffer );
 
-		for ( var i = 0; i < _updatingChunks.Count; i++ )
-		{
-			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
+		//for ( var i = 0; i < _updatingChunks.Count; i++ )
+		//{
+		//	var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
 
-			_findVerticesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer );
-			_findVerticesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
-			_findVerticesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
-			_findVerticesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
+		//	_findVerticesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer );
+		//	_findVerticesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
+		//	_findVerticesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
+		//	_findVerticesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
 
-			_findVerticesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
-			_findVerticesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
+		//	_findVerticesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
+		//	_findVerticesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
 
-			_findVerticesCompute.Dispatch( chunk.Size.x + 1, chunk.Size.y + 1, chunk.Size.z + 1 );
-		}
+		//	_findVerticesCompute.Dispatch( chunk.Size.x + 1, chunk.Size.y + 1, chunk.Size.z + 1 );
+		//}
 
 		//
 		// Find indices
@@ -159,7 +159,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		_findIndicesCompute ??= new ComputeShader( "Shaders/marching_cubes/find_indices_cs.shader" );
 
 		_findIndicesCompute.Attributes.Set( "MarchingCubesLookup", GenerateMarchingCubesLookupTable() );
-		_findIndicesCompute.Attributes.Set( "IndexBuffer", _indexBuffer );
+		_findIndicesCompute.Attributes.Set( "VertexBuffer", _vertexBuffer );
 		_findIndicesCompute.Attributes.Set( "VertexIndexMap", _vertexIndexMap );
 		_findIndicesCompute.Attributes.Set( "ResultBuffer", _resultBuffer );
 
@@ -174,7 +174,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 			_findIndicesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
 			_findIndicesCompute.Attributes.Set( "IndexBufferOffset", indexOffset );
-			_findIndicesCompute.Attributes.Set( "ResultBufferOffset", i * 2 + 1 );
+			_findIndicesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
 
 			_findIndicesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
 		}
@@ -192,7 +192,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 			Log.Info( $"Chunk #{i}: {chunk.WorldOrigin}, VertexCount: {vertexCount}, IndexCount: {indexCount}" );
 
-			if ( indexCount == 0 )
+			if ( vertexCount == 0 )
 			{
 				chunk.ClearMesh();
 				continue;
@@ -201,7 +201,8 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			var (vertexBuffer, indexBuffer) = chunk.PrepareRenderBuffers( vertexCount, indexCount );
 
 			_vertexBuffer.CopyTo( vertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
-			_indexBuffer.CopyTo( indexBuffer, (int)indexOffset, 0, (int)indexCount );
+
+			// _indexBuffer.CopyTo( indexBuffer, (int)indexOffset, 0, (int)indexCount );
 		}
 	}
 }
