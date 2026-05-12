@@ -18,7 +18,7 @@ MODES
 COMMON
 {
     #include "common/shared.hlsl"
-    #include "Shaders/voxels/cubes/common.hlsl"
+    #include "Shaders/marching_cubes/common.hlsl"
 }
 
 struct VertexInput
@@ -38,17 +38,15 @@ VS
     int3 WorldOrigin < Attribute("WorldOrigin"); > ;
     float VoxelSize < Attribute("VoxelSize"); > ;
 
-    PixelInput MainVs(CubeVertex v)
+    PixelInput MainVs(RenderVertex v)
     {
         VertexInput i;
 
         i.vPositionOs = (v.Position + WorldOrigin) * VoxelSize;
-        i.vTexCoord = v.TexCoord;
         i.vNormalOs = float4(v.Normal, 0);
         i.vTangentUOs_flTangentVSign = v.Tangent;
 
         PixelInput o = ProcessVertex(i);
-
         return FinalizeVertex( o );
     }
 }

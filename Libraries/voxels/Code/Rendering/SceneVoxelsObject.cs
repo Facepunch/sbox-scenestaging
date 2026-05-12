@@ -3,16 +3,21 @@ using System;
 
 namespace Voxels.Rendering;
 
-internal readonly record struct RenderVertex( [field: VertexLayout.Position] Vector3 Position );
+internal readonly record struct RenderVertex(
+	[field: VertexLayout.Position] Vector3 Position,
+	[field: VertexLayout.Normal] Vector3 Normal,
+	[field: VertexLayout.Tangent] Vector4 Tangent );
 
 public sealed class SceneVoxelsObject : SceneCustomObject
 {
+	private const int Margin = 1;
+
 	private static Material Material { get; } = Material.FromShader( "Shaders/voxels/cubes.shader" );
 
 	private GpuBuffer<RenderVertex>? _vertexBuffer;
 	private GpuBuffer<uint>? _indexBuffer;
-	private int _vertexCount;
-	private int _indexCount;
+	private uint _vertexCount;
+	private uint _indexCount;
 
 	public Vector3Int WorldOrigin
 	{
@@ -52,17 +57,17 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	private static ComputeShader? _generateCompute;
 
-	public void Generate( Vector3Int size, Vector3Int offset, int seed )
+	public void Generate( Vector3Int size, Vector3Int worldOffset, int seed )
 	{
-		Bounds = new BBox( offset * VoxelSize, (offset + size) * VoxelSize );
+		Bounds = new BBox( worldOffset * VoxelSize, (worldOffset + size) * VoxelSize );
 
-		var sizeWithMargin = size + 2;
+		var sizeWithMargin = size + Margin * 2;
 		var voxelCount = sizeWithMargin.x * sizeWithMargin.y * sizeWithMargin.z;
 
-		WorldOrigin = offset;
+		WorldOrigin = worldOffset;
 		Size = size;
 		SizeWithMargin = sizeWithMargin;
-		Offset = 1;
+		Offset = Margin;
 		Stride = new Vector2Int( sizeWithMargin.x, sizeWithMargin.x * sizeWithMargin.y );
 
 		if ( VoxelBuffer is null || VoxelBuffer.ElementCount != voxelCount )
@@ -83,7 +88,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		var random = new Random( seed );
 		var seedOffset = new Vector3Int( random.Next( -1024, 1024 ), random.Next( -1024, 1024 ), 0 );
 
-		_generateCompute.Attributes.Set( "WorldOrigin", offset + seedOffset + 1 );
+		_generateCompute.Attributes.Set( "WorldOrigin", worldOffset + seedOffset + Offset );
 
 		_generateCompute.Dispatch( sizeWithMargin.x, sizeWithMargin.y, 1 );
 	}
@@ -113,7 +118,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_vertexBuffer = null;
 	}
 
-	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( int vertexCount, int indexCount )
+	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( uint vertexCount, uint indexCount )
 	{
 		_vertexCount = vertexCount;
 		_indexCount = indexCount;
@@ -121,14 +126,14 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < _vertexCount )
 		{
 			_vertexBuffer?.Dispose();
-			_vertexBuffer = new GpuBuffer<RenderVertex>( _vertexCount.NextPowerOf2,
+			_vertexBuffer = new GpuBuffer<RenderVertex>( ((int)_vertexCount).NextPowerOf2,
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex );
 		}
 
 		if ( _indexBuffer is null || _indexBuffer.ElementCount < _indexCount )
 		{
 			_indexBuffer?.Dispose();
-			_indexBuffer = new GpuBuffer<uint>( _indexCount.NextPowerOf2,
+			_indexBuffer = new GpuBuffer<uint>( ((int)_indexCount).NextPowerOf2,
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Index );
 		}
 
@@ -146,6 +151,6 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 			indexBuffer: _indexBuffer,
 			material: Material,
 			attributes: Attributes,
-			indexCount: _indexCount );
+			indexCount: (int)_indexCount );
 	}
 }

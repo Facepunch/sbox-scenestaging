@@ -29,18 +29,31 @@ enum
     CubeEdge_AE = 2
 };
 
+struct RenderVertex
+{
+    float3 Position : POSITION < Semantic(PosXyz); > ;
+    float3 Normal : NORMAL;
+    float4 Tangent : TANGENT < Semantic(TangentU_SignV); > ;
+};
+
 StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); > ;
+uint3 VoxelCount < Attribute("VoxelCount"); > ;
 uint3 VoxelOffset < Attribute("VoxelOffset"); > ;
 uint2 VoxelStride < Attribute("VoxelStride"); > ;
 
 uint VertexBufferOffset < Attribute("VertexBufferOffset"); > ;
 
-uint GetVoxelIndex(uint3 pos)
+RWStructuredBuffer<uint> ResultBuffer < Attribute("ResultBuffer"); > ;
+uint ResultBufferOffset < Attribute("ResultBufferOffset"); > ;
+
+uint GetVoxelIndex(int3 pos)
 {
+    pos = clamp(pos, 0, VoxelCount - 1);
+
     return pos.x + VoxelStride.x * pos.y + VoxelStride.y * pos.z;
 }
 
-Voxel GetVoxel(uint3 pos)
+Voxel GetVoxel(int3 pos)
 {
     return VoxelData[GetVoxelIndex(pos)];
 }

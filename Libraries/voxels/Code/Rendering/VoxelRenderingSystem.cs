@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Voxels.Rendering;
@@ -44,9 +45,9 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	private GpuBuffer<RenderVertex>? _vertexBuffer;
 	private GpuBuffer<uint>? _vertexIndexMap;
 	private GpuBuffer<uint>? _indexBuffer;
-	private GpuBuffer<uint>? _countBuffer;
+	private GpuBuffer<uint>? _resultBuffer;
 
-	private uint[]? _countArray;
+	private uint[]? _resultArray;
 
 	public VoxelRenderingSystem( Scene scene ) : base( scene )
 	{
@@ -73,6 +74,15 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	}
 
 	private readonly List<(SceneVoxelsObject Chunk, uint VertexOffset, uint IndexOffset)> _updatingChunks = new();
+
+	private static void PrepareBuffer<T>( [NotNull] ref GpuBuffer<T>? buffer, uint elementCount )
+		where T : unmanaged
+	{
+		if ( buffer is not null && buffer.ElementCount >= elementCount ) return;
+
+		buffer?.Dispose();
+		buffer = new GpuBuffer<T>( ((int)elementCount).NextPowerOf2 );
+	}
 
 	private void UpdateChunks()
 	{
@@ -102,98 +112,97 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 		if ( _updatingChunks.Count == 0 ) return;
 
-		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < maxTotalVertices )
+		PrepareBuffer( ref _vertexBuffer, maxTotalVertices );
+		PrepareBuffer( ref _vertexIndexMap, maxTotalVertices );
+		PrepareBuffer( ref _indexBuffer, maxTotalIndices );
+		PrepareBuffer( ref _resultBuffer, maxParallelChunks * 2 );
+
+		if ( _resultArray is null || _resultArray.Length < _resultBuffer.ElementCount )
 		{
-			_vertexBuffer?.Dispose();
-			_vertexBuffer = new GpuBuffer<RenderVertex>( ((int)maxTotalVertices).NextPowerOf2 );
+			_resultArray = new uint[_resultBuffer.ElementCount];
 		}
 
-		if ( _vertexIndexMap is null || _vertexIndexMap.ElementCount < maxTotalVertices )
-		{
-			_vertexIndexMap?.Dispose();
-			_vertexIndexMap = new GpuBuffer<uint>( ((int)maxTotalVertices).NextPowerOf2 );
-		}
+		_vertexBuffer.Clear();
+		_indexBuffer.Clear();
+		_vertexIndexMap.Clear();
+		_resultBuffer.Clear();
 
-		if ( _indexBuffer is null || _indexBuffer.ElementCount < maxTotalIndices )
-		{
-			_indexBuffer?.Dispose();
-			_indexBuffer = new GpuBuffer<uint>( ((int)maxTotalIndices).NextPowerOf2 );
-		}
-
-		if ( _countBuffer is null || _countBuffer.ElementCount < maxParallelChunks * 2 )
-		{
-			_countBuffer?.Dispose();
-			_countBuffer = new GpuBuffer<uint>( maxParallelChunks * 2 );
-		}
-
-		_countBuffer.Clear();
+		//
+		// Find vertices
+		//
 
 		_findVerticesCompute ??= new ComputeShader( "Shaders/marching_cubes/find_vertices_cs.shader" );
 
 		_findVerticesCompute.Attributes.Set( "VertexBuffer", _vertexBuffer );
 		_findVerticesCompute.Attributes.Set( "VertexIndexMap", _vertexIndexMap );
+		_findVerticesCompute.Attributes.Set( "ResultBuffer", _resultBuffer );
 
-		//if ( _marchingCubesCompute is null )
-		//{
-		//	_marchingCubesCompute = new ComputeShader( "Shaders/marching_cubes/find_triangles_cs.shader" );
-		//	_marchingCubesCompute.Attributes.Set( "MarchingCubesLookup", GenerateMarchingCubesLookupTable() );
-		//}
+		for ( var i = 0; i < _updatingChunks.Count; i++ )
+		{
+			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
 
-		//_marchingCubesCompute.Attributes.Set( "TriangleBuffer", _triangleBuffer );
-		//_marchingCubesCompute.Attributes.Set( "TriangleCount", _countBuffer );
+			_findVerticesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer );
+			_findVerticesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
+			_findVerticesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
+			_findVerticesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
 
-		//for ( var i = 0; i < _updatingChunks.Count; i++ )
-		//{
-		//	var chunk = _updatingChunks[i];
+			_findVerticesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
+			_findVerticesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
 
-		//	_marchingCubesCompute.Attributes.Set( "ChunkIndex", i );
-		//	_marchingCubesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer! );
-		//	_marchingCubesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
-		//	_marchingCubesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
+			_findVerticesCompute.Dispatch( chunk.Size.x + 1, chunk.Size.y + 1, chunk.Size.z + 1 );
+		}
 
-		//	_marchingCubesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
-		//}
+		//
+		// Find indices
+		//
 
-		//if ( _countArray is null || _countArray.Length < maxParallelChunks )
-		//{
-		//	_countArray = new uint[maxParallelChunks];
-		//}
+		_findIndicesCompute ??= new ComputeShader( "Shaders/marching_cubes/find_indices_cs.shader" );
 
-		//_countBuffer.GetData( _countArray );
+		_findIndicesCompute.Attributes.Set( "MarchingCubesLookup", GenerateMarchingCubesLookupTable() );
+		_findIndicesCompute.Attributes.Set( "IndexBuffer", _indexBuffer );
+		_findIndicesCompute.Attributes.Set( "VertexIndexMap", _vertexIndexMap );
+		_findIndicesCompute.Attributes.Set( "ResultBuffer", _resultBuffer );
 
-		//for ( var i = 0; i < _updatingChunks.Count; i++ )
-		//{
-		//	var chunk = _updatingChunks[i];
-		//	var firstIndex = _firstIndices[i];
-		//	var faceCount = (int)(_countArray[i] - firstIndex);
+		for ( var i = 0; i < _updatingChunks.Count; i++ )
+		{
+			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
 
-		//	Log.Info( $"faceCount: {faceCount}" );
-		//}
+			_findIndicesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer );
+			_findIndicesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
+			_findIndicesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
+			_findIndicesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
 
-		//_buildMeshCompute ??= new ComputeShader( "Shaders/voxels/cubes/build_mesh_cs.shader" );
+			_findIndicesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
+			_findIndicesCompute.Attributes.Set( "IndexBufferOffset", indexOffset );
+			_findIndicesCompute.Attributes.Set( "ResultBufferOffset", i * 2 + 1 );
 
-		//_buildMeshCompute.Attributes.Set( "FaceBuffer", _faceBuffer );
+			_findIndicesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
+		}
 
-		//for ( var i = 0; i < _updatingChunks.Count; i++ )
-		//{
-		//	var chunk = _updatingChunks[i];
-		//	var firstIndex = _firstIndices[i];
-		//	var faceCount = (int)(_countArray[i] - firstIndex);
+		//
+		// Copy vertices / indices to each chunk's buffers
+		//
 
-		//	if ( faceCount == 0 )
-		//	{
-		//		chunk.ClearMesh();
-		//		continue;
-		//	}
+		_resultBuffer.GetData( _resultArray );
 
-		//	var buffers = chunk.PrepareMeshBuffers( faceCount );
+		for ( var i = 0; i < _updatingChunks.Count; i++ )
+		{
+			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
+			var (vertexCount, indexCount) = (_resultArray[i * 2], _resultArray[i * 2 + 1]);
 
-		//	_buildMeshCompute.Attributes.Set( "FirstFaceIndex", (int)firstIndex );
-		//	_buildMeshCompute.Attributes.Set( "VertexBuffer", buffers.Vertex );
-		//	_buildMeshCompute.Attributes.Set( "IndexBuffer", buffers.Index );
+			Log.Info( $"Chunk #{i}: {chunk.WorldOrigin}, VertexCount: {vertexCount}, IndexCount: {indexCount}" );
 
-		//	_buildMeshCompute.Dispatch( faceCount, 1, 1 );
-		//}
+			if ( indexCount == 0 )
+			{
+				chunk.ClearMesh();
+				continue;
+			}
+
+			var (vertexBuffer, indexBuffer) = chunk.PrepareRenderBuffers( vertexCount, indexCount );
+
+			_vertexBuffer.CopyTo( vertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
+			_indexBuffer.CopyTo( indexBuffer, (int)indexOffset, 0, (int)indexCount );
+		}
 	}
 }
 

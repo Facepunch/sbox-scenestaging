@@ -28,7 +28,7 @@ CS
     StructuredBuffer<uint> VertexIndexMap < Attribute("VertexIndexMap"); > ;
 
     RWStructuredBuffer<uint> IndexBuffer < Attribute("IndexBuffer"); > ;
-    RWStructuredBuffer<uint> IndexCount < Attribute("IndexCount"); >;
+    uint IndexBufferOffset < Attribute("IndexBufferOffset"); > ;
 
     uint GetVertexIndex(uint3 pos, LookupVertex vert)
     {
@@ -63,7 +63,9 @@ CS
         LookupEntry entry = MarchingCubesLookup[lookupIndex];
 
         uint baseIndex;
-        InterlockedAdd(IndexCount[ResultIndex], entry.TriangleCount * 3, baseIndex);
+        InterlockedAdd(ResultBuffer[ResultBufferOffset], entry.TriangleCount * 3, baseIndex);
+
+        baseIndex += IndexBufferOffset;
 
         [unroll(5)]
         for (int i = 0; i < entry.TriangleCount; i++)

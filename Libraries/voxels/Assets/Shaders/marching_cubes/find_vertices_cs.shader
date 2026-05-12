@@ -7,17 +7,21 @@ CS
 {
     #include "Shaders/marching_cubes/common.hlsl"
 
-    RWStructuredBuffer<float3> VertexBuffer < Attribute("VertexBuffer"); > ;
-    RWStructuredBuffer<uint> VertexCount < Attribute("VertexCount"); > ;
-    uint VertexCountOffset < Attribute("VertexCountOffset"); > ;
+    RWStructuredBuffer<RenderVertex> VertexBuffer < Attribute("VertexBuffer"); > ;
     RWStructuredBuffer<uint> VertexIndexMap < Attribute("VertexIndexMap"); > ;
 
-    uint AppendVertex( float3 vertex )
+    uint AppendVertex( float3 pos )
     {
         uint index;
-        InterlockedAdd(VertexCount[VertexCountOffset], 1, index);
+        InterlockedAdd(ResultBuffer[ResultBufferOffset], 1, index);
 
-        VertexBuffer[VertexBufferOffset + index] = vertex;
+        RenderVertex v;
+
+        v.Position = pos;
+        v.Normal = float3(0, 0, 1);
+        v.Tangent = float4(1, 0, 0, 1);
+
+        VertexBuffer[VertexBufferOffset + index] = v;
 
         return index;
     }
@@ -27,10 +31,10 @@ CS
     {
         uint3 index = VoxelOffset + dispatchId;
 
-        float a = GetVoxel(index + uint3(0, 0, 0)).Value - 127.0;
-        float b = GetVoxel(index + uint3(1, 0, 0)).Value - 127.0;
-        float c = GetVoxel(index + uint3(0, 1, 0)).Value - 127.0;
-        float e = GetVoxel(index + uint3(0, 0, 1)).Value - 127.0;
+        float a = GetVoxel(index + uint3(0, 0, 0)).Value - 127.5;
+        float b = GetVoxel(index + uint3(1, 0, 0)).Value - 127.5;
+        float c = GetVoxel(index + uint3(0, 1, 0)).Value - 127.5;
+        float e = GetVoxel(index + uint3(0, 0, 1)).Value - 127.5;
 
         uint baseMapOffset = VertexBufferOffset + GetVoxelIndex(index) * 3;
 
