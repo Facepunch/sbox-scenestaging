@@ -60,7 +60,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	{
 		Bounds = new BBox( worldOffset * VoxelSize, (worldOffset + size) * VoxelSize );
 
-		var sizeWithMargin = size + Margin * 2;
+		var sizeWithMargin = size + Margin * 2 + 1;
 		var voxelCount = sizeWithMargin.x * sizeWithMargin.y * sizeWithMargin.z;
 
 		WorldOrigin = worldOffset;

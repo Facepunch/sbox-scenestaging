@@ -86,7 +86,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 	private void UpdateChunks()
 	{
-		const int maxParallelChunks = 1;
+		const int maxParallelChunks = 16;
 
 		var maxTotalVertices = 0U;
 		var maxTotalIndices = 0U;
@@ -148,6 +148,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 			_findVerticesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
 			_findVerticesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
+			_findVerticesCompute.Attributes.Set( "VertexIndexMapStride", new Vector2Int( chunk.Size.x + 1, (chunk.Size.x + 1) * (chunk.Size.y + 1) ) );
 
 			_findVerticesCompute.Dispatch( chunk.Size.x + 1, chunk.Size.y + 1, chunk.Size.z + 1 );
 		}
@@ -175,6 +176,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			_findIndicesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
 			_findIndicesCompute.Attributes.Set( "IndexBufferOffset", indexOffset );
 			_findIndicesCompute.Attributes.Set( "ResultBufferOffset", i * 2 + 1 );
+			_findIndicesCompute.Attributes.Set( "VertexIndexMapStride", new Vector2Int( chunk.Size.x + 1, (chunk.Size.x + 1) * (chunk.Size.y + 1) ) );
 
 			_findIndicesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
 		}

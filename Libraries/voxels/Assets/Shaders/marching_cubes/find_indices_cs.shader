@@ -32,7 +32,7 @@ CS
 
     uint GetVertexIndex(uint3 pos, LookupVertex vert)
     {
-        return VertexIndexMap[VertexBufferOffset + GetVoxelIndex(pos + vert.Offset) * 3 + vert.Edge];
+        return VertexIndexMap[VertexBufferOffset + GetVertexIndexMapIndex(pos + vert.Offset) * 3 + vert.Edge];
     }
 
     [numthreads( 1, 1, 1 )]

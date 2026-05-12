@@ -50,7 +50,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 			(localPosition.z + localRadius).CeilToInt() );
 
 		var chunkMin = GetChunkIndex( localMin - 1 );
-		var chunkMax = GetChunkIndex( localMax ) + 1;
+		var chunkMax = GetChunkIndex( localMax + 1 ) + 1;
 
 		for ( var cz = chunkMin.z; cz < chunkMax.z; cz++ )
 		{

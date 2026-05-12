@@ -22,7 +22,7 @@
           "__guid": "fc396b94-cb37-41b6-852a-b492123f56d8",
           "__enabled": true,
           "Flags": 0,
-          "ChunkCount": "4,4,4",
+          "ChunkCount": "16,16,4",
           "ChunkSize": "64,64,64",
           "Offset": "0,0,0",
           "OnComponentDestroy": null,
@@ -31,7 +31,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Seed": 235674687,
+          "Seed": 2078984806,
           "VoxelSize": 32
         }
       ],
@@ -116,7 +116,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Brush",
-      "Position": "-606.877808,-929.372803,724.659058",
+      "Position": "26223.1152,-23547.9199,-1628.58557",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -138,7 +138,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Radius": 256
+          "Radius": 512
         }
       ],
       "Children": []
@@ -164,13 +164,13 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {

@@ -41,6 +41,7 @@ uint3 VoxelOffset < Attribute("VoxelOffset"); > ;
 uint2 VoxelStride < Attribute("VoxelStride"); > ;
 
 uint VertexBufferOffset < Attribute("VertexBufferOffset"); > ;
+uint2 VertexIndexMapStride < Attribute("VertexIndexMapStride"); > ;
 
 RWStructuredBuffer<uint> ResultBuffer < Attribute("ResultBuffer"); > ;
 uint ResultBufferOffset < Attribute("ResultBufferOffset"); > ;
@@ -50,6 +51,11 @@ uint GetVoxelIndex(int3 pos)
     pos = clamp(pos, 0, VoxelCount - 1);
 
     return pos.x + VoxelStride.x * pos.y + VoxelStride.y * pos.z;
+}
+
+uint GetVertexIndexMapIndex(int3 pos)
+{
+    return pos.x + VertexIndexMapStride.x * pos.y + VertexIndexMapStride.y * pos.z;
 }
 
 Voxel GetVoxel(int3 pos)

@@ -10,21 +10,21 @@ CS
     RWStructuredBuffer<RenderVertex> VertexBuffer < Attribute("VertexBuffer"); > ;
     RWStructuredBuffer<uint> VertexIndexMap < Attribute("VertexIndexMap"); > ;
 
-    float SampleGrid3(in float samples[27], float3 pos)
+    float SampleGrid3(in float samples[64], float3 pos)
     {
         uint3 min = uint3(floor(pos));
         uint3 max = min + 1;
 
         float localSamples[8];
 
-        localSamples[0] = samples[min.x + min.y * 3 + min.z * 9];
-        localSamples[1] = samples[max.x + min.y * 3 + min.z * 9];
-        localSamples[2] = samples[min.x + max.y * 3 + min.z * 9];
-        localSamples[3] = samples[max.x + max.y * 3 + min.z * 9];
-        localSamples[4] = samples[min.x + min.y * 3 + max.z * 9];
-        localSamples[5] = samples[max.x + min.y * 3 + max.z * 9];
-        localSamples[6] = samples[min.x + max.y * 3 + max.z * 9];
-        localSamples[7] = samples[max.x + max.y * 3 + max.z * 9];
+        localSamples[0] = samples[min.x + min.y * 4 + min.z * 16];
+        localSamples[1] = samples[max.x + min.y * 4 + min.z * 16];
+        localSamples[2] = samples[min.x + max.y * 4 + min.z * 16];
+        localSamples[3] = samples[max.x + max.y * 4 + min.z * 16];
+        localSamples[4] = samples[min.x + min.y * 4 + max.z * 16];
+        localSamples[5] = samples[max.x + min.y * 4 + max.z * 16];
+        localSamples[6] = samples[min.x + max.y * 4 + max.z * 16];
+        localSamples[7] = samples[max.x + max.y * 4 + max.z * 16];
 
         float3 t = pos - min;
 
@@ -43,22 +43,22 @@ CS
     {
         int3 min = int3(floor(pos)) - 1;
 
-        float samples[27];
+        float samples[64];
 
         int i = 0;
 
-        for (int dz = 0; dz <= 2; dz++)
+        for (int dz = 0; dz <= 3; dz++)
         {
-            for (int dy = 0; dy <= 2; dy++)
+            for (int dy = 0; dy <= 3; dy++)
             {
-                for (int dx = 0; dx <= 2; dx++)
+                for (int dx = 0; dx <= 3; dx++)
                 {
                     samples[i++] = GetVoxel(VoxelOffset + min + int3(dx, dy, dz)).Value;
                 }
             }
         }
 
-        float3 localPos = pos - min - 1;
+        float3 localPos = pos - min;
 
         float negX = SampleGrid3(samples, localPos - float3(1.0, 0, 0));
         float posX = SampleGrid3(samples, localPos + float3(1.0, 0, 0));
@@ -97,7 +97,7 @@ CS
         float c = GetVoxel(index + uint3(0, 1, 0)).Value - 127.5;
         float e = GetVoxel(index + uint3(0, 0, 1)).Value - 127.5;
 
-        uint baseMapOffset = VertexBufferOffset + GetVoxelIndex(dispatchId) * 3;
+        uint baseMapOffset = VertexBufferOffset + GetVertexIndexMapIndex(dispatchId) * 3;
 
         if (a * b < 0)
         {
