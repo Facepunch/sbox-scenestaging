@@ -5,8 +5,7 @@ namespace Voxels.Rendering;
 
 internal readonly record struct RenderVertex(
 	[field: VertexLayout.Position] Vector3 Position,
-	[field: VertexLayout.Normal] Vector3 Normal,
-	[field: VertexLayout.Tangent] Vector4 Tangent );
+	[field: VertexLayout.Normal] Vector3 Normal );
 
 public sealed class SceneVoxelsObject : SceneCustomObject
 {
@@ -142,14 +141,15 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	public override void RenderSceneObject()
 	{
-		if ( _vertexBuffer is null || _indexBuffer is null || _vertexCount == 0 ) return;
+		if ( _vertexBuffer is null || _indexBuffer is null || _indexCount == 0 ) return;
 
 		Attributes.Set( "WorldOrigin", Position );
 
 		Graphics.Draw(
 			vertexBuffer: _vertexBuffer,
+			indexBuffer: _indexBuffer,
 			material: Material,
 			attributes: Attributes,
-			vertexCount: (int)_vertexCount );
+			indexCount: (int)_indexCount );
 	}
 }

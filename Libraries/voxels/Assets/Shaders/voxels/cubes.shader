@@ -44,7 +44,6 @@ VS
 
         i.vPositionOs = (v.Position + WorldOrigin) * VoxelSize;
         i.vNormalOs = float4(v.Normal, 0);
-        i.vTangentUOs_flTangentVSign = v.Tangent;
 
         PixelInput o = ProcessVertex(i);
         return FinalizeVertex( o );

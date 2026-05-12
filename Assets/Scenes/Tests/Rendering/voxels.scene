@@ -31,7 +31,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Seed": 377093834,
+          "Seed": 235674687,
           "VoxelSize": 32
         }
       ],
@@ -67,47 +67,6 @@
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "5cb725bf-fd73-4e59-9dc4-91a6d8075f85",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "Sun",
-      "Position": "479.260773,2327.63257,2528.97925",
-      "Rotation": "-0.0652631,0.495722443,0.113039002,0.858616471",
-      "Scale": "1,1,1",
-      "Tags": "light_directional,light",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.DirectionalLight",
-          "__guid": "492df075-fe42-4f5b-a35c-a355b27aabdb",
-          "__enabled": true,
-          "Flags": 0,
-          "FogMode": "Enabled",
-          "FogStrength": 1,
-          "LightColor": "0.91373,0.98039,1,1",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "ShadowBias": 0.0005,
-          "ShadowCascadeCount": 4,
-          "ShadowCascadeSplitRatio": 0.91,
-          "ShadowHardness": 0,
-          "Shadows": true,
-          "SkyColor": "0,0,0,0",
-          "Visualizer": {}
         }
       ],
       "Children": []
@@ -157,7 +116,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Brush",
-      "Position": "-3030.36157,-4727.7749,-180.682755",
+      "Position": "-606.877808,-929.372803,724.659058",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",

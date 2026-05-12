@@ -33,7 +33,6 @@ struct RenderVertex
 {
     float3 Position : POSITION < Semantic(PosXyz); > ;
     float3 Normal : NORMAL;
-    float4 Tangent : TANGENT < Semantic(TangentU_SignV); > ;
 };
 
 StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); > ;
