@@ -5,7 +5,10 @@ MODES
 
 CS
 {
-    #include "Shaders/voxels/cubes/common.hlsl"
+    struct Voxel
+    {
+        uint Value;
+    };
 
     RWStructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
     uint3 VoxelOffset < Attribute("VoxelOffset"); >;
@@ -29,13 +32,13 @@ CS
     void MainCs(uint3 dispatchId: SV_DispatchThreadID)
     {
         int3 localPos = int3(dispatchId);
-        float distance = length(localPos - EditOrigin);
+        float distance = length(localPos - EditOrigin) - EditRadius;
 
-        if (distance < EditRadius)
+        if (distance < 1.0)
         {
-            Voxel v;
+            Voxel v = GetVoxel(VoxelOffset + dispatchId);
 
-            v.Value = 0;
+            v.Value = min(v.Value, uint(saturate(0.5 + distance * 0.5) * 255));
 
             SetVoxel(VoxelOffset + dispatchId, v);
         }

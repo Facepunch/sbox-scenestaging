@@ -97,7 +97,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	public void Subtract( Vector3 localPosition, float localRadius )
 	{
-		_editCompute ??= new ComputeShader( "Shaders/voxels/cubes/edit_cs.shader" );
+		_editCompute ??= new ComputeShader( "Shaders/voxels/edit_cs.shader" );
 
 		_editCompute.Attributes.Set( "VoxelData", VoxelBuffer );
 		_editCompute.Attributes.Set( "VoxelSize", SizeWithMargin );
