@@ -31,18 +31,18 @@ CS
         float2 worldPos2d = (WorldOrigin.xy + int2(dispatchId.xy) * VoxelScale) / 4096.0;
         float valueScale = 32.0 / VoxelScale;
 
-        float detail1 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 0.0), 4) * 0.5 + 0.5), 4);
-        float detail2 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 16.0), 4) * 0.5 + 0.5), 4);
-        float detail3 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 32.0), 4) * 0.5 + 0.5), 4);
+        float detail1 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 0.0), 6) * 0.5 + 0.5), 4);
+        float detail2 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 16.0), 6) * 0.5 + 0.5), 4);
+        float detail3 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 32.0), 6) * 0.5 + 0.5), 4);
 
-        float biome1 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 0.5 + 0.625), 4);
-        float biome2 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.125, 16.0), 2) * 0.5 + 0.625), 4);
-        float biome3 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 32.0), 2) * 0.5 + 0.625), 2);
+        float biome1 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.125, 0.0), 4) * 0.5 + 0.625), 4);
+        float biome2 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 16.0), 4) * 0.5 + 0.625), 4);
+        float biome3 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.0625, 32.0), 4) * 0.5 + 0.625), 2);
 
         float surface = lerp(detail1 * 0.1 + 0.25, detail1 * 0.75 + 1.5, biome1);
 
-        float cavernRoof = detail2 * 0.25 - 1.125 - biome2 * 1.5 + biome3;
-        float cavernFloor = detail3 * 0.125 - 1.0 - biome3 * 0.5;
+        float cavernRoof = detail2 * 0.25 - 1.75 + biome3 * 2.0 + biome2;
+        float cavernFloor = detail3 * 0.125 - 1.5 + biome3 * 2.0 - biome2 * 0.5;
 
         for (int z = 0; z < VoxelCount.z; z++)
         {
