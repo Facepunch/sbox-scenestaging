@@ -39,7 +39,7 @@ CS
         float biome2 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 16.0), 4) * 0.5 + 0.625), 4);
         float biome3 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.0625, 32.0), 4) * 0.5 + 0.625), 2);
 
-        float surface = lerp(detail1 * 0.1 + 0.25, detail1 * 0.75 + 1.5, biome1);
+        float surface = lerp(detail1 * 0.1 + 0.25, detail1 * 0.75 + 2.5, biome1);
 
         float cavernRoof = detail2 * 0.25 - 1.75 + biome3 * 2.0 + biome2;
         float cavernFloor = detail3 * 0.125 - 1.5 + biome3 * 2.0 - biome2 * 0.5;

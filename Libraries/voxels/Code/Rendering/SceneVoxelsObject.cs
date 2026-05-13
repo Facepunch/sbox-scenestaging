@@ -3,6 +3,7 @@ using Sandbox.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Voxels.Rendering;
 
@@ -47,7 +48,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
-	public SceneVoxelsObject( SceneWorld sceneWorld, Vector3 position, Vector3Int size, float voxelScale ) : base( sceneWorld )
+	public SceneVoxelsObject( SceneWorld sceneWorld, Vector3Int size) : base( sceneWorld )
 	{
 		Size = size;
 		SizeWithMargin = size + Margin * 2 + 1;
@@ -56,17 +57,25 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		Stride = new Vector2Int( SizeWithMargin.x, SizeWithMargin.x * SizeWithMargin.y );
 		Count = SizeWithMargin.x * SizeWithMargin.y * SizeWithMargin.z;
 
-		VoxelScale = voxelScale;
-
 		Flags.CastShadows = true;
 		Flags.IsOpaque = true;
 
 		Batchable = false;
+	}
 
+	public void Initialize( Vector3 position, float voxelScale )
+	{
+		VoxelScale = voxelScale;
 		Position = position;
 
 		Attributes.Set( "WorldOrigin", Position );
-		Bounds = new BBox( Position, Position + size * voxelScale );
+		Bounds = new BBox( Position, Position + Size * voxelScale );
+
+		_worldGenParams = null;
+		_needsWorldGen = false;
+
+		_vertexCount = 0;
+		_indexCount = 0;
 	}
 
 	private static ComputeShader? _generateCompute;
@@ -134,12 +143,12 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_editCompute.Dispatch( SizeWithMargin.x, SizeWithMargin.y, SizeWithMargin.z );
 	}
 
-	internal void ClearMesh()
+	public void ClearMesh()
 	{
 		_vertexCount = 0;
+		_indexCount = 0;
 
-		_vertexBuffer?.Dispose();
-		_vertexBuffer = null;
+		RenderingEnabled = false;
 	}
 
 	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( uint vertexCount, uint indexCount )
@@ -160,6 +169,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 			_indexBuffer = new GpuBuffer<uint>( ((int)_indexCount).NextPowerOf2,
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Index );
 		}
+
+		RenderingEnabled = true;
 
 		return (_vertexBuffer, _indexBuffer);
 	}

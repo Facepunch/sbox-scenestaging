@@ -36,7 +36,10 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		public ChunkIndex FirstSubChunk => new ChunkIndex( Index * 2, Level - 1 );
 	}
 
+	private const int MaxPoolCapacity = 128;
+
 	private readonly Dictionary<ChunkIndex, SceneVoxelsObject> _chunks = new();
+	private readonly List<SceneVoxelsObject> _pool = new( MaxPoolCapacity );
 
 	[Property]
 	public float VoxelSize { get; set; } = 32f;
@@ -143,6 +146,19 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	private readonly HashSet<ChunkIndex> _chunksToKeep = new();
 	private readonly HashSet<ChunkIndex> _chunksToRemove = new();
 
+	private SceneVoxelsObject CreateChunk()
+	{
+		if ( _pool.Count > 0 )
+		{
+			var chunk = _pool[^1];
+			_pool.RemoveAt( _pool.Count - 1 );
+
+			return chunk;
+		}
+
+		return new SceneVoxelsObject( Scene.SceneWorld, ChunkSize );
+	}
+
 	[Button]
 	public void UpdateChunks()
 	{
@@ -153,8 +169,8 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		{
 			if ( !_chunks.TryGetValue( index, out var chunk ) )
 			{
-				chunk = _chunks[index] = new SceneVoxelsObject( Scene.SceneWorld, index.Min * VoxelSize, ChunkSize, index.VoxelScale * VoxelSize );
-				chunk.Position = index.Min * VoxelSize;
+				chunk = _chunks[index] = CreateChunk();
+				chunk.Initialize( index.Min * VoxelSize, index.VoxelScale * VoxelSize );
 			}
 
 			if ( chunk.Generate( (Vector3Int)(index.Min * VoxelSize), Seed ) )
@@ -238,6 +254,15 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		foreach ( var index in _chunksToRemove )
 		{
 			_chunks.Remove( index, out var chunk );
+
+			if ( _pool.Count < MaxPoolCapacity && chunk is not null )
+			{
+				chunk.ClearMesh();
+
+				_pool.Add( chunk );
+				continue;
+			}
+
 			chunk?.Delete();
 		}
 	}
