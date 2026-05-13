@@ -32,6 +32,8 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 				&& thisMin.y <= max.y && thisMax.y > min.y
 				&& thisMin.z <= max.z && thisMax.z > min.z;
 		}
+
+		public ChunkIndex FirstSubChunk => new ChunkIndex( Index * 2, Level - 1 );
 	}
 
 	private readonly Dictionary<ChunkIndex, SceneVoxelsObject> _chunks = new();
@@ -51,6 +53,9 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 	[Property]
 	public int ChunkLoadRadius { get; set; } = 2;
 
+	[Property]
+	public bool PauseChunkUpdates { get; set; }
+
 	[Button]
 	public void RandomizeSeed()
 	{
@@ -68,6 +73,8 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 
 	protected override void OnUpdate()
 	{
+		if ( PauseChunkUpdates ) return;
+
 		var loadOrigin = GetLoadOrigin();
 
 		if ( _lastLoadOrigin != loadOrigin )
@@ -155,6 +162,27 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
 			}
 		}
+
+		foreach ( var (index, chunk) in _chunks )
+		{
+			chunk.RenderingEnabled = !AllSubChunksLoaded( index );
+		}
+	}
+
+	private bool AllSubChunksLoaded( ChunkIndex index )
+	{
+		var firstSubChunk = index.FirstSubChunk;
+
+		for ( var i = 0; i < 8; i++ )
+		{
+			var offset = new Vector3Int( i & 1, (i >> 1) & 1, (i >> 2) & 1 );
+			var subChunk = new ChunkIndex( firstSubChunk.Index + offset, firstSubChunk.Level );
+
+			if ( !_chunks.TryGetValue( subChunk, out var chunk ) ) return false;
+			if ( !chunk.IsReady ) return false;
+		}
+
+		return true;
 	}
 
 	private void FindChunksToLoad()

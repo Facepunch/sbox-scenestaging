@@ -1,6 +1,8 @@
 ﻿using Sandbox;
 using Sandbox.Services;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Voxels.Rendering;
 
@@ -40,6 +42,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	private WorldGenParameters? _worldGenParams;
 	private bool _needsWorldGen;
+
+	public bool IsReady => !_needsWorldGen;
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
