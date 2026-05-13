@@ -19,8 +19,8 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 			var thisMax = Max;
 
 			return pos.x >= thisMin.x && pos.x < thisMax.x
-			                          && pos.y >= thisMin.y && pos.y < thisMax.y
-			                          && pos.z >= thisMin.z && pos.z < thisMax.z;
+				&& pos.y >= thisMin.y && pos.y < thisMax.y
+				&& pos.z >= thisMin.z && pos.z < thisMax.z;
 		}
 
 		public bool Contains( Vector3Int min, Vector3Int max )
@@ -150,7 +150,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 				chunk.Position = index.Min * VoxelSize;
 			}
 
-			if ( chunk.Generate( index.Min, Seed ) )
+			if ( chunk.Generate( (Vector3Int)(index.Min * VoxelSize), Seed ) )
 			{
 				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
 			}

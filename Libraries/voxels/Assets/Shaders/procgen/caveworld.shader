@@ -18,7 +18,7 @@ CS
     uint3 VoxelCount < Attribute("VoxelCount"); > ;
     float VoxelScale < Attribute("VoxelScale"); > ;
 
-    int3 WorldOrigin < Attribute("WorldOrigin"); > ;
+    float3 WorldOrigin < Attribute("WorldOrigin"); > ;
 
     void SetVoxel(uint3 index, Voxel voxel)
     {
@@ -28,7 +28,7 @@ CS
     [numthreads( 1, 1, 1 )]
     void MainCs(uint2 dispatchId: SV_DispatchThreadID)
     {
-        float2 worldPos2d = (WorldOrigin.xy + int2(dispatchId.xy) * VoxelScale / 32.0) / 128.0;
+        float2 worldPos2d = (WorldOrigin.xy + int2(dispatchId.xy) * VoxelScale) / 4096.0;
         float valueScale = 32.0 / VoxelScale;
 
         float biome = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d * 0.25, 0.0), 2) * 0.5 + 0.625), 4);
@@ -39,7 +39,7 @@ CS
         for (int z = 0; z < VoxelCount.z; z++)
         {
             int3 localPos = int3(dispatchId.xy, z);
-            float3 worldPos = (WorldOrigin + localPos * VoxelScale / 32.0) / 128.0;
+            float3 worldPos = (WorldOrigin + localPos * VoxelScale) / 4096.0;
             float underground = (height - worldPos.z) * 32.0 * valueScale;
 
             if (underground <= -1.0) break;
@@ -50,7 +50,7 @@ CS
 
             Voxel v;
 
-            v.Value = uint(lerp(0, 255, saturate(underground * 0.5 + 0.5) * saturate(density * 0.5 + 0.5)));
+            v.Value = uint(lerp(0, 255, saturate(min(underground, density) * 0.5 + 0.5)));
 
             SetVoxel(VoxelOffset + localPos, v);
         }

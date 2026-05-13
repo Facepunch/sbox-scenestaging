@@ -104,9 +104,9 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_generateCompute.Attributes.Set( "VoxelScale", VoxelScale );
 
 		var random = new Random( parameters.Seed );
-		var seedOffset = new Vector3Int( random.Next( -1024, 1024 ), random.Next( -1024, 1024 ), 0 );
+		var seedOffset = new Vector3Int( random.Next( -32768, 32768 ), random.Next( -32768, 32768 ), 0 );
 
-		_generateCompute.Attributes.Set( "WorldOrigin", parameters.WorldOffset + seedOffset - Offset );
+		_generateCompute.Attributes.Set( "WorldOrigin", parameters.WorldOffset + seedOffset - Offset * VoxelScale );
 
 		_generateCompute.Dispatch( SizeWithMargin.x, SizeWithMargin.y, 1 );
 	}
