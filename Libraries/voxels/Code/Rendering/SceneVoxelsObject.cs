@@ -35,6 +35,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	public Vector3Int Size { get; }
 	public Vector3Int SizeWithMargin { get; }
 
+	internal uint Generation { get; private set; }
 	internal int Count { get; }
 	internal Vector3Int Offset { get; }
 	internal Vector2Int Stride { get; }
@@ -43,8 +44,9 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	private WorldGenParameters? _worldGenParams;
 	private bool _needsWorldGen;
+	private bool _finishedFirstUpdate;
 
-	public bool IsReady => !_needsWorldGen;
+	public bool IsReady => _finishedFirstUpdate;
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
@@ -65,6 +67,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	public void Initialize( Vector3 position, float voxelScale )
 	{
+		Generation++;
+
 		VoxelScale = voxelScale;
 		Position = position;
 
@@ -76,6 +80,10 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 		_vertexCount = 0;
 		_indexCount = 0;
+
+		RenderingEnabled = true;
+
+		_finishedFirstUpdate = false;
 	}
 
 	private static ComputeShader? _generateCompute;
@@ -147,14 +155,22 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	{
 		_vertexCount = 0;
 		_indexCount = 0;
+		_finishedFirstUpdate = true;
+	}
 
+	public void Reset()
+	{
+		ClearMesh();
 		RenderingEnabled = false;
+		Generation++;
 	}
 
 	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( uint vertexCount, uint indexCount )
 	{
 		_vertexCount = vertexCount;
 		_indexCount = indexCount;
+
+		_finishedFirstUpdate = true;
 
 		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < _vertexCount )
 		{
@@ -170,13 +186,15 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Index );
 		}
 
-		RenderingEnabled = true;
-
 		return (_vertexBuffer, _indexBuffer);
 	}
 
+	internal Action? BeforeRenderAction { get; set; }
+
 	public override void RenderSceneObject()
 	{
+		BeforeRenderAction?.Invoke();
+
 		if ( _vertexBuffer is null || _indexBuffer is null || _indexCount == 0 ) return;
 
 		Graphics.Draw(

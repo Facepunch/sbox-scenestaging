@@ -222,6 +222,8 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		var minIndex = origin.Index - loadRadius;
 		var maxIndex = origin.Index + loadRadius;
 
+		var thresholdSq = (loadRadius + 1) * (loadRadius + 1);
+
 		for ( var z = minIndex.z; z <= maxIndex.z; z++ )
 		{
 			for ( var y = minIndex.y; y <= maxIndex.y; y++ )
@@ -230,7 +232,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 				{
 					var index = new Vector3Int( x, y, z );
 
-					if ( (index - origin.Index).LengthSquared <= loadRadius * loadRadius )
+					if ( (index - origin.Index).LengthSquared < thresholdSq )
 					{
 						result.Add( new ChunkIndex( index, level ) );
 					}
@@ -257,7 +259,7 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 
 			if ( _pool.Count < MaxPoolCapacity && chunk is not null )
 			{
-				chunk.ClearMesh();
+				chunk.Reset();
 
 				_pool.Add( chunk );
 				continue;
