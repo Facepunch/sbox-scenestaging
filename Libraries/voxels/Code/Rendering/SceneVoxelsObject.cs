@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.Services;
 using System;
 
 namespace Voxels.Rendering;
@@ -18,78 +19,96 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	private uint _vertexCount;
 	private uint _indexCount;
 
-	public Vector3Int WorldOrigin
+	public float VoxelScale
 	{
 		get;
 		set
 		{
 			field = value;
-			Attributes.Set( "WorldOrigin", value );
+			Attributes.Set( "VoxelScale", value );
 		}
 	}
 
-	public float VoxelSize
-	{
-		get;
-		set
-		{
-			field = value;
-			Attributes.Set( "VoxelSize", value );
-		}
-	}
+	public Vector3Int Size { get; }
+	public Vector3Int SizeWithMargin { get; }
 
-	public Vector3Int Size { get; private set; }
-	public Vector3Int SizeWithMargin { get; private set; }
+	internal int Count { get; }
+	internal Vector3Int Offset { get; }
+	internal Vector2Int Stride { get; }
 
-	internal Vector3Int Offset { get; private set; }
-	internal Vector2Int Stride { get; private set; }
+	private readonly record struct WorldGenParameters( Vector3Int WorldOffset, int Seed );
+
+	private WorldGenParameters? _worldGenParams;
+	private bool _needsWorldGen;
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
-	public SceneVoxelsObject( SceneWorld sceneWorld ) : base( sceneWorld )
+	public SceneVoxelsObject( SceneWorld sceneWorld, Vector3 position, Vector3Int size, float voxelScale ) : base( sceneWorld )
 	{
-		VoxelSize = 32f;
+		Size = size;
+		SizeWithMargin = size + Margin * 2 + 1;
+
+		Offset = Margin;
+		Stride = new Vector2Int( SizeWithMargin.x, SizeWithMargin.x * SizeWithMargin.y );
+		Count = SizeWithMargin.x * SizeWithMargin.y * SizeWithMargin.z;
+
+		VoxelScale = voxelScale;
 
 		Flags.CastShadows = true;
 		Flags.IsOpaque = true;
+
+		Batchable = false;
+
+		Position = position;
+
+		Attributes.Set( "WorldOrigin", Position );
+		Bounds = new BBox( Position, Position + size * voxelScale );
 	}
 
 	private static ComputeShader? _generateCompute;
 
-	public void Generate( Vector3Int size, Vector3Int worldOffset, int seed )
+	public bool Generate( Vector3Int worldOffset, int seed )
 	{
-		Bounds = new BBox( worldOffset * VoxelSize, (worldOffset + size) * VoxelSize );
+		var parameters = new WorldGenParameters( worldOffset, seed );
 
-		var sizeWithMargin = size + Margin * 2 + 1;
-		var voxelCount = sizeWithMargin.x * sizeWithMargin.y * sizeWithMargin.z;
+		if ( _worldGenParams == parameters )
+		{
+			return false;
+		}
 
-		WorldOrigin = worldOffset;
-		Size = size;
-		SizeWithMargin = sizeWithMargin;
-		Offset = Margin;
-		Stride = new Vector2Int( sizeWithMargin.x, sizeWithMargin.x * sizeWithMargin.y );
+		_worldGenParams = parameters;
+		_needsWorldGen = true;
+		return true;
+	}
 
-		if ( VoxelBuffer is null || VoxelBuffer.ElementCount != voxelCount )
+	internal void BeforeUpdate()
+	{
+		if ( VoxelBuffer is null || VoxelBuffer.ElementCount != Count )
 		{
 			VoxelBuffer?.Dispose();
-			VoxelBuffer = new GpuBuffer<uint>( voxelCount );
+			VoxelBuffer = new GpuBuffer<uint>( Count );
 		}
+
+		if ( !_needsWorldGen || _worldGenParams is not { } parameters ) return;
+
+		_needsWorldGen = false;
 
 		VoxelBuffer.Clear();
 
 		_generateCompute ??= new ComputeShader( "Shaders/procgen/caveworld.shader" );
 
 		_generateCompute.Attributes.Set( "VoxelData", VoxelBuffer );
-		_generateCompute.Attributes.Set( "VoxelSize", sizeWithMargin );
+		_generateCompute.Attributes.Set( "VoxelCount", SizeWithMargin );
 		_generateCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
 		_generateCompute.Attributes.Set( "VoxelStride", Stride );
+		_generateCompute.Attributes.Set( "VoxelScale", VoxelScale );
 
-		var random = new Random( seed );
+		var random = new Random( parameters.Seed );
 		var seedOffset = new Vector3Int( random.Next( -1024, 1024 ), random.Next( -1024, 1024 ), 0 );
 
-		_generateCompute.Attributes.Set( "WorldOrigin", worldOffset + seedOffset + Offset );
+		_generateCompute.Attributes.Set( "WorldOrigin", parameters.WorldOffset + seedOffset - Offset );
 
-		_generateCompute.Dispatch( sizeWithMargin.x, sizeWithMargin.y, 1 );
+		_generateCompute.Dispatch( SizeWithMargin.x, SizeWithMargin.y, 1 );
 	}
 
 	private static ComputeShader? _editCompute;
@@ -99,9 +118,10 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_editCompute ??= new ComputeShader( "Shaders/voxels/edit_cs.shader" );
 
 		_editCompute.Attributes.Set( "VoxelData", VoxelBuffer );
-		_editCompute.Attributes.Set( "VoxelSize", SizeWithMargin );
+		_editCompute.Attributes.Set( "VoxelCount", SizeWithMargin );
 		_editCompute.Attributes.Set( "VoxelOffset", new Vector3Int( 0, 0, 0 ) );
 		_editCompute.Attributes.Set( "VoxelStride", Stride );
+		_editCompute.Attributes.Set( "VoxelScale", VoxelScale );
 
 		_editCompute.Attributes.Set( "EditOriginA", capsule.CenterA );
 		_editCompute.Attributes.Set( "EditOriginB", capsule.CenterB );
@@ -143,8 +163,6 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	public override void RenderSceneObject()
 	{
 		if ( _vertexBuffer is null || _indexBuffer is null || _indexCount == 0 ) return;
-
-		Attributes.Set( "WorldOrigin", Position );
 
 		Graphics.Draw(
 			vertexBuffer: _vertexBuffer,

@@ -1,7 +1,6 @@
 ﻿using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Voxels.Rendering;
 
@@ -99,6 +98,9 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 			if ( !chunk.IsValid() ) continue;
 			if ( chunk.Size == default ) continue;
+
+			chunk.BeforeUpdate();
+
 			if ( chunk.VoxelBuffer is null ) continue;
 
 			_updatingChunks.Add( (chunk, maxTotalVertices, maxTotalIndices) );

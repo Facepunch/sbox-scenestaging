@@ -12,8 +12,8 @@ CS
 
     RWStructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
     uint3 VoxelOffset < Attribute("VoxelOffset"); >;
-    uint2 VoxelStride < Attribute("VoxelStride"); >;
-    uint3 VoxelSize < Attribute("VoxelSize"); >;
+    uint2 VoxelStride < Attribute("VoxelStride"); > ;
+    uint3 VoxelCount < Attribute("VoxelCount"); >;
 
     float3 EditOriginA < Attribute("EditOriginA"); > ;
     float3 EditOriginB < Attribute("EditOriginB"); > ;

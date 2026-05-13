@@ -4,22 +4,52 @@ namespace Sandbox;
 
 public sealed class VoxelTest : Component, Component.ExecuteInEditor
 {
-	private readonly Dictionary<Vector3Int, SceneVoxelsObject> _chunks = new();
+	public const int ChunkSize = 64;
+
+	private readonly record struct ChunkIndex( Vector3Int Index, int Level )
+	{
+		public Vector3Int Min => Index * ChunkSize * VoxelScale;
+		public Vector3Int Max => Index * ChunkSize * VoxelScale;
+
+		public int VoxelScale => 1 << Level;
+
+		public bool Contains( Vector3Int pos )
+		{
+			var thisMin = Min;
+			var thisMax = Max;
+
+			return pos.x >= thisMin.x && pos.x < thisMax.x
+			                          && pos.y >= thisMin.y && pos.y < thisMax.y
+			                          && pos.z >= thisMin.z && pos.z < thisMax.z;
+		}
+
+		public bool Contains( Vector3Int min, Vector3Int max )
+		{
+			var thisMin = Min;
+			var thisMax = Max;
+
+			return thisMin.x <= max.x && thisMax.x > min.x
+				&& thisMin.y <= max.y && thisMax.y > min.y
+				&& thisMin.z <= max.z && thisMax.z > min.z;
+		}
+	}
+
+	private readonly Dictionary<ChunkIndex, SceneVoxelsObject> _chunks = new();
 
 	[Property]
 	public float VoxelSize { get; set; } = 32f;
-
-	[Property]
-	public Vector3Int ChunkCount { get; set; } = new Vector3Int( 16, 16, 4 );
-
-	[Property]
-	public Vector3Int ChunkSize { get; set; } = 32;
 
 	[Property]
 	public Vector3Int Offset { get; set; }
 
 	[Property]
 	public int Seed { get; set; } = 12379162;
+
+	[Property]
+	public int MaxLevel { get; set; } = 4;
+
+	[Property]
+	public int ChunkLoadRadius { get; set; } = 2;
 
 	[Button]
 	public void RandomizeSeed()
@@ -28,10 +58,23 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		UpdateChunks();
 	}
 
-	[Button]
-	public void UpdateChunks()
+	private Vector3Int GetLoadOrigin()
 	{
-		_ = UpdateChunksAsync();
+		var cameraPos = Scene.Camera.IsValid() ? Scene.Camera.WorldPosition : default;
+		return (Vector3Int)(cameraPos / VoxelSize);
+	}
+
+	private Vector3Int _lastLoadOrigin;
+
+	protected override void OnUpdate()
+	{
+		var loadOrigin = GetLoadOrigin();
+
+		if ( _lastLoadOrigin != loadOrigin )
+		{
+			_lastLoadOrigin = loadOrigin;
+			UpdateChunks();
+		}
 	}
 
 	public void Subtract( Capsule capsule )
@@ -53,20 +96,20 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 			localBounds.Maxs.y.CeilToInt(),
 			localBounds.Maxs.z.CeilToInt() );
 
-		var chunkMin = GetChunkIndex( localMin - 1 );
-		var chunkMax = GetChunkIndex( localMax + 1 ) + 1;
+		var chunkMin = GetChunkIndex( localMin - 1, 0 );
+		var chunkMax = GetChunkIndex( localMax + 1, 0 );
 
-		for ( var cz = chunkMin.z; cz < chunkMax.z; cz++ )
+		for ( var cz = chunkMin.Index.z; cz <= chunkMax.Index.z; cz++ )
 		{
-			for ( var cy = chunkMin.y; cy < chunkMax.y; cy++ )
+			for ( var cy = chunkMin.Index.y; cy <= chunkMax.Index.y; cy++ )
 			{
-				for ( var cx = chunkMin.x; cx < chunkMax.x; cx++ )
+				for ( var cx = chunkMin.Index.x; cx <= chunkMax.Index.x; cx++ )
 				{
-					var chunkIndex = new Vector3Int( cx, cy, cz );
+					var chunkIndex = new ChunkIndex( new Vector3Int( cx, cy, cz ), 0 );
 
 					if ( !_chunks.TryGetValue( chunkIndex, out var chunk ) ) continue;
 
-					var offset = chunkIndex * ChunkSize;
+					var offset = chunkIndex.Min;
 
 					chunk.Subtract( new Capsule( localCapsule.CenterA - offset, localCapsule.CenterB - offset, localCapsule.Radius ) );
 					Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
@@ -75,12 +118,12 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		}
 	}
 
-	private Vector3Int GetChunkIndex( Vector3Int localIndex )
+	private ChunkIndex GetChunkIndex( Vector3Int localIndex, int level )
 	{
-		return new Vector3Int(
-			GetChunkIndexComponent( localIndex.x, ChunkSize.x ),
-			GetChunkIndexComponent( localIndex.y, ChunkSize.y ),
-			GetChunkIndexComponent( localIndex.z, ChunkSize.z ) );
+		return new ChunkIndex( new Vector3Int(
+			GetChunkIndexComponent( localIndex.x, ChunkSize << level ),
+			GetChunkIndexComponent( localIndex.y, ChunkSize << level ),
+			GetChunkIndexComponent( localIndex.z, ChunkSize << level ) ), level );
 	}
 
 	private static int GetChunkIndexComponent( int local, int chunkSize )
@@ -89,49 +132,85 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		return (local - chunkSize + 1) / chunkSize;
 	}
 
-	private async Task UpdateChunksAsync()
+	private readonly HashSet<ChunkIndex> _chunksToLoad = new();
+	private readonly HashSet<ChunkIndex> _chunksToKeep = new();
+	private readonly HashSet<ChunkIndex> _chunksToRemove = new();
+
+	[Button]
+	public void UpdateChunks()
 	{
-		var min = -ChunkCount / 2;
-		var max = min + ChunkCount;
+		FindChunksToLoad();
+		UnloadUnwantedChunks();
 
-		var toRemove = _chunks.Keys
-			.Where( pos => pos.x < min.x || pos.y < min.y || pos.z < min.z || pos.x >= max.x || pos.y >= max.y || pos.z >= max.z )
-			.ToArray();
-
-		foreach ( var pos in toRemove )
+		foreach ( var index in _chunksToLoad )
 		{
-			_chunks.Remove( pos, out var chunk );
-			chunk?.Delete();
-		}
-
-		var toGenerate = Enumerable.Range( min.x, ChunkCount.x )
-			.SelectMany( x => Enumerable.Range( min.y, ChunkCount.y )
-				.SelectMany( y => Enumerable.Range( min.z, ChunkCount.z )
-					.Select( z => new Vector3Int( x, y, z ) ) ) )
-			.Shuffle()
-			.ToArray();
-
-		foreach ( var pos in toGenerate )
-		{
-			if ( !_chunks.TryGetValue( pos, out var chunk ) )
+			if ( !_chunks.TryGetValue( index, out var chunk ) )
 			{
-				chunk = _chunks[pos] = new SceneVoxelsObject( Scene.SceneWorld );
+				chunk = _chunks[index] = new SceneVoxelsObject( Scene.SceneWorld, index.Min * VoxelSize, ChunkSize, index.VoxelScale * VoxelSize );
+				chunk.Position = index.Min * VoxelSize;
 			}
 
-			await Task.MainThread();
-
-			try
+			if ( chunk.Generate( index.Min, Seed ) )
 			{
-				chunk.VoxelSize = VoxelSize;
-				chunk.Generate( ChunkSize, ChunkSize * pos, Seed );
 				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
 			}
-			catch ( Exception ex )
-			{
-				Log.Error( ex );
-			}
+		}
+	}
 
-			await Task.Yield();
+	private void FindChunksToLoad()
+	{
+		var loadOrigin = GetLoadOrigin();
+
+		_chunksToLoad.Clear();
+		_chunksToKeep.Clear();
+
+		for ( var i = 0; i <= MaxLevel; i++ )
+		{
+			FindChunksToLoad( loadOrigin, ChunkLoadRadius, i, _chunksToLoad );
+			FindChunksToLoad( loadOrigin, ChunkLoadRadius + 1, i, _chunksToKeep );
+		}
+	}
+
+	private void FindChunksToLoad( Vector3Int localPos, int loadRadius, int level, HashSet<ChunkIndex> result )
+	{
+		var origin = GetChunkIndex( localPos, level );
+
+		var minIndex = origin.Index - loadRadius;
+		var maxIndex = origin.Index + loadRadius;
+
+		for ( var z = minIndex.z; z <= maxIndex.z; z++ )
+		{
+			for ( var y = minIndex.y; y <= maxIndex.y; y++ )
+			{
+				for ( var x = minIndex.x; x <= maxIndex.x; x++ )
+				{
+					var index = new Vector3Int( x, y, z );
+
+					if ( (index - origin.Index).LengthSquared <= loadRadius * loadRadius )
+					{
+						result.Add( new ChunkIndex( index, level ) );
+					}
+				}
+			}
+		}
+	}
+
+	private void UnloadUnwantedChunks()
+	{
+		_chunksToRemove.Clear();
+
+		foreach ( var index in _chunks.Keys )
+		{
+			if ( !_chunksToKeep.Contains( index ) )
+			{
+				_chunksToRemove.Add( index );
+			}
+		}
+
+		foreach ( var index in _chunksToRemove )
+		{
+			_chunks.Remove( index, out var chunk );
+			chunk?.Delete();
 		}
 	}
 

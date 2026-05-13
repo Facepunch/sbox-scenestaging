@@ -35,14 +35,14 @@ VS
 {
     #include "common/vertex.hlsl"
 
-    int3 WorldOrigin < Attribute("WorldOrigin"); > ;
-    float VoxelSize < Attribute("VoxelSize"); > ;
+    float3 WorldOrigin < Attribute("WorldOrigin"); > ;
+    float VoxelScale < Attribute("VoxelScale"); > ;
 
     PixelInput MainVs(RenderVertex v)
     {
         VertexInput i;
 
-        i.vPositionOs = (v.Position + WorldOrigin) * VoxelSize;
+        i.vPositionOs = v.Position * VoxelScale + WorldOrigin;
         i.vNormalOs = float4(v.Normal, 0);
 
         PixelInput o = ProcessVertex(i);
