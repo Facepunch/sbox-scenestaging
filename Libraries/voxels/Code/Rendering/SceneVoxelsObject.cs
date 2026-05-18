@@ -1,9 +1,6 @@
 ﻿using Sandbox;
-using Sandbox.Services;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 
 namespace Voxels.Rendering;
 
@@ -40,6 +37,9 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	internal Vector3Int Offset { get; }
 	internal Vector2Int Stride { get; }
 
+	internal PhysicsBody? Body { get; set; }
+	internal PhysicsShape? Shape { get; set; }
+
 	private readonly record struct WorldGenParameters( Vector3Int WorldOffset, int Seed );
 
 	private WorldGenParameters? _worldGenParams;
@@ -50,7 +50,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
-	public SceneVoxelsObject( SceneWorld sceneWorld, Vector3Int size) : base( sceneWorld )
+	public SceneVoxelsObject( SceneWorld sceneWorld, Vector3Int size ) : base( sceneWorld )
 	{
 		Size = size;
 		SizeWithMargin = size + Margin * 2 + 1;
@@ -156,11 +156,19 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_vertexCount = 0;
 		_indexCount = 0;
 		_finishedFirstUpdate = true;
+
+		_physicsVertices.Clear();
+		_physicsIndices.Clear();
+
+		Shape?.Remove();
+		Shape = null;
 	}
 
 	public void Reset()
 	{
 		ClearMesh();
+		Body?.Remove();
+		Body = null;
 		RenderingEnabled = false;
 		Generation++;
 	}
@@ -187,6 +195,30 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		}
 
 		return (_vertexBuffer, _indexBuffer);
+	}
+
+	private readonly List<Vector3> _physicsVertices = new();
+	private readonly List<int> _physicsIndices = new();
+
+	internal void SetPhysicsMesh( ReadOnlySpan<Vector3> vertices, ReadOnlySpan<int> indices )
+	{
+		if ( !Body.IsValid() ) return;
+
+		_physicsVertices.Clear();
+		_physicsIndices.Clear();
+
+		_physicsVertices.AddRange( vertices );
+		_physicsIndices.AddRange( indices );
+
+		if ( !Shape.IsValid() || !Shape.IsMeshShape )
+		{
+			Shape?.Remove();
+			Shape = Body.AddMeshShape( _physicsVertices, _physicsIndices );
+		}
+		else
+		{
+			Shape.UpdateMesh( _physicsVertices, _physicsIndices );
+		}
 	}
 
 	internal Action? BeforeRenderAction { get; set; }

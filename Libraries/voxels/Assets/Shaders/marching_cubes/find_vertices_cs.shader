@@ -8,7 +8,9 @@ CS
     #include "Shaders/marching_cubes/common.hlsl"
 
     RWStructuredBuffer<RenderVertex> VertexBuffer < Attribute("VertexBuffer"); > ;
+    RWStructuredBuffer<float3> PhysicsVertexBuffer < Attribute("PhysicsVertexBuffer"); > ;
     RWStructuredBuffer<uint> VertexIndexMap < Attribute("VertexIndexMap"); > ;
+    float VoxelScale < Attribute("VoxelScale"); > ;
 
     float SampleGrid3(in float samples[64], float3 pos)
     {
@@ -79,10 +81,11 @@ CS
 
         RenderVertex v;
 
-        v.Position = pos;
+        v.Position = pos * VoxelScale;
         v.Normal = GetNormal(pos);
 
         VertexBuffer[VertexBufferOffset + index] = v;
+        PhysicsVertexBuffer[VertexBufferOffset + index] = pos * VoxelScale;
 
         return index;
     }

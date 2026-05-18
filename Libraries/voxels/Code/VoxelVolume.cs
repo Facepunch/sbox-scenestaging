@@ -1,10 +1,14 @@
-﻿using Voxels.Rendering;
+﻿using Sandbox;
+using System;
+using System.Collections.Generic;
+using Voxels.Rendering;
 
-namespace Sandbox;
+namespace Voxels;
 
-public sealed class VoxelTest : Component, Component.ExecuteInEditor
+public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 {
-	public const int ChunkSize = 64;
+	public const int ChunkSize = 32;
+	public const int Margin = 1;
 
 	private readonly record struct ChunkIndex( Vector3Int Index, int Level )
 	{
@@ -173,6 +177,15 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 				chunk.Initialize( index.Min * VoxelSize, index.VoxelScale * VoxelSize );
 			}
 
+			if ( index.Level == 0 )
+			{
+				chunk.Body = new PhysicsBody( Scene.PhysicsWorld )
+				{
+					Position = index.Min * VoxelSize,
+					Component = this
+				};
+			}
+
 			if ( chunk.Generate( (Vector3Int)(index.Min * VoxelSize), Seed ) )
 			{
 				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
@@ -257,10 +270,10 @@ public sealed class VoxelTest : Component, Component.ExecuteInEditor
 		{
 			_chunks.Remove( index, out var chunk );
 
+			chunk?.Reset();
+
 			if ( _pool.Count < MaxPoolCapacity && chunk is not null )
 			{
-				chunk.Reset();
-
 				_pool.Add( chunk );
 				continue;
 			}

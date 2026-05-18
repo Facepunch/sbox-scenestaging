@@ -4,7 +4,35 @@ namespace Voxels.Rendering;
 
 partial class VoxelRenderingSystem
 {
-	private GpuBuffer<MarchingCubesLookupEntry>? _marchingCubesLookup;
+	private enum VoxelEdge : uint
+	{
+		AB = 0,
+		AC = 1,
+		AE = 2
+	}
+
+	private readonly record struct VertexData( Vector3Int Origin, VoxelEdge Edge );
+	private readonly record struct TriangleData( VertexData A, VertexData B, VertexData C );
+
+	private readonly record struct MarchingCubesLookupEntry(
+		uint TriangleCount,
+		TriangleData Tri0,
+		TriangleData Tri1,
+		TriangleData Tri2,
+		TriangleData Tri3,
+		TriangleData Tri4 )
+	{
+		public MarchingCubesLookupEntry( params TriangleData[] triangles )
+			: this( (uint)triangles.Length,
+				triangles.Length > 0 ? triangles[0] : default,
+				triangles.Length > 1 ? triangles[1] : default,
+				triangles.Length > 2 ? triangles[2] : default,
+				triangles.Length > 3 ? triangles[3] : default,
+				triangles.Length > 4 ? triangles[4] : default )
+		{
+
+		}
+	}
 
 	private static class Vertices
 	{
@@ -21,6 +49,8 @@ partial class VoxelRenderingSystem
 		public static VertexData FH { get; } = new( new Vector3Int( 1, 0, 1 ), VoxelEdge.AC );
 		public static VertexData GH { get; } = new( new Vector3Int( 0, 1, 1 ), VoxelEdge.AB );
 	}
+
+	private GpuBuffer<MarchingCubesLookupEntry>? _marchingCubesLookup;
 
 	private GpuBuffer<MarchingCubesLookupEntry> GenerateMarchingCubesLookupTable()
 	{

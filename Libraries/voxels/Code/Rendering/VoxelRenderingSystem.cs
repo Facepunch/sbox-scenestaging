@@ -1,6 +1,8 @@
-﻿using Sandbox;
+﻿using System;
+using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Voxels.Rendering;
 
@@ -9,39 +11,10 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	private readonly HashSet<(SceneVoxelsObject Chunk, uint Generation)> _dirtyChunkSet = new();
 	private readonly Queue<(SceneVoxelsObject Chunk, uint Generation)> _dirtyChunkQueue = new();
 
-	private enum VoxelEdge : uint
-	{
-		AB = 0,
-		AC = 1,
-		AE = 2
-	}
-
-	private readonly record struct VertexData( Vector3Int Origin, VoxelEdge Edge );
-	private readonly record struct TriangleData( VertexData A, VertexData B, VertexData C );
-
-	private readonly record struct MarchingCubesLookupEntry(
-		uint TriangleCount,
-		TriangleData Tri0,
-		TriangleData Tri1,
-		TriangleData Tri2,
-		TriangleData Tri3,
-		TriangleData Tri4 )
-	{
-		public MarchingCubesLookupEntry( params TriangleData[] triangles )
-			: this( (uint)triangles.Length,
-				triangles.Length > 0 ? triangles[0] : default,
-				triangles.Length > 1 ? triangles[1] : default,
-				triangles.Length > 2 ? triangles[2] : default,
-				triangles.Length > 3 ? triangles[3] : default,
-				triangles.Length > 4 ? triangles[4] : default )
-		{
-
-		}
-	}
-
 	private ComputeShader? _findVerticesCompute;
 	private ComputeShader? _findIndicesCompute;
 	private GpuBuffer<RenderVertex>? _vertexBuffer;
+	private GpuBuffer<Vector3>? _physicsVertexBuffer;
 	private GpuBuffer<uint>? _vertexIndexMap;
 	private GpuBuffer<uint>? _indexBuffer;
 	private GpuBuffer<uint>? _resultBuffer;
@@ -55,7 +28,13 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	}
 
 	private uint[]? _resultArray;
+	private Vector3[]? _physicsVertexArray;
+	private int[]? _physicsIndexArray;
+
 	private UpdateState _updateState;
+	private bool _hasResult;
+	private bool _hasPhysicsVertices;
+	private bool _hasPhysicsIndices;
 
 	public VoxelRenderingSystem( Scene scene ) : base( scene )
 	{
@@ -105,6 +84,14 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			}
 		}
 
+		if ( _updateState == UpdateState.WaitingForResult )
+		{
+			if ( _hasResult && _hasPhysicsVertices && _hasPhysicsIndices )
+			{
+				_updateState = UpdateState.CopyingBuffers;
+			}
+		}
+
 		if ( _updateState == UpdateState.CopyingBuffers )
 		{
 			for ( var i = 0; i < _updatingChunks.Count; i++ )
@@ -125,6 +112,13 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 				_vertexBuffer!.CopyTo( vertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
 				_indexBuffer!.CopyTo( indexBuffer, (int)indexOffset, 0, (int)indexCount );
+
+				if ( chunk.Body.IsValid() )
+				{
+					chunk.SetPhysicsMesh(
+						_physicsVertexArray!.AsSpan( (int)vertexOffset, (int)vertexCount ),
+						_physicsIndexArray!.AsSpan( (int)indexOffset, (int)indexCount ) );
+				}
 			}
 
 			_updateState = UpdateState.None;
@@ -133,7 +127,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 		if ( _updateState != UpdateState.None ) return;
 
-		const int maxParallelChunks = 4;
+		const int maxParallelChunks = 16;
 
 		var maxTotalVertices = 0U;
 		var maxTotalIndices = 0U;
@@ -164,6 +158,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		_updateState = UpdateState.StartingJobs;
 
 		PrepareBuffer( ref _vertexBuffer, maxTotalVertices );
+		PrepareBuffer( ref _physicsVertexBuffer, maxTotalVertices );
 		PrepareBuffer( ref _vertexIndexMap, maxTotalVertices );
 		PrepareBuffer( ref _indexBuffer, maxTotalIndices );
 		PrepareBuffer( ref _resultBuffer, maxParallelChunks * 2 );
@@ -171,6 +166,16 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		if ( _resultArray is null || _resultArray.Length < _resultBuffer.ElementCount )
 		{
 			_resultArray = new uint[_resultBuffer.ElementCount];
+		}
+
+		if ( _physicsVertexArray is null || _physicsVertexArray.Length < _physicsVertexBuffer.ElementCount )
+		{
+			_physicsVertexArray = new Vector3[_physicsVertexBuffer.ElementCount];
+		}
+
+		if ( _physicsIndexArray is null || _physicsIndexArray.Length < _indexBuffer.ElementCount )
+		{
+			_physicsIndexArray = new int[_indexBuffer.ElementCount];
 		}
 
 		_vertexBuffer.Clear();
@@ -185,6 +190,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		_findVerticesCompute ??= new ComputeShader( "Shaders/marching_cubes/find_vertices_cs.shader" );
 
 		_findVerticesCompute.Attributes.Set( "VertexBuffer", _vertexBuffer );
+		_findVerticesCompute.Attributes.Set( "PhysicsVertexBuffer", _physicsVertexBuffer );
 		_findVerticesCompute.Attributes.Set( "VertexIndexMap", _vertexIndexMap );
 		_findVerticesCompute.Attributes.Set( "ResultBuffer", _resultBuffer );
 
@@ -196,6 +202,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			_findVerticesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
 			_findVerticesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
 			_findVerticesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
+			_findVerticesCompute.Attributes.Set( "VoxelScale", chunk.VoxelScale );
 
 			_findVerticesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
 			_findVerticesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
@@ -237,16 +244,37 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 	private void BeforeUpdatingChunkRender()
 	{
+		// gets called on the render thread by an updating chunk,
+		// hack to be able to call GetDataAsync
+
 		if ( _updatingChunks.Count == 0 ) return;
 		if ( _updateState != UpdateState.StartingJobs ) return;
-		if ( _resultBuffer is not { } resultBuffer ) return;
 
+		var anyPhysics = _updatingChunks.Any( x => x.Chunk.Body is not null );
+
+		_hasResult = false;
+		_hasPhysicsVertices = !anyPhysics;
+		_hasPhysicsIndices = !anyPhysics;
 		_updateState = UpdateState.WaitingForResult;
 
-		resultBuffer.GetDataAsync( result =>
+		_resultBuffer!.GetDataAsync( result =>
 		{
 			result.CopyTo( _resultArray );
-			_updateState = UpdateState.CopyingBuffers;
+			_hasResult = true;
+		} );
+
+		if ( !anyPhysics ) return;
+
+		_physicsVertexBuffer!.GetDataAsync( result =>
+		{
+			result.CopyTo( _physicsVertexArray );
+			_hasPhysicsVertices = true;
+		} );
+
+		_indexBuffer!.GetDataAsync<int>( result =>
+		{
+			result.CopyTo( _physicsIndexArray );
+			_hasPhysicsIndices = true;
 		} );
 	}
 }

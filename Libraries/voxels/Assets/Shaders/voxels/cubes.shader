@@ -42,7 +42,7 @@ VS
     {
         VertexInput i;
 
-        i.vPositionOs = v.Position * VoxelScale + WorldOrigin;
+        i.vPositionOs = v.Position + WorldOrigin;
         i.vNormalOs = float4(v.Normal, 0);
 
         PixelInput o = ProcessVertex(i);

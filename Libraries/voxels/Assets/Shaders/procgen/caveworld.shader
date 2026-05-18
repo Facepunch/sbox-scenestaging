@@ -52,7 +52,7 @@ CS
 
             if (underground <= -1.0) break;
 
-            float density = (FractalSimplexNoise3D(worldPos * float3(0.5, 0.5, 1.0), 5) + 0.55) * 16.0 * valueScale;
+            float density = (FractalSimplexNoise3D(worldPos * float3(0.5, 0.5, 1.0), 6) + 0.55) * 16.0 * valueScale;
 
             if (density <= -1.0) continue;
 
