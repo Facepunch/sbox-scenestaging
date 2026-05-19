@@ -208,7 +208,7 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 			var subChunk = new ChunkIndex( firstSubChunk.Index + offset, firstSubChunk.Level );
 
 			if ( !_chunks.TryGetValue( subChunk, out var chunk ) ) return false;
-			if ( !chunk.IsReady ) return false;
+			if ( !chunk.IsMeshReady ) return false;
 		}
 
 		return true;
@@ -305,5 +305,26 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 		}
 
 		_chunks.Clear();
+	}
+
+	public bool AreChunksLoaded( BBox worldBounds )
+	{
+		var minIndex = GetChunkIndex( (Vector3Int)(worldBounds.Mins / VoxelSize), 0 ).Index;
+		var maxIndex = GetChunkIndex( (Vector3Int)(worldBounds.Maxs / VoxelSize), 0 ).Index;
+
+		for ( var z = minIndex.z; z <= maxIndex.z; z++ )
+		{
+			for ( var y = minIndex.y; y <= maxIndex.y; y++ )
+			{
+				for ( var x = minIndex.x; x <= maxIndex.x; x++ )
+				{
+					if ( !_chunks.TryGetValue( new ChunkIndex( new Vector3Int( x, y, z ), 0 ), out var chunk ) ) return false;
+
+					if ( !chunk.IsPhysicsReady ) return false;
+				}
+			}
+		}
+
+		return true;
 	}
 }

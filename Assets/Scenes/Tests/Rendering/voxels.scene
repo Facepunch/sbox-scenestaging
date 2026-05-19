@@ -34,6 +34,18 @@
           "PauseChunkUpdates": false,
           "Seed": 12379162,
           "VoxelSize": 32
+        },
+        {
+          "__type": "ChunkLoadDetector",
+          "__guid": "1c5c6cac-e3ff-47a9-95c0-b506c98404d2",
+          "__enabled": true,
+          "Flags": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         }
       ],
       "Children": []
@@ -158,11 +170,11 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "-4504.72119,-5704.23779,3340.05908",
+      "Position": "-4504.72119,-5883.2002,2172.39087",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
-      "Enabled": false,
+      "Enabled": true,
       "NetworkMode": 2,
       "NetworkFlags": 0,
       "NetworkOrphaned": 0,
@@ -565,9 +577,6 @@
         "Data": {
           "SelectionSets": []
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       }
     }
   },

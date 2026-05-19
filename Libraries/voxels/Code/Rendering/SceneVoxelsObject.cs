@@ -44,9 +44,11 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	private WorldGenParameters? _worldGenParams;
 	private bool _needsWorldGen;
-	private bool _finishedFirstUpdate;
+	private bool _finishedFirstMeshUpdate;
+	private bool _finishedFirstPhysicsUpdate;
 
-	public bool IsReady => _finishedFirstUpdate;
+	public bool IsMeshReady => _finishedFirstMeshUpdate;
+	public bool IsPhysicsReady => _finishedFirstPhysicsUpdate;
 
 	internal GpuBuffer<uint>? VoxelBuffer { get; private set; }
 
@@ -83,7 +85,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 		RenderingEnabled = true;
 
-		_finishedFirstUpdate = false;
+		_finishedFirstMeshUpdate = false;
+		_finishedFirstPhysicsUpdate = false;
 	}
 
 	private static ComputeShader? _generateCompute;
@@ -155,7 +158,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	{
 		_vertexCount = 0;
 		_indexCount = 0;
-		_finishedFirstUpdate = true;
+		_finishedFirstMeshUpdate = true;
+		_finishedFirstPhysicsUpdate = true;
 
 		_physicsVertices.Clear();
 		_physicsIndices.Clear();
@@ -178,7 +182,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_vertexCount = vertexCount;
 		_indexCount = indexCount;
 
-		_finishedFirstUpdate = true;
+		_finishedFirstMeshUpdate = true;
 
 		if ( _vertexBuffer is null || _vertexBuffer.ElementCount < _vertexCount )
 		{
@@ -203,6 +207,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	internal void SetPhysicsMesh( ReadOnlySpan<Vector3> vertices, ReadOnlySpan<int> indices )
 	{
 		if ( !Body.IsValid() ) return;
+
+		_finishedFirstPhysicsUpdate = true;
 
 		_physicsVertices.Clear();
 		_physicsIndices.Clear();
