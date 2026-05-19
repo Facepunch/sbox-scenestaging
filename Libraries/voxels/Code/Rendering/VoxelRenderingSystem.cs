@@ -28,13 +28,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	}
 
 	private uint[]? _resultArray;
-	private Vector3[]? _physicsVertexArray;
-	private int[]? _physicsIndexArray;
-
 	private UpdateState _updateState;
-	private bool _hasResult;
-	private bool _hasPhysicsVertices;
-	private bool _hasPhysicsIndices;
 
 	public VoxelRenderingSystem( Scene scene ) : base( scene )
 	{
@@ -84,14 +78,6 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			}
 		}
 
-		if ( _updateState == UpdateState.WaitingForResult )
-		{
-			if ( _hasResult && _hasPhysicsVertices && _hasPhysicsIndices )
-			{
-				_updateState = UpdateState.CopyingBuffers;
-			}
-		}
-
 		if ( _updateState == UpdateState.CopyingBuffers )
 		{
 			for ( var i = 0; i < _updatingChunks.Count; i++ )
@@ -108,16 +94,14 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 					continue;
 				}
 
-				var (vertexBuffer, indexBuffer) = chunk.PrepareRenderBuffers( vertexCount, indexCount );
+				var (vertexBuffer, physicsVertexBuffer, indexBuffer) = chunk.PrepareRenderBuffers( vertexCount, indexCount );
 
 				_vertexBuffer!.CopyTo( vertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
 				_indexBuffer!.CopyTo( indexBuffer, (int)indexOffset, 0, (int)indexCount );
 
-				if ( chunk.Body.IsValid() )
+				if ( physicsVertexBuffer is not null )
 				{
-					chunk.SetPhysicsMesh(
-						_physicsVertexArray!.AsSpan( (int)vertexOffset, (int)vertexCount ),
-						_physicsIndexArray!.AsSpan( (int)indexOffset, (int)indexCount ) );
+					_physicsVertexBuffer!.CopyTo( physicsVertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
 				}
 			}
 
@@ -166,16 +150,6 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		if ( _resultArray is null || _resultArray.Length < _resultBuffer.ElementCount )
 		{
 			_resultArray = new uint[_resultBuffer.ElementCount];
-		}
-
-		if ( _physicsVertexArray is null || _physicsVertexArray.Length < _physicsVertexBuffer.ElementCount )
-		{
-			_physicsVertexArray = new Vector3[_physicsVertexBuffer.ElementCount];
-		}
-
-		if ( _physicsIndexArray is null || _physicsIndexArray.Length < _indexBuffer.ElementCount )
-		{
-			_physicsIndexArray = new int[_indexBuffer.ElementCount];
 		}
 
 		_vertexBuffer.Clear();
@@ -250,31 +224,12 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		if ( _updatingChunks.Count == 0 ) return;
 		if ( _updateState != UpdateState.StartingJobs ) return;
 
-		var anyPhysics = _updatingChunks.Any( x => x.Chunk.Body is not null );
-
-		_hasResult = false;
-		_hasPhysicsVertices = !anyPhysics;
-		_hasPhysicsIndices = !anyPhysics;
 		_updateState = UpdateState.WaitingForResult;
 
 		_resultBuffer!.GetDataAsync( result =>
 		{
 			result.CopyTo( _resultArray );
-			_hasResult = true;
-		} );
-
-		if ( !anyPhysics ) return;
-
-		_physicsVertexBuffer!.GetDataAsync( result =>
-		{
-			result.CopyTo( _physicsVertexArray );
-			_hasPhysicsVertices = true;
-		} );
-
-		_indexBuffer!.GetDataAsync<int>( result =>
-		{
-			result.CopyTo( _physicsIndexArray );
-			_hasPhysicsIndices = true;
+			_updateState = UpdateState.CopyingBuffers;
 		} );
 	}
 }

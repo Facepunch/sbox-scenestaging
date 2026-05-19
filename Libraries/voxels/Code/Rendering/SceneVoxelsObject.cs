@@ -1,6 +1,8 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Voxels.Rendering;
 
@@ -15,6 +17,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	private static Material Material { get; } = Material.FromShader( "Shaders/voxels/cubes.shader" );
 
 	private GpuBuffer<RenderVertex>? _vertexBuffer;
+	private GpuBuffer<Vector3>? _physicsVertexBuffer;
 	private GpuBuffer<uint>? _indexBuffer;
 	private uint _vertexCount;
 	private uint _indexCount;
@@ -160,6 +163,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_indexCount = 0;
 		_finishedFirstMeshUpdate = true;
 		_finishedFirstPhysicsUpdate = true;
+		_shouldRequestPhysicsMesh = false;
 
 		_physicsVertices.Clear();
 		_physicsIndices.Clear();
@@ -177,7 +181,11 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		Generation++;
 	}
 
-	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( uint vertexCount, uint indexCount )
+	private bool _shouldRequestPhysicsMesh;
+	private bool _hasPhysicsVertices;
+	private bool _hasPhysicsIndices;
+
+	internal (GpuBuffer<RenderVertex> Vertices, GpuBuffer<Vector3>? PhysicsVertices, GpuBuffer<uint> Indices) PrepareRenderBuffers( uint vertexCount, uint indexCount )
 	{
 		_vertexCount = vertexCount;
 		_indexCount = indexCount;
@@ -191,6 +199,17 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Vertex );
 		}
 
+		if ( Body is not null )
+		{
+			if ( _physicsVertexBuffer is null || _physicsVertexBuffer.ElementCount < _vertexCount )
+			{
+				_physicsVertexBuffer?.Dispose();
+				_physicsVertexBuffer = new GpuBuffer<Vector3>( ((int)_vertexCount).NextPowerOf2 );
+			}
+
+			_shouldRequestPhysicsMesh = true;
+		}
+
 		if ( _indexBuffer is null || _indexBuffer.ElementCount < _indexCount )
 		{
 			_indexBuffer?.Dispose();
@@ -198,23 +217,17 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 				GpuBuffer.UsageFlags.Structured | GpuBuffer.UsageFlags.Index );
 		}
 
-		return (_vertexBuffer, _indexBuffer);
+		return (_vertexBuffer, Body is not null ? _physicsVertexBuffer : null, _indexBuffer);
 	}
 
 	private readonly List<Vector3> _physicsVertices = new();
 	private readonly List<int> _physicsIndices = new();
 
-	internal void SetPhysicsMesh( ReadOnlySpan<Vector3> vertices, ReadOnlySpan<int> indices )
+	internal async Task SetPhysicsMeshAsync()
 	{
 		if ( !Body.IsValid() ) return;
 
-		_finishedFirstPhysicsUpdate = true;
-
-		_physicsVertices.Clear();
-		_physicsIndices.Clear();
-
-		_physicsVertices.AddRange( vertices );
-		_physicsIndices.AddRange( indices );
+		await MainThread.Wait();
 
 		if ( !Shape.IsValid() || !Shape.IsMeshShape )
 		{
@@ -225,6 +238,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		{
 			Shape.UpdateMesh( _physicsVertices, _physicsIndices );
 		}
+
+		_finishedFirstPhysicsUpdate = true;
 	}
 
 	internal Action? BeforeRenderAction { get; set; }
@@ -234,6 +249,38 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		BeforeRenderAction?.Invoke();
 
 		if ( _vertexBuffer is null || _indexBuffer is null || _indexCount == 0 ) return;
+
+		if ( _shouldRequestPhysicsMesh && _indexCount > 0 )
+		{
+			_shouldRequestPhysicsMesh = false;
+			_hasPhysicsVertices = false;
+			_hasPhysicsIndices = false;
+
+			_physicsVertices.Clear();
+			_physicsIndices.Clear();
+
+			_physicsVertexBuffer?.GetDataAsync( vertices =>
+			{
+				_physicsVertices.AddRange( vertices );
+				_hasPhysicsVertices = true;
+
+				if ( _hasPhysicsIndices )
+				{
+					_ = SetPhysicsMeshAsync();
+				}
+			}, 0, (int)_vertexCount );
+
+			_indexBuffer?.GetDataAsync<int>( indices =>
+			{
+				_physicsIndices.AddRange( indices );
+				_hasPhysicsIndices = true;
+
+				if ( _hasPhysicsVertices )
+				{
+					_ = SetPhysicsMeshAsync();
+				}
+			}, 0, (int)_indexCount );
+		}
 
 		Graphics.Draw(
 			vertexBuffer: _vertexBuffer,
