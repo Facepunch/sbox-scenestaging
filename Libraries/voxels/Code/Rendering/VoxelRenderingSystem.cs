@@ -1,14 +1,20 @@
-﻿using Sandbox;
+﻿using System;
+using System.Collections.Concurrent;
+using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Sandbox.Tasks;
 
 namespace Voxels.Rendering;
 
+internal delegate void ChunkAction( VoxelChunk chunk );
+
 public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem>
 {
-	private readonly HashSet<(SceneVoxelsObject Chunk, uint Generation)> _dirtyChunkSet = new();
-	private readonly Queue<(SceneVoxelsObject Chunk, uint Generation)> _dirtyChunkQueue = new();
+	private readonly HashSet<VoxelChunk> _dirtyChunkSet = new();
+	private readonly Queue<VoxelChunk> _dirtyChunkQueue = new();
 
 	private ComputeShader? _findVerticesCompute;
 	private ComputeShader? _findIndicesCompute;
@@ -18,16 +24,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	private GpuBuffer<uint>? _indexBuffer;
 	private GpuBuffer<uint>? _resultBuffer;
 
-	private enum UpdateState
-	{
-		None,
-		StartingJobs,
-		WaitingForResult,
-		CopyingBuffers
-	}
-
-	private uint[]? _resultArray;
-	private UpdateState _updateState;
+	private readonly List<uint> _resultList = new();
 	private readonly SceneCustomObject _sceneObject;
 
 	public VoxelRenderingSystem( Scene scene ) : base( scene )
@@ -44,13 +41,12 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		_sceneObject.Delete();
 	}
 
-	public void QueueChunkUpdate( SceneVoxelsObject chunk )
+	internal void QueueChunkUpdate( VoxelChunk chunk )
 	{
-		var generation = chunk.Generation;
-
-		if ( !_dirtyChunkSet.Add( (chunk, generation) ) ) return;
-
-		_dirtyChunkQueue.Enqueue( (chunk, generation) );
+		if ( _dirtyChunkSet.Add( chunk ) )
+		{
+			_dirtyChunkQueue.Enqueue( chunk );
+		}
 	}
 
 	private static int GetMaxVertexCount( Vector3Int chunkSize )
@@ -65,8 +61,6 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		return chunkSize.x * chunkSize.y * chunkSize.z * 5;
 	}
 
-	private readonly List<(SceneVoxelsObject Chunk, uint Generation, uint VertexOffset, uint IndexOffset)> _updatingChunks = new();
-
 	private static void PrepareBuffer<T>( [NotNull] ref GpuBuffer<T>? buffer, uint elementCount )
 		where T : unmanaged
 	{
@@ -76,51 +70,26 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		buffer = new GpuBuffer<T>( ((int)elementCount).NextPowerOf2 );
 	}
 
+	private Task? _updateChunksTask;
+
 	private void UpdateChunks()
 	{
-		if ( _updateState == UpdateState.StartingJobs )
+		if ( _dirtyChunkQueue.Count > 0 && _updateChunksTask is null or { IsCompleted: true } )
 		{
-			if ( _updatingChunks.TrueForAll( x => !x.Chunk.IsValid() || x.Chunk.Generation != x.Generation ) )
-			{
-				_updateState = UpdateState.None;
-				_updatingChunks.Clear();
-			}
+			_updateChunksTask = UpdateChunksAsync();
 		}
+	}
 
-		if ( _updateState == UpdateState.CopyingBuffers )
-		{
-			for ( var i = 0; i < _updatingChunks.Count; i++ )
-			{
-				var (chunk, generation, vertexOffset, indexOffset) = _updatingChunks[i];
+	private readonly record struct UpdatingChunk( VoxelChunk Chunk, uint VertexOffset, uint IndexOffset );
 
-				if ( chunk.Generation != generation ) continue;
+	private readonly List<UpdatingChunk> _updatingChunks = new();
+	private readonly ConcurrentQueue<Action> _renderThreadTasks = new();
 
-				var (vertexCount, indexCount) = (_resultArray![i * 2], _resultArray[i * 2 + 1]);
-
-				if ( vertexCount == 0 )
-				{
-					chunk.ClearMesh();
-					continue;
-				}
-
-				var (vertexBuffer, physicsVertexBuffer, indexBuffer) = chunk.PrepareRenderBuffers( vertexCount, indexCount );
-
-				_vertexBuffer!.CopyTo( vertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
-				_indexBuffer!.CopyTo( indexBuffer, (int)indexOffset, 0, (int)indexCount );
-
-				if ( physicsVertexBuffer is not null )
-				{
-					_physicsVertexBuffer!.CopyTo( physicsVertexBuffer, (int)vertexOffset, 0, (int)vertexCount );
-				}
-			}
-
-			_updateState = UpdateState.None;
-			_updatingChunks.Clear();
-		}
-
-		if ( _updateState != UpdateState.None ) return;
-
+	private async Task UpdateChunksAsync()
+	{
 		const int maxParallelChunks = 16;
+
+		_updatingChunks.Clear();
 
 		var maxTotalVertices = 0U;
 		var maxTotalIndices = 0U;
@@ -129,18 +98,12 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		{
 			_dirtyChunkSet.Remove( next );
 
-			if ( !next.Chunk.IsValid() ) continue;
-			if ( next.Chunk.Generation != next.Generation ) continue;
-			if ( next.Chunk.Size == default ) continue;
+			if ( !next.IsValid() ) continue;
 
-			next.Chunk.BeforeUpdate();
+			_updatingChunks.Add( new( next, maxTotalVertices, maxTotalIndices ) );
 
-			if ( next.Chunk.VoxelBuffer is null ) continue;
-
-			_updatingChunks.Add( (next.Chunk, next.Generation, maxTotalVertices, maxTotalIndices) );
-
-			var maxVertices = GetMaxVertexCount( next.Chunk.Size );
-			var maxTriangles = GetMaxTriangleCount( next.Chunk.Size );
+			var maxVertices = GetMaxVertexCount( VoxelChunk.Size );
+			var maxTriangles = GetMaxTriangleCount( VoxelChunk.Size );
 
 			maxTotalVertices = (uint)(maxTotalVertices + maxVertices);
 			maxTotalIndices = (uint)(maxTotalIndices + maxTriangles * 3);
@@ -148,18 +111,11 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 		if ( _updatingChunks.Count == 0 ) return;
 
-		_updateState = UpdateState.StartingJobs;
-
 		PrepareBuffer( ref _vertexBuffer, maxTotalVertices );
 		PrepareBuffer( ref _physicsVertexBuffer, maxTotalVertices );
 		PrepareBuffer( ref _vertexIndexMap, maxTotalVertices );
 		PrepareBuffer( ref _indexBuffer, maxTotalIndices );
 		PrepareBuffer( ref _resultBuffer, maxParallelChunks * 2 );
-
-		if ( _resultArray is null || _resultArray.Length < _resultBuffer.ElementCount )
-		{
-			_resultArray = new uint[_resultBuffer.ElementCount];
-		}
 
 		_vertexBuffer.Clear();
 		_indexBuffer.Clear();
@@ -179,19 +135,25 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 		for ( var i = 0; i < _updatingChunks.Count; i++ )
 		{
-			var (chunk, _, vertexOffset, _) = _updatingChunks[i];
+			var (chunk, vertexOffset, _) = _updatingChunks[i];
+			var voxelSpan = chunk.VisibleVoxelSpan;
 
-			_findVerticesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer );
-			_findVerticesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
-			_findVerticesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
-			_findVerticesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
+			_findVerticesCompute.Attributes.Set( "VoxelData", voxelSpan.Buffer );
+			_findVerticesCompute.Attributes.Set( "VoxelOffset", voxelSpan.Offset );
+			_findVerticesCompute.Attributes.Set( "VoxelStride", voxelSpan.Stride );
 			_findVerticesCompute.Attributes.Set( "VoxelScale", chunk.VoxelScale );
+
+			var vertexCount = voxelSpan.Size + 1;
+			var vertexStride = new Vector3Int(
+				vertexCount.x,
+				vertexCount.x * vertexCount.y,
+				vertexCount.x * vertexCount.y * vertexCount.z );
 
 			_findVerticesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
 			_findVerticesCompute.Attributes.Set( "ResultBufferOffset", i * 2 );
-			_findVerticesCompute.Attributes.Set( "VertexIndexMapStride", new Vector2Int( chunk.Size.x + 1, (chunk.Size.x + 1) * (chunk.Size.y + 1) ) );
+			_findVerticesCompute.Attributes.Set( "VertexIndexMapStride", vertexStride );
 
-			_findVerticesCompute.Dispatch( chunk.Size.x + 1, chunk.Size.y + 1, chunk.Size.z + 1 );
+			_findVerticesCompute.Dispatch( vertexCount.x, vertexCount.y, vertexCount.z );
 		}
 
 		//
@@ -207,34 +169,79 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 		for ( var i = 0; i < _updatingChunks.Count; i++ )
 		{
-			var (chunk, _, vertexOffset, indexOffset) = _updatingChunks[i];
+			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
+			var voxelSpan = chunk.VisibleVoxelSpan;
 
-			_findIndicesCompute.Attributes.Set( "VoxelData", chunk.VoxelBuffer );
-			_findIndicesCompute.Attributes.Set( "VoxelCount", chunk.SizeWithMargin );
-			_findIndicesCompute.Attributes.Set( "VoxelOffset", chunk.Offset );
-			_findIndicesCompute.Attributes.Set( "VoxelStride", chunk.Stride );
+			_findIndicesCompute.Attributes.Set( "VoxelData", voxelSpan.Buffer );
+			_findIndicesCompute.Attributes.Set( "VoxelOffset", voxelSpan.Offset );
+			_findIndicesCompute.Attributes.Set( "VoxelStride", voxelSpan.Stride );
+
+			var vertexCount = voxelSpan.Size + 1;
+			var vertexStride = new Vector3Int(
+				vertexCount.x,
+				vertexCount.x * vertexCount.y,
+				vertexCount.x * vertexCount.y * vertexCount.z );
 
 			_findIndicesCompute.Attributes.Set( "VertexBufferOffset", vertexOffset );
 			_findIndicesCompute.Attributes.Set( "IndexBufferOffset", indexOffset );
 			_findIndicesCompute.Attributes.Set( "ResultBufferOffset", i * 2 + 1 );
-			_findIndicesCompute.Attributes.Set( "VertexIndexMapStride", new Vector2Int( chunk.Size.x + 1, (chunk.Size.x + 1) * (chunk.Size.y + 1) ) );
+			_findIndicesCompute.Attributes.Set( "VertexIndexMapStride", vertexStride );
 
-			_findIndicesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
+			_findIndicesCompute.Dispatch( voxelSpan.Size.x, voxelSpan.Size.y, voxelSpan.Size.z );
 		}
+
+		//
+		// Download vertex / index counts
+		//
+
+		await GetDataAsync( _resultBuffer, _resultList, 0, _updatingChunks.Count * 2 );
+
+		//
+		// Submit results
+		//
+
+		for ( var i = 0; i < _updatingChunks.Count; i++ )
+		{
+			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
+			var (vertexCount, indexCount) = (_resultList[i * 2], _resultList[i * 2 + 1]);
+
+			if ( vertexCount == 0 )
+			{
+				chunk.RenderMesh = null;
+				continue;
+			}
+
+			chunk.RenderMesh = new VoxelRenderMesh(
+				_vertexBuffer, (int)vertexOffset, (int)vertexCount,
+				_indexBuffer, (int)indexOffset, (int)indexCount );
+		}
+	}
+
+	internal Task GetDataAsync<T>( GpuBuffer<T> buffer, List<T> dst, int srcOffset, int srcCount )
+		where T : unmanaged
+	{
+		var tcs = new TaskCompletionSource();
+
+		dst.Clear();
+
+		_renderThreadTasks.Enqueue( () =>
+		{
+			buffer.GetDataAsync( result =>
+			{
+				dst.AddRange( result );
+				tcs.SetResult();
+			}, srcOffset, srcCount );
+		} );
+
+		return tcs.Task;
 	}
 
 	internal void RenderThreadTick()
 	{
-		if ( _updatingChunks.Count == 0 ) return;
-		if ( _updateState != UpdateState.StartingJobs ) return;
-
-		_updateState = UpdateState.WaitingForResult;
-
-		_resultBuffer!.GetDataAsync( result =>
+		while ( _renderThreadTasks.TryDequeue( out var task ) )
 		{
-			result.CopyTo( _resultArray );
-			_updateState = UpdateState.CopyingBuffers;
-		}, 0, _updatingChunks.Count * 2 );
+			task.InvokeWithWarning();
+		}
 	}
 }
 

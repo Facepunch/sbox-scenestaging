@@ -508,7 +508,7 @@
       "Rotation": "0.17513524,0.0534205213,-0.940322995,0.286821455",
       "Scale": "1,1,1",
       "Tags": "maincamera",
-      "Enabled": true,
+      "Enabled": false,
       "NetworkMode": 2,
       "NetworkFlags": 0,
       "NetworkOrphaned": 0,
@@ -568,14 +568,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
-        }
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
+        }
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
         }
       }
     }

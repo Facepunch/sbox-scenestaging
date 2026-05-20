@@ -36,20 +36,17 @@ struct RenderVertex
 };
 
 StructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); > ;
-uint3 VoxelCount < Attribute("VoxelCount"); > ;
 uint3 VoxelOffset < Attribute("VoxelOffset"); > ;
-uint2 VoxelStride < Attribute("VoxelStride"); > ;
+uint3 VoxelStride < Attribute("VoxelStride"); > ;
 
 uint VertexBufferOffset < Attribute("VertexBufferOffset"); > ;
-uint2 VertexIndexMapStride < Attribute("VertexIndexMapStride"); > ;
+uint3 VertexIndexMapStride < Attribute("VertexIndexMapStride"); > ;
 
 RWStructuredBuffer<uint> ResultBuffer < Attribute("ResultBuffer"); > ;
 uint ResultBufferOffset < Attribute("ResultBufferOffset"); > ;
 
 uint GetVoxelIndex(int3 pos)
 {
-    pos = clamp(pos, 0, VoxelCount - 1);
-
     return pos.x + VoxelStride.x * pos.y + VoxelStride.y * pos.z;
 }
 
