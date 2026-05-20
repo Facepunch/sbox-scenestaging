@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Voxels.Rendering;
 
 namespace Voxels;
@@ -38,6 +39,11 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 		}
 
 		public ChunkIndex FirstSubChunk => new ChunkIndex( Index * 2, Level - 1 );
+
+		public override string ToString()
+		{
+			return $"ChunkIndex {{ {Index}, {Level} }}";
+		}
 	}
 
 	private const int MaxPoolCapacity = 128;
@@ -88,6 +94,12 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 		{
 			_lastLoadOrigin = loadOrigin;
 			UpdateChunks();
+		}
+
+		foreach ( var (index, chunk) in _chunks )
+		{
+			chunk.LodDistance = index.Level > 0 ? ChunkLoadRadius * index.VoxelScale * ChunkSize * VoxelSize * 0.25f : 0f;
+			chunk.LodMask = GetLodMask( index );
 		}
 	}
 
@@ -191,27 +203,25 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 				Scene.GetSystem<VoxelRenderingSystem>().QueueChunkUpdate( chunk );
 			}
 		}
-
-		foreach ( var (index, chunk) in _chunks )
-		{
-			chunk.RenderingEnabled = !AllSubChunksLoaded( index );
-		}
 	}
 
-	private bool AllSubChunksLoaded( ChunkIndex index )
+	private byte GetLodMask( ChunkIndex index )
 	{
 		var firstSubChunk = index.FirstSubChunk;
+		byte mask = 0;
 
 		for ( var i = 0; i < 8; i++ )
 		{
 			var offset = new Vector3Int( i & 1, (i >> 1) & 1, (i >> 2) & 1 );
 			var subChunk = new ChunkIndex( firstSubChunk.Index + offset, firstSubChunk.Level );
 
-			if ( !_chunks.TryGetValue( subChunk, out var chunk ) ) return false;
-			if ( !chunk.IsMeshReady ) return false;
+			if ( !_chunks.TryGetValue( subChunk, out var chunk ) ) continue;
+			if ( !chunk.IsMeshReady ) continue;
+
+			mask |= (byte)(1 << i);
 		}
 
-		return true;
+		return mask;
 	}
 
 	private void FindChunksToLoad()
@@ -318,13 +328,31 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 			{
 				for ( var x = minIndex.x; x <= maxIndex.x; x++ )
 				{
-					if ( !_chunks.TryGetValue( new ChunkIndex( new Vector3Int( x, y, z ), 0 ), out var chunk ) ) return false;
+					var index = new ChunkIndex( new Vector3Int( x, y, z ), 0 );
 
-					if ( !chunk.IsPhysicsReady ) return false;
+					if ( !_chunks.TryGetValue( index, out var chunk ) ) return false;
+
+					if ( !chunk.IsPhysicsReady )
+					{
+						Log.Info( $"Not loaded! {index}" );
+						return false;
+					}
 				}
 			}
 		}
 
 		return true;
+	}
+
+	protected override void DrawGizmos()
+	{
+		foreach ( var (index, chunk) in _chunks )
+		{
+			//if ( chunk.IsMasked ) return;
+			//if ( chunk.IsMeshReady && chunk.IsPhysicsReady ) return;
+
+			Gizmo.Draw.Color = chunk.IsMeshReady ? Color.Green : Color.Red;
+			Gizmo.Draw.LineBBox( new BBox( index.Min * VoxelSize, index.Max * VoxelSize ) );
+		}
 	}
 }

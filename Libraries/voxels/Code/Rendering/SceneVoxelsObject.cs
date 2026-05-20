@@ -77,7 +77,13 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		VoxelScale = voxelScale;
 		Position = position;
 
+		var hue = (MathF.Log2( voxelScale ) - 5f) * 60f;
+		var color = new ColorHsv( hue, 0.75f, 1f ).ToColor();
+
 		Attributes.Set( "WorldOrigin", Position );
+		Attributes.Set( "WorldSize", Size * voxelScale );
+		Attributes.Set( "Tint", new Vector3( color.r, color.g, color.b ) );
+
 		Bounds = new BBox( Position, Position + Size * voxelScale );
 
 		_worldGenParams = null;
@@ -90,6 +96,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 		_finishedFirstMeshUpdate = false;
 		_finishedFirstPhysicsUpdate = false;
+		_shouldRequestPhysicsMesh = false;
 	}
 
 	private static ComputeShader? _generateCompute;
@@ -178,6 +185,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		Body?.Remove();
 		Body = null;
 		RenderingEnabled = false;
+		LodMask = 0;
 		Generation++;
 	}
 
@@ -225,9 +233,13 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 	internal async Task SetPhysicsMeshAsync()
 	{
+		var generation = Generation;
+
 		if ( !Body.IsValid() ) return;
 
 		await MainThread.Wait();
+
+		if ( generation != Generation ) return;
 
 		if ( !Shape.IsValid() || !Shape.IsMeshShape )
 		{
@@ -243,6 +255,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	}
 
 	internal Action? BeforeRenderAction { get; set; }
+	internal byte LodMask { get; set; }
+	internal float LodDistance { get; set; }
 
 	public override void RenderSceneObject()
 	{
@@ -259,8 +273,12 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 			_physicsVertices.Clear();
 			_physicsIndices.Clear();
 
+			var requestGen = Generation;
+
 			_physicsVertexBuffer?.GetDataAsync( vertices =>
 			{
+				if ( requestGen != Generation ) return;
+
 				_physicsVertices.AddRange( vertices );
 				_hasPhysicsVertices = true;
 
@@ -272,6 +290,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 			_indexBuffer?.GetDataAsync<int>( indices =>
 			{
+				if ( requestGen != Generation ) return;
+
 				_physicsIndices.AddRange( indices );
 				_hasPhysicsIndices = true;
 
@@ -281,6 +301,11 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 				}
 			}, 0, (int)_indexCount );
 		}
+
+		if ( LodMask == 0xff ) return;
+
+		Attributes.Set( "LodDistance", LodDistance );
+		Attributes.Set( "LodMask", (uint)LodMask );
 
 		Graphics.Draw(
 			vertexBuffer: _vertexBuffer,

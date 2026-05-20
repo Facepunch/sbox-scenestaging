@@ -29,6 +29,8 @@ struct VertexInput
 struct PixelInput
 {
     #include "common/pixelinput.hlsl"
+
+    float3 vChunkLocal : TEXCOORD5;
 };
 
 VS
@@ -36,7 +38,7 @@ VS
     #include "common/vertex.hlsl"
 
     float3 WorldOrigin < Attribute("WorldOrigin"); > ;
-    float VoxelScale < Attribute("VoxelScale"); > ;
+    float3 WorldSize < Attribute("WorldSize"); > ;
 
     PixelInput MainVs(RenderVertex v)
     {
@@ -46,7 +48,12 @@ VS
         i.vNormalOs = float4(v.Normal, 0);
 
         PixelInput o = ProcessVertex(i);
-        return FinalizeVertex( o );
+
+        o = FinalizeVertex(o);
+
+        o.vChunkLocal = (v.Position / WorldSize);
+
+        return o;
     }
 }
 
@@ -54,9 +61,23 @@ PS
 {
     #include "common/pixel.hlsl"
 
+    float3 Tint < Attribute("Tint"); > ;
+
+    uint LodMask < Attribute("LodMask"); > ;
+    float LodDistance < Attribute("LodDistance"); > ;
+
     float4 MainPs(PixelInput i) : SV_Target0
     {
+        uint3 octants = uint3(i.vChunkLocal * 2);
+        uint octantIndex = dot(octants, uint3(1, 2, 4));
+
+        float lodLoaded = (LodMask >> octantIndex) & 1;
+
+        clip(0.5 - lodLoaded);
+
         Material m = Material::From(i);
+
+        m.Albedo *= Tint;
 
         return ShadingModelStandard::Shade(m);
     }
