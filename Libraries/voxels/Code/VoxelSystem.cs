@@ -3,15 +3,12 @@ using System.Collections.Concurrent;
 using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Sandbox.Tasks;
+using Voxels.Rendering;
 
-namespace Voxels.Rendering;
+namespace Voxels;
 
-internal delegate void ChunkAction( VoxelChunk chunk );
-
-public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderingSystem>
+internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 {
 	private readonly HashSet<VoxelChunk> _dirtyChunkSet = new();
 	private readonly Queue<VoxelChunk> _dirtyChunkQueue = new();
@@ -27,7 +24,7 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 	private readonly List<uint> _resultList = new();
 	private readonly SceneCustomObject _sceneObject;
 
-	public VoxelRenderingSystem( Scene scene ) : base( scene )
+	public VoxelSystem( Scene scene ) : base( scene )
 	{
 		_sceneObject = new SceneDummyObject( this );
 
@@ -205,6 +202,8 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
 			var (vertexCount, indexCount) = (_resultList[i * 2], _resultList[i * 2 + 1]);
 
+			if ( !chunk.IsValid ) continue;
+
 			if ( vertexCount == 0 )
 			{
 				chunk.RenderMesh = null;
@@ -214,6 +213,8 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			chunk.RenderMesh = new VoxelRenderMesh(
 				_vertexBuffer, (int)vertexOffset, (int)vertexCount,
 				_indexBuffer, (int)indexOffset, (int)indexCount );
+
+
 		}
 	}
 
@@ -247,9 +248,9 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 file sealed class SceneDummyObject : SceneCustomObject
 {
-	private readonly VoxelRenderingSystem _voxelSystem;
+	private readonly VoxelSystem _voxelSystem;
 
-	public SceneDummyObject( VoxelRenderingSystem voxelSystem )
+	public SceneDummyObject( VoxelSystem voxelSystem )
 		: base( voxelSystem.Scene.SceneWorld )
 	{
 		_voxelSystem = voxelSystem;

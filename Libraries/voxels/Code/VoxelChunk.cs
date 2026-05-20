@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using System;
+using Sandbox.Diagnostics;
 using Voxels.Rendering;
 
 namespace Voxels;
@@ -37,6 +38,8 @@ internal sealed class VoxelChunk : IDisposable, IValid
 		get;
 		set
 		{
+			Assert.IsValid( this );
+
 			field = value;
 			IsReady = true;
 
@@ -80,6 +83,8 @@ internal sealed class VoxelChunk : IDisposable, IValid
 
 	public void Generate( Vector3 worldOffset, int seed )
 	{
+		Assert.IsValid( this );
+
 		_generateCompute ??= new ComputeShader( "Shaders/procgen/caveworld.shader" );
 
 		_generateCompute.Attributes.Set( "VoxelData", _buffer );
@@ -95,7 +100,7 @@ internal sealed class VoxelChunk : IDisposable, IValid
 
 		_generateCompute.Dispatch( FullVoxelSpan.Size.x, FullVoxelSpan.Size.y, 1 );
 
-		Volume.Scene.Get<VoxelRenderingSystem>().QueueChunkUpdate( this );
+		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
 	}
 
 	public void Dispose()
@@ -105,7 +110,6 @@ internal sealed class VoxelChunk : IDisposable, IValid
 		_buffer.Dispose();
 
 		RenderMesh?.Dispose();
-		RenderMesh = null;
 
 		_sceneObject?.Delete();
 		_sceneObject = null;

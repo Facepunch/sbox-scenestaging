@@ -1,8 +1,8 @@
 ﻿using Sandbox;
 
-namespace Voxels.Rendering;
+namespace Voxels;
 
-partial class VoxelRenderingSystem
+partial class VoxelSystem
 {
 	private enum VoxelEdge : uint
 	{
