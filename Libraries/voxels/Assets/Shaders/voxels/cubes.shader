@@ -60,6 +60,7 @@ VS
 PS
 {
     #include "common/pixel.hlsl"
+    #include "Shaders/procgen/simplex3d.hlsl"
 
     float3 Tint < Attribute("Tint"); > ;
 
@@ -77,7 +78,10 @@ PS
 
         Material m = Material::From(i);
 
-        m.Albedo *= Tint;
+        float3 voxel = trunc(i.vChunkLocal * 32.0) / 4.0;
+        float tweak = SimplexNoise3D(voxel) * 0.125 + 0.75;
+
+        m.Albedo *= Tint * tweak;
 
         return ShadingModelStandard::Shade(m);
     }

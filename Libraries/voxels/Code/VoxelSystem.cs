@@ -4,6 +4,7 @@ using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Voxels.Physics;
 using Voxels.Rendering;
 
 namespace Voxels;
@@ -80,7 +81,7 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 	private readonly record struct UpdatingChunk( VoxelChunk Chunk, uint VertexOffset, uint IndexOffset );
 
 	private readonly List<UpdatingChunk> _updatingChunks = new();
-	private readonly ConcurrentQueue<Action> _renderThreadTasks = new();
+	private readonly List<Task> _pendingTasks = new();
 
 	private async Task UpdateChunksAsync()
 	{
@@ -191,7 +192,11 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 		// Download vertex / index counts
 		//
 
-		await GetDataAsync( _resultBuffer, _resultList, 0, _updatingChunks.Count * 2 );
+		_resultList.Clear();
+
+		await GetDataAsync( _resultBuffer, result => _resultList.AddRange( result ), 0, _updatingChunks.Count * 2 );
+
+		_pendingTasks.Clear();
 
 		//
 		// Submit results
@@ -204,42 +209,87 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 
 			if ( !chunk.IsValid ) continue;
 
-			if ( vertexCount == 0 )
+			chunk.RenderMesh = vertexCount > 0 && indexCount > 0
+				? new VoxelRenderMesh(
+					_vertexBuffer, (int)vertexOffset, (int)vertexCount,
+					_indexBuffer, (int)indexOffset, (int)indexCount )
+				: null;
+
+			if ( chunk.Index.Level > 0 ) continue;
+
+			if ( vertexCount == 0 || indexCount == 0 )
 			{
-				chunk.RenderMesh = null;
-				continue;
+				chunk.CollisionMesh = null;
 			}
-
-			chunk.RenderMesh = new VoxelRenderMesh(
-				_vertexBuffer, (int)vertexOffset, (int)vertexCount,
-				_indexBuffer, (int)indexOffset, (int)indexCount );
-
-
+			else
+			{
+				_pendingTasks.Add( UpdateCollisionMesh( chunk,
+					(int)vertexOffset, (int)vertexCount,
+					(int)indexOffset, (int)indexCount ) );
+			}
 		}
+
+		await GameTask.WhenAll( _pendingTasks );
 	}
 
-	internal Task GetDataAsync<T>( GpuBuffer<T> buffer, List<T> dst, int srcOffset, int srcCount )
+	private async Task UpdateCollisionMesh( VoxelChunk chunk, int vertexOffset, int vertexCount, int indexOffset, int indexCount )
+	{
+		var mesh = new VoxelCollisionMesh();
+
+		var updateVerticesTask = GetDataAsync( _physicsVertexBuffer!, mesh.UpdateVertices, vertexOffset, vertexCount );
+		var updateIndicesTask = GetDataAsync<uint, int>( _indexBuffer!, mesh.UpdateIndices, indexOffset, indexCount );
+
+		await GameTask.WhenAll( updateVerticesTask, updateIndicesTask );
+
+		if ( !chunk.IsValid ) return;
+
+		chunk.CollisionMesh = mesh;
+	}
+
+	internal Task GetDataAsync<T>( GpuBuffer<T> buffer, Action<ReadOnlySpan<T>> action, int srcOffset, int srcCount )
 		where T : unmanaged
+	{
+		return GetDataAsync<T, T>( buffer, action, srcOffset, srcCount );
+	}
+
+	internal Task GetDataAsync<T1, T2>( GpuBuffer<T1> buffer, Action<ReadOnlySpan<T2>> action, int srcOffset, int srcCount )
+		where T1 : unmanaged
+		where T2 : unmanaged
 	{
 		var tcs = new TaskCompletionSource();
 
-		dst.Clear();
-
-		_renderThreadTasks.Enqueue( () =>
+		_renderThreadActions.Enqueue( () =>
 		{
-			buffer.GetDataAsync( result =>
+			try
 			{
-				dst.AddRange( result );
-				tcs.SetResult();
-			}, srcOffset, srcCount );
+				buffer.GetDataAsync<T2>( result =>
+				{
+					try
+					{
+						action( result );
+						tcs.SetResult();
+					}
+					catch ( Exception ex )
+					{
+						tcs.SetException( ex );
+					}
+				}, srcOffset, srcCount );
+			}
+			catch ( Exception ex )
+			{
+				Log.Info( $"GetDataAsync( {buffer.ElementCount}, {srcOffset}, {srcCount} )" );
+				tcs.SetException( ex );
+			}
 		} );
 
 		return tcs.Task;
 	}
 
+	private readonly ConcurrentQueue<Action> _renderThreadActions = new();
+
 	internal void RenderThreadTick()
 	{
-		while ( _renderThreadTasks.TryDequeue( out var task ) )
+		while ( _renderThreadActions.TryDequeue( out var task ) )
 		{
 			task.InvokeWithWarning();
 		}

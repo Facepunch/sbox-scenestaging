@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using System;
 using Sandbox.Diagnostics;
+using Voxels.Physics;
 using Voxels.Rendering;
 
 namespace Voxels;
@@ -13,6 +14,8 @@ internal readonly record struct GpuVoxelSpan(
 
 internal sealed class VoxelChunk : IDisposable, IValid
 {
+	private static GpuBufferPool<uint> VoxelBufferPool { get; } = new();
+
 	public const int Size = 32;
 	public const int Margin = 1;
 
@@ -25,6 +28,8 @@ internal sealed class VoxelChunk : IDisposable, IValid
 	private readonly GpuBuffer<uint> _buffer;
 
 	private SceneVoxelsObject? _sceneObject;
+	private PhysicsBody? _physicsBody;
+	private PhysicsShape? _physicsShape;
 
 	internal byte LodMask { get; set; }
 	internal float LodDistance { get; set; }
@@ -48,10 +53,39 @@ internal sealed class VoxelChunk : IDisposable, IValid
 				_sceneObject?.Delete();
 				_sceneObject = null;
 			}
-			else if ( _sceneObject is null)
+			else if ( _sceneObject is null )
 			{
 				_sceneObject = new SceneVoxelsObject( this );
 				_sceneObject.Initialize( Index.Min * Volume.VoxelSize, Size, VoxelScale );
+			}
+		}
+	}
+
+	internal VoxelCollisionMesh? CollisionMesh
+	{
+		get;
+		set
+		{
+			Assert.IsValid( this );
+
+			field = value;
+			IsPhysicsReady = true;
+
+			if ( value is null )
+			{
+				_physicsBody?.Remove();
+				_physicsBody = null;
+				_physicsShape = null;
+			}
+			else
+			{
+				_physicsBody ??= new PhysicsBody( Volume.Scene.PhysicsWorld )
+				{
+					Component = Volume,
+					Position = Index.Min * Volume.VoxelSize
+				};
+
+				value.UpdateShape( _physicsBody, ref _physicsShape );
 			}
 		}
 	}
@@ -71,7 +105,7 @@ internal sealed class VoxelChunk : IDisposable, IValid
 			sizeWithMargin * sizeWithMargin,
 			sizeWithMargin * sizeWithMargin * sizeWithMargin );
 
-		_buffer = new GpuBuffer<uint>( stride.z );
+		_buffer = VoxelBufferPool.Rent( stride.z );
 
 		FullVoxelSpan = new GpuVoxelSpan( _buffer, 0, sizeWithMargin, stride );
 		VisibleVoxelSpan = new GpuVoxelSpan( _buffer, 1, Size, stride );
@@ -84,6 +118,8 @@ internal sealed class VoxelChunk : IDisposable, IValid
 	public void Generate( Vector3 worldOffset, int seed )
 	{
 		Assert.IsValid( this );
+
+		_buffer.Clear();
 
 		_generateCompute ??= new ComputeShader( "Shaders/procgen/caveworld.shader" );
 
@@ -107,11 +143,15 @@ internal sealed class VoxelChunk : IDisposable, IValid
 	{
 		IsValid = false;
 
-		_buffer.Dispose();
+		VoxelBufferPool.Return( _buffer );
 
 		RenderMesh?.Dispose();
 
 		_sceneObject?.Delete();
 		_sceneObject = null;
+
+		_physicsBody?.Remove();
+		_physicsBody = null;
+		_physicsShape = null;
 	}
 }
