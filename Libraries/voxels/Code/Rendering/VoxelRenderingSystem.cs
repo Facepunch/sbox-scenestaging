@@ -1,8 +1,7 @@
-﻿using System;
-using Sandbox;
+﻿using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voxels.Rendering;
 
@@ -29,10 +28,20 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 
 	private uint[]? _resultArray;
 	private UpdateState _updateState;
+	private readonly SceneCustomObject _sceneObject;
 
 	public VoxelRenderingSystem( Scene scene ) : base( scene )
 	{
+		_sceneObject = new SceneDummyObject( this );
+
 		Listen( Stage.FinishUpdate, 0, UpdateChunks, "VoxelRenderingSystem.UpdateChunks" );
+	}
+
+	public override void Dispose()
+	{
+		base.Dispose();
+
+		_sceneObject.Delete();
 	}
 
 	public void QueueChunkUpdate( SceneVoxelsObject chunk )
@@ -211,16 +220,11 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 			_findIndicesCompute.Attributes.Set( "VertexIndexMapStride", new Vector2Int( chunk.Size.x + 1, (chunk.Size.x + 1) * (chunk.Size.y + 1) ) );
 
 			_findIndicesCompute.Dispatch( chunk.Size.x, chunk.Size.y, chunk.Size.z );
-
-			chunk.BeforeRenderAction = BeforeUpdatingChunkRender;
 		}
 	}
 
-	private void BeforeUpdatingChunkRender()
+	internal void RenderThreadTick()
 	{
-		// gets called on the render thread by an updating chunk,
-		// hack to be able to call GetDataAsync
-
 		if ( _updatingChunks.Count == 0 ) return;
 		if ( _updateState != UpdateState.StartingJobs ) return;
 
@@ -230,7 +234,23 @@ public sealed partial class VoxelRenderingSystem : GameObjectSystem<VoxelRenderi
 		{
 			result.CopyTo( _resultArray );
 			_updateState = UpdateState.CopyingBuffers;
-		} );
+		}, 0, _updatingChunks.Count * 2 );
+	}
+}
+
+file sealed class SceneDummyObject : SceneCustomObject
+{
+	private readonly VoxelRenderingSystem _voxelSystem;
+
+	public SceneDummyObject( VoxelRenderingSystem voxelSystem )
+		: base( voxelSystem.Scene.SceneWorld )
+	{
+		_voxelSystem = voxelSystem;
+	}
+
+	public override void RenderSceneObject()
+	{
+		_voxelSystem.RenderThreadTick();
 	}
 }
 

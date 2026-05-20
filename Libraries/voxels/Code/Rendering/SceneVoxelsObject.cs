@@ -231,10 +231,8 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 	private readonly List<Vector3> _physicsVertices = new();
 	private readonly List<int> _physicsIndices = new();
 
-	internal async Task SetPhysicsMeshAsync()
+	internal async Task SetPhysicsMeshAsync( uint generation )
 	{
-		var generation = Generation;
-
 		if ( !Body.IsValid() ) return;
 
 		await MainThread.Wait();
@@ -254,14 +252,11 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 		_finishedFirstPhysicsUpdate = true;
 	}
 
-	internal Action? BeforeRenderAction { get; set; }
 	internal byte LodMask { get; set; }
 	internal float LodDistance { get; set; }
 
 	public override void RenderSceneObject()
 	{
-		BeforeRenderAction?.Invoke();
-
 		if ( _vertexBuffer is null || _indexBuffer is null || _indexCount == 0 ) return;
 
 		if ( _shouldRequestPhysicsMesh && _indexCount > 0 )
@@ -284,7 +279,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 				if ( _hasPhysicsIndices )
 				{
-					_ = SetPhysicsMeshAsync();
+					_ = SetPhysicsMeshAsync( requestGen );
 				}
 			}, 0, (int)_vertexCount );
 
@@ -297,7 +292,7 @@ public sealed class SceneVoxelsObject : SceneCustomObject
 
 				if ( _hasPhysicsVertices )
 				{
-					_ = SetPhysicsMeshAsync();
+					_ = SetPhysicsMeshAsync( requestGen );
 				}
 			}, 0, (int)_indexCount );
 		}
