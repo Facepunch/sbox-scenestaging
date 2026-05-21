@@ -1,34 +1,8 @@
-MODES
+struct WorldGenModification
 {
-    Default();
-}
-
-CS
-{
-    #include "Shaders/procgen/simplex3d.hlsl"
-
-    struct Voxel
+    void Apply(VoxelColumn c)
     {
-        uint Value;
-    };
-
-    RWStructuredBuffer<Voxel> VoxelData < Attribute("VoxelData"); >;
-    uint3 VoxelOffset < Attribute("VoxelOffset"); > ;
-    uint2 VoxelStride < Attribute("VoxelStride"); > ;
-    uint3 VoxelCount < Attribute("VoxelCount"); > ;
-    float VoxelScale < Attribute("VoxelScale"); > ;
-
-    float3 WorldOrigin < Attribute("WorldOrigin"); > ;
-
-    void SetVoxel(uint3 index, Voxel voxel)
-    {
-        VoxelData[index.x + VoxelStride.x * index.y + VoxelStride.y * index.z] = voxel;
-    }
-
-    [numthreads( 1, 1, 1 )]
-    void MainCs(uint2 dispatchId: SV_DispatchThreadID)
-    {
-        float2 worldPos2d = (WorldOrigin.xy + int2(dispatchId.xy) * VoxelScale) / 4096.0;
+        float2 worldPos2d = c.GetWorldPos(0).xy / 4096.0;
         float valueScale = 32.0 / VoxelScale;
 
         float detail1 = pow(saturate(FractalSimplexNoise3D(float3(worldPos2d, 0.0), 6) * 0.5 + 0.5), 4);
@@ -44,10 +18,9 @@ CS
         float cavernRoof = detail2 * 0.25 - 1.75 + biome3 * 2.0 + biome2;
         float cavernFloor = detail3 * 0.125 - 1.5 + biome3 * 2.0 - biome2 * 0.5;
 
-        for (int z = 0; z < VoxelCount.z; z++)
+        for (int z = 0; z < c.Count; z++)
         {
-            int3 localPos = int3(dispatchId.xy, z);
-            float3 worldPos = (WorldOrigin + localPos * VoxelScale) / 4096.0;
+            float3 worldPos = c.GetWorldPos(z) / 4096.0;
             float underground = (surface - worldPos.z) * 32.0 * valueScale;
 
             if (underground <= -1.0) break;
@@ -60,11 +33,20 @@ CS
 
             if (cavern <= -1.0) continue;
 
+            float dist = min(cavern, min(underground, density)) * 0.5 + 0.5;
+
             Voxel v;
 
-            v.Value = uint(lerp(0, 255, saturate(min(cavern, min(underground, density)) * 0.5 + 0.5)));
+            v.Solidity = saturate(min(cavern, min(underground, density)) * 0.5 + 0.5);
 
-            SetVoxel(VoxelOffset + localPos, v);
+            c.Set(z, v);
         }
     }
-}
+
+    static WorldGenModification Read(uint offset)
+    {
+        WorldGenModification mod = {};
+
+        return mod;
+    }
+};

@@ -23,6 +23,7 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 		base.OnEnabled();
 
 		Transform.OnTransformChanged += OnTransformChanged;
+		GetComponentInParent<VoxelVolume>()?.ForceRebuild();
 	}
 
 	protected override void OnDisabled()
@@ -30,6 +31,7 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 		base.OnDisabled();
 
 		Transform.OnTransformChanged -= OnTransformChanged;
+		GetComponentInParent<VoxelVolume>()?.ForceRebuild();
 	}
 
 	private void OnTransformChanged()

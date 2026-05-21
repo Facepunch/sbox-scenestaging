@@ -253,4 +253,18 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 		return true;
 	}
+
+	protected override void DrawGizmos()
+	{
+		if ( !Gizmo.IsSelected ) return;
+
+		Gizmo.Draw.Color = Color.White.WithAlpha( 0.25f );
+
+		foreach ( var (index, chunk) in _chunks )
+		{
+			if ( chunk.RenderMesh is null ) continue;
+
+			Gizmo.Draw.LineBBox( new BBox( chunk.Index.Min * VoxelSize, chunk.Index.Max * VoxelSize ) );
+		}
+	}
 }

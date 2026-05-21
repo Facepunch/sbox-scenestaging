@@ -2,23 +2,18 @@
 
 namespace Voxels.Modification;
 
-public sealed class SphereBrush : VoxelBrush
+public sealed class PlaneBrush : VoxelBrush
 {
-	public override uint ModificationTypeId => 0x02;
+	public override uint ModificationTypeId => 0x01;
 
 	[Property]
 	public BrushOperation Operation { get; set; }
 
-	[Property]
-	public float Radius { get; set; } = 256f;
-
-	public override BBox LocalBounds => new( mins: -Radius, maxs: Radius );
-
 	protected override void OnWriteParameters( ParameterWriter writer )
 	{
 		writer.Write( (uint)Operation );
-		writer.Write( WorldPosition );
-		writer.Write( Radius );
+		writer.Write( WorldRotation.Up );
+		writer.Write( Vector3.Dot( WorldRotation.Up, WorldPosition ) );
 	}
 
 	protected override void DrawGizmos()
@@ -26,6 +21,7 @@ public sealed class SphereBrush : VoxelBrush
 		if ( !Gizmo.IsSelected ) return;
 
 		Gizmo.Draw.Color = Operation == BrushOperation.Add ? Color.Blue : Color.Yellow;
-		Gizmo.Draw.LineSphere( new Sphere( 0f, Radius ) );
+		Gizmo.Draw.LineCircle( 0f, Vector3.Up, 1024f );
+		Gizmo.Draw.Arrow( 0f, Vector3.Up * 64f );
 	}
 }

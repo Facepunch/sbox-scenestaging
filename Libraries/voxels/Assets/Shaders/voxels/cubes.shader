@@ -60,7 +60,7 @@ VS
 PS
 {
     #include "common/pixel.hlsl"
-    #include "Shaders/procgen/simplex3d.hlsl"
+    #include "Shaders/simplex3d.hlsl"
 
     float3 Tint < Attribute("Tint"); > ;
 

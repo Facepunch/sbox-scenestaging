@@ -150,7 +150,7 @@ internal sealed class VoxelChunk : IDisposable, IValid
 
 		AppendBrushes( brushes );
 
-		if ( _brushes.Count == 0 && hadBrushes )
+		if ( _brushes.Count == 0 )
 		{
 			RenderMesh = null;
 			CollisionMesh = null;

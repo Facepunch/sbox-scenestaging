@@ -5,9 +5,21 @@ MODES
 
 CS
 {
+    #include "Shaders/simplex3d.hlsl"
+
     struct Voxel
     {
         float Solidity;
+
+        void Add(float distance)
+        {
+            Solidity = max(Solidity, saturate(-distance * 0.5 + 0.5));
+        }
+
+        void Subtract(float distance)
+        {
+            Solidity = min(Solidity, saturate(distance * 0.5 + 0.5));
+        }
     };
 
     struct VoxelModificationEntry
@@ -18,15 +30,9 @@ CS
 
     enum
     {
-        ModificationType_Sphere = 1
-    };
-
-    struct EmptyModification
-    {
-        Voxel Apply(Voxel voxel, float3 worldPos)
-        {
-            return voxel;
-        }
+        ModificationType_Plane = 0x01,
+        ModificationType_Sphere = 0x02,
+        ModificationType_WorldGen = 0x03
     };
 
     RWStructuredBuffer<uint> VoxelData < Attribute("VoxelData"); >;
@@ -40,8 +46,6 @@ CS
     uint ModificationCount < Attribute("ModificationCount"); > ;
     StructuredBuffer<VoxelModificationEntry> ModificationList < Attribute("ModificationList"); >;
     StructuredBuffer<uint> ParameterData < Attribute("ParameterData"); > ;
-
-    #include "Shaders/voxels/modifications/sphere.hlsl"
 
     void SetVoxel(uint3 index, Voxel voxel)
     {
@@ -59,28 +63,78 @@ CS
         return v;
     }
 
+    struct VoxelColumn
+    {
+        uint2 Index;
+        uint Count;
+
+        float3 GetWorldPos(uint z)
+        {
+            return WorldOrigin + uint3(Index, z) * VoxelScale;
+        }
+
+        Voxel Get(uint z)
+        {
+            return GetVoxel(uint3(Index, z));
+        }
+
+        void Set(uint z, Voxel v)
+        {
+            SetVoxel(uint3(Index, z), v);
+        }
+
+        void Apply(uint z, uint operation, float worldDistance)
+        {
+            float distance = worldDistance * 0.5 / VoxelScale;
+
+            if (distance > 1) return;
+
+            Voxel v = Get(z);
+
+            if (operation == 0) {
+                v.Add(distance);
+            } else {
+                v.Subtract(distance);
+            }
+
+            Set(z, v);
+        }
+    };
+
+    struct EmptyModification
+    {
+        void Apply(VoxelColumn c) { }
+    };
+
+    #include "Shaders/voxels/modifications/sphere.hlsl"
+    #include "Shaders/voxels/modifications/plane.hlsl"
+    #include "Shaders/voxels/modifications/worldgen.hlsl"
+
     [numthreads( 1, 1, 1 )]
     void MainCs(uint2 dispatchId: SV_DispatchThreadID)
     {
-        for (uint z = 0; z < VoxelCount.z; z++)
+        for (int i = 0; i < ModificationCount; i++)
         {
-            uint3 voxelIndex = uint3(dispatchId, z);
-            float3 worldPos = WorldOrigin + voxelIndex * VoxelScale;
-            Voxel v = GetVoxel(voxelIndex);
+            VoxelModificationEntry e = ModificationList[i];
+            VoxelColumn c;
 
-            for (int i = 0; i < ModificationCount; i++)
+            c.Index = dispatchId;
+            c.Count = VoxelCount.z;
+
+            switch (e.ModificationTypeId)
             {
-                VoxelModificationEntry e = ModificationList[i];
+            case ModificationType_Plane:
+                PlaneModification::Read(e.ParameterOffset).Apply(c);
+                break;
 
-                switch (e.ModificationTypeId)
-                {
-                case ModificationType_Sphere:
-                    v = SphereModification::Read(e.ParameterOffset).Apply(v, worldPos);
-                    break;
-                }
+            case ModificationType_Sphere:
+                SphereModification::Read(e.ParameterOffset).Apply(c);
+                break;
+
+            case ModificationType_WorldGen:
+                WorldGenModification::Read(e.ParameterOffset).Apply(c);
+                break;
             }
-            
-            SetVoxel(voxelIndex, v);
         }
     }
 }

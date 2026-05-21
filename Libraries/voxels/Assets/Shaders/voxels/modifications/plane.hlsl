@@ -1,30 +1,30 @@
-struct SphereModification
+struct PlaneModification
 {
     uint Operation;
-    float3 WorldOrigin;
-    float WorldRadius;
+    float3 WorldNormal;
+    float WorldDistance;
 
     void Apply(VoxelColumn c)
     {
         for (uint z = 0; z < c.Count; z++)
         {
             float3 worldPos = c.GetWorldPos(z);
-            float worldDistance = length(worldPos - WorldOrigin) - WorldRadius;
+            float worldDistance = dot(worldPos, WorldNormal) - WorldDistance;
 
             c.Apply(z, Operation, worldDistance);
         }
     }
 
-    static SphereModification Read(uint offset)
+    static PlaneModification Read(uint offset)
     {
-        SphereModification mod;
+        PlaneModification mod;
 
         mod.Operation = ParameterData[offset + 0];
-        mod.WorldOrigin = float3(
+        mod.WorldNormal = float3(
             asfloat(ParameterData[offset + 1]),
             asfloat(ParameterData[offset + 2]),
             asfloat(ParameterData[offset + 3]));
-        mod.WorldRadius = asfloat(ParameterData[offset + 4]);
+        mod.WorldDistance = asfloat(ParameterData[offset + 4]);
 
         return mod;
     }
