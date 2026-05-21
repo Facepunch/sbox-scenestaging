@@ -3,7 +3,7 @@
 internal readonly record struct ChunkIndex( Vector3Int Position, int Level )
 {
 	public Vector3Int Min => Position * VoxelChunk.Size * VoxelScale;
-	public Vector3Int Max => Position * VoxelChunk.Size * VoxelScale;
+	public Vector3Int Max => (Position + 1) * VoxelChunk.Size * VoxelScale;
 
 	public int VoxelScale => 1 << Level;
 

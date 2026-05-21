@@ -1,6 +1,9 @@
 ﻿using Sandbox;
-using System;
 using Sandbox.Diagnostics;
+using Sandbox.Services;
+using System;
+using System.Collections.Generic;
+using Voxels.Modification;
 using Voxels.Physics;
 using Voxels.Rendering;
 
@@ -111,30 +114,125 @@ internal sealed class VoxelChunk : IDisposable, IValid
 		VisibleVoxelSpan = new GpuVoxelSpan( _buffer, 1, Size, stride );
 
 		IsValid = true;
+
+		ClearVoxelBuffer();
 	}
 
-	private static ComputeShader? _generateCompute;
+	private readonly List<VoxelBrush> _brushes = new();
+	private int _appliedBrushes;
 
-	public void Generate( Vector3 worldOffset, int seed )
+	private void ClearVoxelBuffer()
 	{
-		Assert.IsValid( this );
+		_buffer.Clear( Volume.StartSolid ? 255U : 0 );
+	}
 
-		_buffer.Clear();
+	public void Clear()
+	{
+		_appliedBrushes = 0;
 
-		_generateCompute ??= new ComputeShader( "Shaders/procgen/caveworld.shader" );
+		_brushes.Clear();
+		ClearVoxelBuffer();
 
-		_generateCompute.Attributes.Set( "VoxelData", _buffer );
-		_generateCompute.Attributes.Set( "VoxelCount", FullVoxelSpan.Size );
-		_generateCompute.Attributes.Set( "VoxelOffset", FullVoxelSpan.Offset );
-		_generateCompute.Attributes.Set( "VoxelStride", FullVoxelSpan.Stride );
-		_generateCompute.Attributes.Set( "VoxelScale", VoxelScale );
+		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
+	}
 
-		var random = new Random( seed );
-		var seedOffset = new Vector3Int( random.Next( -32768, 32768 ), random.Next( -32768, 32768 ), 0 );
+	public void SetBrushes( IEnumerable<VoxelBrush> brushes )
+	{
+		var hadBrushes = _brushes.Count > 0;
 
-		_generateCompute.Attributes.Set( "WorldOrigin", worldOffset + seedOffset - Margin * VoxelScale );
+		if ( hadBrushes )
+		{
+			_appliedBrushes = 0;
+			_brushes.Clear();
 
-		_generateCompute.Dispatch( FullVoxelSpan.Size.x, FullVoxelSpan.Size.y, 1 );
+			ClearVoxelBuffer();
+		}
+
+		AppendBrushes( brushes );
+
+		if ( _brushes.Count == 0 && hadBrushes )
+		{
+			RenderMesh = null;
+			CollisionMesh = null;
+		}
+	}
+
+	public void AppendBrushes( IEnumerable<VoxelBrush> brushes )
+	{
+		foreach ( var brush in brushes )
+		{
+			if ( !brush.CanAffectChunk( this ) ) continue;
+
+			_brushes.Add( brush );
+		}
+
+		ApplyBrushes();
+	}
+
+	public void AppendBrush( VoxelBrush brush )
+	{
+		if ( !brush.CanAffectChunk( this ) ) return;
+
+		_brushes.Add( brush );
+
+		ApplyBrushes();
+	}
+
+	private static ComputeShader? _modificationCompute;
+	private static GpuBuffer<VoxelModification>? _modificationBuffer;
+	private static GpuBuffer<uint>? _parameterBuffer;
+
+	private readonly List<VoxelModification> _modificationList = new();
+	private readonly List<uint> _parameterList = new();
+
+	public void ApplyBrushes()
+	{
+		if ( _appliedBrushes >= _brushes.Count ) return;
+
+		_modificationList.Clear();
+		_parameterList.Clear();
+
+		for ( ; _appliedBrushes < _brushes.Count; _appliedBrushes++ )
+		{
+			var brush = _brushes[_appliedBrushes];
+
+			if ( !brush.IsValid ) continue;
+
+			brush.Write( this, _modificationList, _parameterList );
+		}
+
+		if ( _modificationList.Count == 0 ) return;
+
+		if ( _modificationBuffer is null || _modificationBuffer.ElementCount < _modificationList.Count )
+		{
+			_modificationBuffer?.Dispose();
+			_modificationBuffer = new GpuBuffer<VoxelModification>( _modificationList.Count.NextPowerOf2 );
+		}
+
+		if ( _parameterBuffer is null || _parameterBuffer.ElementCount < _parameterList.Count )
+		{
+			_parameterBuffer?.Dispose();
+			_parameterBuffer = new GpuBuffer<uint>( _parameterList.Count.NextPowerOf2 );
+		}
+
+		_modificationCompute ??= new ComputeShader( "Shaders/voxels/modification_cs.shader" );
+
+		_modificationCompute.Attributes.Set( "VoxelData", _buffer );
+		_modificationCompute.Attributes.Set( "VoxelCount", FullVoxelSpan.Size );
+		_modificationCompute.Attributes.Set( "VoxelOffset", FullVoxelSpan.Offset );
+		_modificationCompute.Attributes.Set( "VoxelStride", FullVoxelSpan.Stride );
+
+		_modificationCompute.Attributes.Set( "VoxelScale", VoxelScale );
+		_modificationCompute.Attributes.Set( "WorldOrigin", Index.Min * Volume.VoxelSize - Margin * VoxelScale );
+
+		_modificationBuffer.SetData( _modificationList );
+		_parameterBuffer.SetData( _parameterList );
+
+		_modificationCompute.Attributes.Set( "ModificationCount", _modificationList.Count );
+		_modificationCompute.Attributes.Set( "ModificationList", _modificationBuffer );
+		_modificationCompute.Attributes.Set( "ParameterData", _parameterBuffer );
+
+		_modificationCompute.Dispatch( FullVoxelSpan.Size.x, FullVoxelSpan.Size.y, 1 );
 
 		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
 	}

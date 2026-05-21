@@ -5,7 +5,7 @@
       "__guid": "0acdc28f-704b-4bbf-8459-5e382e1a2b53",
       "__version": 2,
       "Flags": 0,
-      "Name": "Object",
+      "Name": "Voxels",
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -33,6 +33,7 @@
           "OnComponentUpdate": null,
           "PauseChunkUpdates": false,
           "Seed": 12379162,
+          "StartSolid": false,
           "VoxelSize": 32
         },
         {
@@ -48,7 +49,74 @@
           "OnComponentUpdate": null
         }
       ],
-      "Children": []
+      "Children": [
+        {
+          "__guid": "fd6362bd-fab5-4480-b11c-2286f81ecd29",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sphere (1)",
+          "Position": "-1666.41895,-2096.43701,2342.07471",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.SphereBrush",
+              "__guid": "f70b5f85-b649-4229-ac77-bea6e43056d5",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Operation": "Add",
+              "Radius": 2048
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "1815c255-897d-4808-a696-064ae93a5d8e",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sphere",
+          "Position": "-2709.85474,-1884.30347,4019.25317",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.SphereBrush",
+              "__guid": "0bb22969-3345-4a9b-a456-96bfa1a94787",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Operation": "Subtract",
+              "Radius": 1024
+            }
+          ],
+          "Children": []
+        }
+      ]
     },
     {
       "__guid": "824acfc9-95d8-4ff3-8d29-fcf93252d3e9",
@@ -504,8 +572,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-4348.57861,-5603.30176,2307.36694",
-      "Rotation": "0.17513524,0.0534205213,-0.940322995,0.286821455",
+      "Position": "-5862.12451,-1958.14661,3135.08789",
+      "Rotation": "0.00757397758,0.0772397518,-0.0972956046,0.992224872",
       "Scale": "1,1,1",
       "Tags": "maincamera",
       "Enabled": true,

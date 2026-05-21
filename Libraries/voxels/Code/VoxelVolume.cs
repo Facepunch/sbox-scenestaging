@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+using Voxels.Modification;
 using Voxels.Rendering;
 
 namespace Voxels;
@@ -26,6 +27,9 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 	[Property]
 	public bool PauseChunkUpdates { get; set; }
+
+	[Property]
+	public bool StartSolid { get; set; }
 
 	[Button]
 	public void RandomizeSeed()
@@ -79,24 +83,45 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 	private readonly HashSet<ChunkIndex> _chunksToKeep = new();
 	private readonly HashSet<ChunkIndex> _chunksToRemove = new();
 
+	private readonly List<VoxelBrush> _brushes = new();
+	private bool _brushesInvalid = true;
+
+	private void UpdateBrushes()
+	{
+		if ( !_brushesInvalid ) return;
+
+		_brushesInvalid = false;
+
+		_brushes.Clear();
+		_brushes.AddRange( GetComponentsInChildren<VoxelBrush>() );
+
+		foreach ( var chunk in _chunks.Values )
+		{
+			chunk.SetBrushes( _brushes );
+		}
+	}
+
+	[Button]
+	public void ForceRebuild()
+	{
+		_brushesInvalid = true;
+		UpdateChunks();
+	}
+
 	[Button]
 	public void UpdateChunks()
 	{
 		FindChunksToLoad();
 		UnloadUnwantedChunks();
 
+		UpdateBrushes();
+
 		foreach ( var index in _chunksToLoad )
 		{
-			if ( !_chunks.TryGetValue( index, out var chunk ) )
-			{
-				chunk = _chunks[index] = new VoxelChunk( this, index, index.VoxelScale * VoxelSize );
-				chunk.Generate( (Vector3Int)(index.Min * VoxelSize), Seed );
-			}
+			if ( _chunks.TryGetValue( index, out var chunk ) ) continue;
 
-			if ( index.Level == 0 )
-			{
-				// TODO: enable physics
-			}
+			chunk = _chunks[index] = new VoxelChunk( this, index, index.VoxelScale * VoxelSize );
+			chunk.SetBrushes( _brushes );
 		}
 	}
 
