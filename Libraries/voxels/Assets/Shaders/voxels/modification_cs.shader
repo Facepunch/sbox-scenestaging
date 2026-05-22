@@ -6,6 +6,7 @@ MODES
 CS
 {
     #include "Shaders/simplex3d.hlsl"
+    #include "Shaders/quaternion.hlsl"
 
     struct Voxel
     {
@@ -33,7 +34,8 @@ CS
         ModificationType_Plane = 0x01,
         ModificationType_Sphere = 0x02,
         ModificationType_WorldGen = 0x03,
-        ModificationType_Mountain = 0x04
+        ModificationType_Mountain = 0x04,
+        ModificationType_Cave = 0x05
     };
 
     RWStructuredBuffer<uint> VoxelData < Attribute("VoxelData"); >;
@@ -112,6 +114,7 @@ CS
     #include "Shaders/voxels/modifications/plane.hlsl"
     #include "Shaders/voxels/modifications/worldgen.hlsl"
     #include "Shaders/voxels/modifications/mountain.hlsl"
+    #include "Shaders/voxels/modifications/cave.hlsl"
 
     [numthreads( 1, 1, 1 )]
     void MainCs(uint2 dispatchId: SV_DispatchThreadID)
@@ -140,6 +143,10 @@ CS
 
             case ModificationType_Mountain:
                 MountainModification::Read(e.ParameterOffset).Apply(c);
+                break;
+
+            case ModificationType_Cave:
+                CaveModification::Read(e.ParameterOffset).Apply(c);
                 break;
             }
         }

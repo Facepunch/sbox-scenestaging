@@ -65,6 +65,14 @@ public abstract record VoxelModification( uint ModificationTypeId, BBox WorldBou
 			Write( value.y );
 			Write( value.z );
 		}
+
+		public void Write( Rotation value )
+		{
+			Write( value.x );
+			Write( value.y );
+			Write( value.z );
+			Write( value.w );
+		}
 	}
 
 	protected virtual void OnWriteParameters( ParameterWriter writer ) { }

@@ -26,11 +26,7 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 	private Vector3Int GetLoadOrigin()
 	{
-		var editorCamera = Scene.GetComponents<CameraComponent>()
-			.FirstOrDefault( x => x.GameObject.Name == "editor_camera" );
-
-		var camera = editorCamera ?? Scene.Camera;
-		var cameraPos = camera?.WorldPosition ?? default;
+		var cameraPos = Scene.Camera.IsValid() ? Scene.Camera.WorldPosition : default;
 
 		return (Vector3Int)(cameraPos / VoxelSize);
 	}
@@ -154,9 +150,7 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 		_chunksToLoad.Clear();
 		_chunksToKeep.Clear();
 
-		var minLevel = Scene.IsEditor ? 2 : 0;
-
-		for ( var i = minLevel; i <= MaxLevel; i++ )
+		for ( var i = 0; i <= MaxLevel; i++ )
 		{
 			FindChunksToLoad( loadOrigin, ChunkLoadRadius, i, _chunksToLoad );
 			FindChunksToLoad( loadOrigin, ChunkLoadRadius + 1, i, _chunksToKeep );

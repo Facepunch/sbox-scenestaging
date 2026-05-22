@@ -101,25 +101,25 @@
               "__guid": "aa2be4e2-922a-41b3-8ed5-b5ff5a8eb65d",
               "__enabled": true,
               "Flags": 0,
-              "Height": 1024,
+              "Height": 1000,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Radius": 10000,
-              "Seed": 1539607848
+              "Radius": 20000,
+              "Seed": 626207372
             }
           ],
           "Children": []
         },
         {
-          "__guid": "35ab4b8b-667b-4b3b-8f50-af5d965cfb21",
+          "__guid": "5d031c69-0268-45b3-8c75-3d5aa5398438",
           "__version": 2,
           "Flags": 0,
-          "Name": "Mountain",
-          "Position": "4243.31152,-18662.5391,0.0129385162",
+          "Name": "Island",
+          "Position": "-702.372803,-7508.55127,-0.0020481348",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -132,7 +132,75 @@
           "Components": [
             {
               "__type": "Voxels.Modification.MountainBrush",
-              "__guid": "ff5d640a-cabe-41ed-a87c-6785fafbac9e",
+              "__guid": "6858532f-46f5-477e-bfb4-761122b1c6a6",
+              "__enabled": true,
+              "Flags": 0,
+              "Height": 1000,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Radius": 20000,
+              "Seed": 1440904948
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "e77f8a71-956d-4ea9-8f81-0ee0ac008beb",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Island",
+          "Position": "8090.82227,-4222.99854,-0.00193202496",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "9e248607-964f-4892-b013-33a314b339c8",
+              "__enabled": true,
+              "Flags": 0,
+              "Height": 1000,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Radius": 20000,
+              "Seed": 924523410
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "95172c95-21a1-4b39-ac61-430628037bda",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Mountain",
+          "Position": "1604.15442,4223.11377,0.00473117828",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "20c3e38a-c40a-444c-aa6e-1a9859afde38",
               "__enabled": true,
               "Flags": 0,
               "Height": 4000,
@@ -142,18 +210,18 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Radius": 7500,
-              "Seed": 1539607848
+              "Radius": 10000,
+              "Seed": 1739507427
             }
           ],
           "Children": []
         },
         {
-          "__guid": "9bb2eb15-8b90-43fb-bd57-c05dbe2e48ac",
+          "__guid": "7044f4bd-26d4-4b14-8eaa-15d5d00683a4",
           "__version": 2,
           "Flags": 0,
-          "Name": "Mountain (1)",
-          "Position": "4918.66064,-13651.0713,250.278656",
+          "Name": "Mountain",
+          "Position": "8297.03027,2276.81958,0.00330638885",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -166,28 +234,28 @@
           "Components": [
             {
               "__type": "Voxels.Modification.MountainBrush",
-              "__guid": "6d689792-ffc2-41e8-b059-7fce970f1092",
+              "__guid": "d28b7b90-8f98-4b87-b7d5-3c55eab1dff9",
               "__enabled": true,
               "Flags": 0,
-              "Height": 3000,
+              "Height": 4000,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Radius": 7500,
-              "Seed": 240211695
+              "Radius": 10000,
+              "Seed": 1732702692
             }
           ],
           "Children": []
         },
         {
-          "__guid": "0329352f-ca1a-4a21-898c-b90ef08dad4a",
+          "__guid": "8942bfaa-c1a4-4787-bbc7-122c3cd6fb47",
           "__version": 2,
           "Flags": 0,
-          "Name": "Island (1)",
-          "Position": "7137.19922,-9396.66602,0.00103995204",
+          "Name": "Mountain",
+          "Position": "11082.2041,-5771.71387,0.00342941284",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -200,28 +268,28 @@
           "Components": [
             {
               "__type": "Voxels.Modification.MountainBrush",
-              "__guid": "3743a78e-d730-4125-984e-58808b4fde01",
+              "__guid": "5c660379-f6ec-45b2-84a0-1e986ff21d7b",
               "__enabled": true,
               "Flags": 0,
-              "Height": 1024,
+              "Height": 4000,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Radius": 15000,
-              "Seed": 666584863
+              "Radius": 10000,
+              "Seed": 686075382
             }
           ],
           "Children": []
         },
         {
-          "__guid": "500cbf8b-a0a3-4414-bbba-ea8b008e6383",
+          "__guid": "2046c36c-14cd-4d87-bdd4-148ac01b3b1c",
           "__version": 2,
           "Flags": 0,
-          "Name": "Island (2)",
-          "Position": "5130.0708,-18210.8281,0",
+          "Name": "Cave",
+          "Position": "-2647.10889,1934.00195,1235.62256",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -233,19 +301,150 @@
           "OwnerTransfer": 1,
           "Components": [
             {
-              "__type": "Voxels.Modification.MountainBrush",
-              "__guid": "08146de7-04e7-4aca-a10b-6950cb8c6347",
+              "__type": "Voxels.Modification.CaveBrush",
+              "__guid": "1497de9b-4b2d-499c-9577-1382bfabb399",
               "__enabled": true,
               "Flags": 0,
-              "Height": 1024,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Radius": 15000,
-              "Seed": 1013390189
+              "Seed": 1326485032,
+              "Size": "2000,2000,1000"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "bec57139-e57e-4bfa-bfc7-3dde89e9e09e",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cave",
+          "Position": "-2462.53027,2852.47046,1032.78345",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.CaveBrush",
+              "__guid": "81630218-6945-492d-9bee-fa2d8fc56258",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Seed": 237338680,
+              "Size": "2000,2000,500"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "8fa9e704-808c-4083-aa4e-246abe27848a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cave",
+          "Position": "-1341.93945,2382.19385,1032.78345",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.CaveBrush",
+              "__guid": "db818edb-31da-40d3-b77f-d74626a4ed05",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Seed": 1071974499,
+              "Size": "2000,2000,500"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "8b68d5cf-e56c-457a-b19c-efcf18f05981",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cave",
+          "Position": "-24.6165771,3210.86084,1032.78345",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.CaveBrush",
+              "__guid": "727d485e-d62f-4c13-afe8-c22332f2661b",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Seed": 1915379424,
+              "Size": "2000,2000,500"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "fb820565-3060-4a7b-abbe-023eedac9b70",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cave",
+          "Position": "125.255005,4562.45068,1032.78345",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.CaveBrush",
+              "__guid": "c6103234-9c00-40c2-9a0e-867d97003a41",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Seed": 630757096,
+              "Size": "2000,2000,500"
             }
           ],
           "Children": []
@@ -368,11 +567,11 @@
       "Children": []
     },
     {
-      "__guid": "c471ee36-1272-4403-b84c-314d8e995cbb",
+      "__guid": "d772fc70-5218-4d53-977a-68ad6ece5cb4",
       "__version": 2,
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "-2481.2041,555.717651,1065.49731",
+      "Position": "-5027.04199,-27.2129974,546.345337",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -385,7 +584,7 @@
       "Components": [
         {
           "__type": "Sandbox.PlayerController",
-          "__guid": "7c4a560b-7a8c-4117-b25c-a9dc1f985d38",
+          "__guid": "75542e11-bc96-4196-95f1-a88f3e0d1405",
           "__enabled": true,
           "Flags": 0,
           "AccelerationTime": 0,
@@ -396,8 +595,8 @@
           "AltMoveButton": "run",
           "Body": {
             "_type": "component",
-            "component_id": "b9008a02-cd20-41a1-870b-74ceff94ffd7",
-            "go": "c471ee36-1272-4403-b84c-314d8e995cbb",
+            "component_id": "59f3bc2f-930e-409a-a358-87e8de49b612",
+            "go": "d772fc70-5218-4d53-977a-68ad6ece5cb4",
             "component_type": "Rigidbody"
           },
           "BodyCollisionTags": null,
@@ -408,7 +607,7 @@
           "CameraOffset": "256,0,12",
           "ColliderObject": {
             "_type": "gameobject",
-            "go": "57f6dd1c-fa14-415d-b257-1150c7220745"
+            "go": "d4fc9f84-e3e6-4117-b2ad-a7170fcafa8d"
           },
           "DeaccelerationTime": 0,
           "DuckedHeight": 36,
@@ -422,7 +621,7 @@
           },
           "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
-          "JumpSpeed": 3000,
+          "JumpSpeed": 300,
           "LookSensitivity": 1,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -434,15 +633,15 @@
           "ReachLength": 130,
           "Renderer": {
             "_type": "component",
-            "component_id": "5c39e1de-8fbd-4b38-be84-9fe3fa352d06",
-            "go": "f1757a33-1a7e-4cba-85ee-262fc6a09071",
+            "component_id": "dac7c9a1-f057-4c56-b50f-668a0b80fec4",
+            "go": "d9092227-5121-4de2-b281-e26ed69ce9a3",
             "component_type": "SkinnedModelRenderer"
           },
           "RotateWithGround": true,
           "RotationAngleLimit": 45,
           "RotationSpeed": 1,
           "RunByDefault": false,
-          "RunSpeed": 1600,
+          "RunSpeed": 320,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
           "ThirdPerson": true,
@@ -457,7 +656,7 @@
         },
         {
           "__type": "Sandbox.Rigidbody",
-          "__guid": "b9008a02-cd20-41a1-870b-74ceff94ffd7",
+          "__guid": "59f3bc2f-930e-409a-a358-87e8de49b612",
           "__enabled": true,
           "Flags": 1,
           "AngularDamping": 1,
@@ -492,7 +691,7 @@
         },
         {
           "__type": "Sandbox.Movement.MoveModeWalk",
-          "__guid": "6b7f2c40-f790-4a72-81f6-cd382aa8fb01",
+          "__guid": "d969c06b-b351-4cb3-bfee-9d5ba0be2e86",
           "__enabled": true,
           "Flags": 0,
           "GroundAngle": 45,
@@ -508,7 +707,7 @@
         },
         {
           "__type": "Sandbox.Movement.MoveModeSwim",
-          "__guid": "425ee7a4-f266-4a5f-a5f3-e5a3c8da53f7",
+          "__guid": "c0c43625-adee-416e-a659-6e765f31e57a",
           "__enabled": true,
           "Flags": 0,
           "OnComponentDestroy": null,
@@ -522,7 +721,7 @@
         },
         {
           "__type": "Sandbox.Movement.MoveModeLadder",
-          "__guid": "4075934f-61f9-4f45-8078-4c8568739377",
+          "__guid": "5ff22acd-ccc4-4e3f-82b8-574f39867d70",
           "__enabled": true,
           "Flags": 0,
           "ClimbableTags": "ladder",
@@ -537,14 +736,14 @@
         },
         {
           "__type": "Sandbox.Dresser",
-          "__guid": "24661c71-cfb6-4c4f-b0c1-2e2634e3be4e",
+          "__guid": "e439c45a-055a-4c1d-93be-23e82d90fb76",
           "__enabled": true,
           "Flags": 0,
           "ApplyHeightScale": true,
           "BodyTarget": {
             "_type": "component",
-            "component_id": "5c39e1de-8fbd-4b38-be84-9fe3fa352d06",
-            "go": "f1757a33-1a7e-4cba-85ee-262fc6a09071",
+            "component_id": "dac7c9a1-f057-4c56-b50f-668a0b80fec4",
+            "go": "d9092227-5121-4de2-b281-e26ed69ce9a3",
             "component_type": "SkinnedModelRenderer"
           },
           "Clothing": [],
@@ -564,7 +763,7 @@
       ],
       "Children": [
         {
-          "__guid": "f1757a33-1a7e-4cba-85ee-262fc6a09071",
+          "__guid": "d9092227-5121-4de2-b281-e26ed69ce9a3",
           "__version": 2,
           "Flags": 0,
           "Name": "Body",
@@ -581,7 +780,7 @@
           "Components": [
             {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "5c39e1de-8fbd-4b38-be84-9fe3fa352d06",
+              "__guid": "dac7c9a1-f057-4c56-b50f-668a0b80fec4",
               "__enabled": true,
               "Flags": 0,
               "AnimationGraph": null,
@@ -628,7 +827,7 @@
           "Children": []
         },
         {
-          "__guid": "57f6dd1c-fa14-415d-b257-1150c7220745",
+          "__guid": "d4fc9f84-e3e6-4117-b2ad-a7170fcafa8d",
           "__version": 2,
           "Flags": 1,
           "Name": "Colliders",
@@ -645,7 +844,7 @@
           "Components": [
             {
               "__type": "Sandbox.CapsuleCollider",
-              "__guid": "f422b1f1-a591-4eca-bf00-0e7d50dbea60",
+              "__guid": "7d8538b9-2f2f-4f01-8c72-aa80de6dbc6b",
               "__enabled": true,
               "Flags": 1,
               "ColliderFlags": 0,
@@ -672,7 +871,7 @@
             },
             {
               "__type": "Sandbox.BoxCollider",
-              "__guid": "d5dff66b-f7e3-4ad9-8cdb-d5764b953ef5",
+              "__guid": "47a0bf47-3586-4584-887e-636532e03a01",
               "__enabled": true,
               "Flags": 1,
               "Center": "0,0,18",
@@ -702,12 +901,12 @@
       ]
     },
     {
-      "__guid": "353737eb-b78f-4725-82ed-2e98589baff4",
+      "__guid": "bf05aa6f-b39c-4ae6-82cd-06996851b540",
       "__version": 2,
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-2082.1084,928.290588,1335.46936",
-      "Rotation": "0.189457774,0.0747334883,-0.910745919,0.359252721",
+      "Position": "-6607.49463,-94.8837204,675.167175",
+      "Rotation": "0.0377780013,0.205379754,-0.1769187,0.961816907",
       "Scale": "1,1,1",
       "Tags": "maincamera",
       "Enabled": true,
@@ -719,7 +918,7 @@
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
-          "__guid": "e77af4e5-a86e-463c-8756-52ea00bee27d",
+          "__guid": "045f019a-5409-4962-ab5a-bb506a4353e4",
           "__enabled": true,
           "Flags": 0,
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
@@ -743,21 +942,21 @@
           "RenderTexture": null,
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
-          "ZFar": 131072,
+          "ZFar": 10000,
           "ZNear": 10
         }
       ],
       "Children": []
     },
     {
-      "__guid": "21b8587d-02da-4f83-9789-ede6340c294a",
+      "__guid": "210cd708-85c2-436f-bb1d-80becc80f5ba",
       "__version": 2,
       "Flags": 0,
       "Name": "Ocean",
-      "Position": "0,0,256",
+      "Position": "0,0,500",
       "Rotation": "0,0,0,1",
-      "Scale": "4096,4096,1",
-      "Tags": "reflection",
+      "Scale": "8192,8192,1",
+      "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkFlags": 0,
@@ -767,14 +966,14 @@
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
-          "__guid": "c68c118c-254e-47e9-a829-18429d21795c",
+          "__guid": "217b4b38-feab-45e8-8c1a-92c873565c65",
           "__enabled": true,
           "Flags": 0,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "LodOverride": null,
           "MaterialGroup": null,
-          "MaterialOverride": "materials/water/water_mirror.vmat",
+          "MaterialOverride": "materials/water/water_clear.vmat",
           "Materials": null,
           "Model": "models/dev/plane.vmdl",
           "OnComponentDestroy": null,
@@ -791,93 +990,9 @@
           },
           "RenderType": "On",
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "PlaneReflection",
-          "__guid": "d7772624-2daa-4bef-a37f-be4afcca08e9",
-          "__enabled": true,
-          "Flags": 0,
-          "IncludeReflection": true,
-          "IncludeRefraction": false,
-          "OffsettingEnabled": false,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "PlaneNormal": "0,0,1",
-          "ReflectionCamera": {
-            "_type": "component",
-            "component_id": "de47391e-f046-4382-aa0a-da13f31fbbca",
-            "go": "010fb4d6-d19c-4796-a8fa-8453861972a0",
-            "component_type": "CameraComponent"
-          },
-          "ReflectionSurfaceOffset": 4,
-          "RefractionFog": false,
-          "RefractionFogColor": "0,0,0,1",
-          "RefractionFogDepth": 128,
-          "RefractionFogDistance": 0,
-          "RefractionFogHeight": 0,
-          "TargetRenderer": {
-            "_type": "component",
-            "component_id": "c68c118c-254e-47e9-a829-18429d21795c",
-            "go": "21b8587d-02da-4f83-9789-ede6340c294a",
-            "component_type": "ModelRenderer"
-          },
-          "TextureResolution": 1
         }
       ],
-      "Children": [
-        {
-          "__guid": "010fb4d6-d19c-4796-a8fa-8453861972a0",
-          "__version": 2,
-          "Flags": 4096,
-          "Name": "Reflections Camera",
-          "Position": "-2082.1084,928.290588,1335.46936",
-          "Rotation": "0.189457774,0.0747334883,-0.910745919,0.359252721",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.CameraComponent",
-              "__guid": "de47391e-f046-4382-aa0a-da13f31fbbca",
-              "__enabled": false,
-              "Flags": 0,
-              "BackgroundColor": "0.33333,0.46275,0.52157,1",
-              "ClearFlags": "All",
-              "EnablePostProcessing": true,
-              "FieldOfView": 60,
-              "FovAxis": "Horizontal",
-              "IsMainCamera": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Orthographic": false,
-              "OrthographicHeight": 1204,
-              "PostProcessAnchor": null,
-              "Priority": -100,
-              "RenderExcludeTags": "reflection,debugoverlay",
-              "RenderTags": "",
-              "RenderTexture": null,
-              "TargetEye": "None",
-              "Viewport": "0,0,1,1",
-              "ZFar": 131072,
-              "ZNear": 10
-            }
-          ],
-          "Children": []
-        }
-      ]
+      "Children": []
     }
   ],
   "SceneProperties": {

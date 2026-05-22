@@ -3,7 +3,7 @@ struct MountainModification
     float3 WorldOrigin;
     float WorldRadius;
     float WorldHeight;
-    float NoiseOffset;
+    float3 NoiseOffset;
 
     float Smooth(float value)
     {
@@ -17,7 +17,7 @@ struct MountainModification
 
         if (peakiness <= 0) return;
 
-        float detail = FractalSimplexNoise3D(float3((worldPos2d - WorldOrigin.xy) / 8192.0, NoiseOffset), 6) * 0.5 + 0.5;
+        float detail = FractalSimplexNoise3D(NoiseOffset + float3((worldPos2d - WorldOrigin.xy) / 8192.0, 0), 6) * 0.5 + 0.5;
 
         peakiness = lerp(0, 0.5 + detail * 0.5, peakiness);
         peakiness = Smooth(peakiness);
