@@ -90,7 +90,6 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 
 		Transform.OnTransformChanged += OnTransformChanged;
 
-		Volume?.InvalidateBrushes();
 		UpdateModification();
 	}
 
@@ -100,7 +99,6 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 
 		Transform.OnTransformChanged -= OnTransformChanged;
 
-		Volume?.InvalidateBrushes();
 		UpdateModification();
 	}
 
@@ -110,7 +108,6 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 
 		Transform.OnTransformChanged -= OnTransformChanged;
 
-		Volume?.InvalidateBrushes();
 		UpdateModification();
 	}
 

@@ -1,7 +1,6 @@
 ﻿using Sandbox;
-using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
+using System.Linq;
 using Voxels.Modification;
 
 namespace Voxels;
@@ -27,7 +26,12 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 	private Vector3Int GetLoadOrigin()
 	{
-		var cameraPos = Scene.Camera.IsValid() ? Scene.Camera.WorldPosition : default;
+		var editorCamera = Scene.GetComponents<CameraComponent>()
+			.FirstOrDefault( x => x.GameObject.Name == "editor_camera" );
+
+		var camera = editorCamera ?? Scene.Camera;
+		var cameraPos = camera?.WorldPosition ?? default;
+
 		return (Vector3Int)(cameraPos / VoxelSize);
 	}
 
@@ -44,8 +48,6 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 			_lastLoadOrigin = loadOrigin;
 			UpdateChunks();
 		}
-
-		UpdateBrushes();
 
 		foreach ( var (index, chunk) in _chunks )
 		{
@@ -72,40 +74,15 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 	private readonly HashSet<ChunkIndex> _chunksToKeep = new();
 	private readonly HashSet<ChunkIndex> _chunksToRemove = new();
 
-	private readonly List<VoxelBrush> _brushes = new();
-	private bool _brushesInvalid = true;
-
-	private void UpdateBrushes()
-	{
-		if ( !_brushesInvalid ) return;
-
-		_brushesInvalid = false;
-
-		_brushes.Clear();
-		_brushes.AddRange( GetComponentsInChildren<VoxelBrush>() );
-
-		foreach ( var chunk in _chunks.Values )
-		{
-			UpdateModifications( chunk );
-		}
-	}
-
-	internal void InvalidateBrushes()
-	{
-		_brushesInvalid = true;
-	}
-
 	[Button]
 	public void ForceRebuild()
 	{
-		InvalidateBrushes();
+		MarkDirty( new BBox( mins: float.NegativeInfinity, maxs: float.PositiveInfinity ) );
 		UpdateChunks();
 	}
 
 	internal void MarkDirty( BBox worldBounds, int voxelMargin = 4 )
 	{
-		UpdateBrushes();
-
 		var voxelBounds = new BBox( worldBounds.Mins / VoxelSize, worldBounds.Maxs / VoxelSize );
 
 		// TODO: find min / max chunk indices, iterate?
@@ -124,7 +101,7 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 	{
 		_tempModifications.Clear();
 
-		foreach ( var brush in _brushes )
+		foreach ( var brush in GetComponentsInChildren<VoxelBrush>() )
 		{
 			if ( brush.Modification is not { } modification ) continue;
 			if ( !modification.CanAffectChunk( chunk ) ) continue;
@@ -140,8 +117,6 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 	{
 		FindChunksToLoad();
 		UnloadUnwantedChunks();
-
-		UpdateBrushes();
 
 		foreach ( var index in _chunksToLoad )
 		{
@@ -179,7 +154,9 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 		_chunksToLoad.Clear();
 		_chunksToKeep.Clear();
 
-		for ( var i = 0; i <= MaxLevel; i++ )
+		var minLevel = Scene.IsEditor ? 2 : 0;
+
+		for ( var i = minLevel; i <= MaxLevel; i++ )
 		{
 			FindChunksToLoad( loadOrigin, ChunkLoadRadius, i, _chunksToLoad );
 			FindChunksToLoad( loadOrigin, ChunkLoadRadius + 1, i, _chunksToKeep );

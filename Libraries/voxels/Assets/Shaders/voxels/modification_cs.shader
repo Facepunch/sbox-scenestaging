@@ -32,7 +32,8 @@ CS
     {
         ModificationType_Plane = 0x01,
         ModificationType_Sphere = 0x02,
-        ModificationType_WorldGen = 0x03
+        ModificationType_WorldGen = 0x03,
+        ModificationType_Mountain = 0x04
     };
 
     RWStructuredBuffer<uint> VoxelData < Attribute("VoxelData"); >;
@@ -110,6 +111,7 @@ CS
     #include "Shaders/voxels/modifications/sphere.hlsl"
     #include "Shaders/voxels/modifications/plane.hlsl"
     #include "Shaders/voxels/modifications/worldgen.hlsl"
+    #include "Shaders/voxels/modifications/mountain.hlsl"
 
     [numthreads( 1, 1, 1 )]
     void MainCs(uint2 dispatchId: SV_DispatchThreadID)
@@ -134,6 +136,10 @@ CS
 
             case ModificationType_WorldGen:
                 WorldGenModification::Read(e.ParameterOffset).Apply(c);
+                break;
+
+            case ModificationType_Mountain:
+                MountainModification::Read(e.ParameterOffset).Apply(c);
                 break;
             }
         }

@@ -66,7 +66,7 @@
           "Components": [
             {
               "__type": "Voxels.Modification.PlaneBrush",
-              "__guid": "e9c21227-5847-48a8-a113-80b9793b9a12",
+              "__guid": "75f3be7d-1b92-4c68-83be-60b7e26c430b",
               "__enabled": true,
               "Flags": 0,
               "OnComponentDestroy": null,
@@ -81,11 +81,11 @@
           "Children": []
         },
         {
-          "__guid": "8392aa9c-73e2-441b-a62a-760c4ed92a2d",
+          "__guid": "638a9952-5b3b-4afd-a4dc-a09bd7b8b582",
           "__version": 2,
           "Flags": 0,
-          "Name": "World",
-          "Position": "0,0,0",
+          "Name": "Island",
+          "Position": "493.509399,-803.514771,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -97,59 +97,29 @@
           "OwnerTransfer": 1,
           "Components": [
             {
-              "__type": "Voxels.Modification.WorldGenBrush",
-              "__guid": "8f31c996-0689-43c4-9ce0-15b4be1c7416",
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "aa2be4e2-922a-41b3-8ed5-b5ff5a8eb65d",
               "__enabled": true,
               "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "db6df5e4-9369-4363-9073-c04726c8a8bf",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "Sphere (1)",
-          "Position": "-5923.53662,1786.36707,1908.54211",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Voxels.Modification.SphereBrush",
-              "__guid": "d1648963-c4d1-443a-9801-ac03f86a356a",
-              "__enabled": true,
-              "Flags": 0,
+              "Height": 1024,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Operation": "Subtract",
-              "Radius": 1280
+              "Radius": 10000,
+              "Seed": 1539607848
             }
           ],
           "Children": []
         },
         {
-          "__guid": "0566ceef-ca77-42ed-953c-5f8622c7aef8",
+          "__guid": "35ab4b8b-667b-4b3b-8f50-af5d965cfb21",
           "__version": 2,
           "Flags": 0,
-          "Name": "Sphere (2)",
-          "Position": "-4987.771,567.854675,2135.35718",
+          "Name": "Mountain",
+          "Position": "4243.31152,-18662.5391,0.0129385162",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -161,28 +131,29 @@
           "OwnerTransfer": 1,
           "Components": [
             {
-              "__type": "Voxels.Modification.SphereBrush",
-              "__guid": "0796d0e4-13f2-4909-a48b-d852cf8f30de",
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "ff5d640a-cabe-41ed-a87c-6785fafbac9e",
               "__enabled": true,
               "Flags": 0,
+              "Height": 4000,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Operation": "Subtract",
-              "Radius": 1280
+              "Radius": 7500,
+              "Seed": 1539607848
             }
           ],
           "Children": []
         },
         {
-          "__guid": "39dfc867-0a77-4d4c-93f8-690e5a267fac",
+          "__guid": "9bb2eb15-8b90-43fb-bd57-c05dbe2e48ac",
           "__version": 2,
           "Flags": 0,
-          "Name": "Sphere (3)",
-          "Position": "-4125.07178,1895.33521,1578.95215",
+          "Name": "Mountain (1)",
+          "Position": "4918.66064,-13651.0713,250.278656",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
@@ -194,18 +165,87 @@
           "OwnerTransfer": 1,
           "Components": [
             {
-              "__type": "Voxels.Modification.SphereBrush",
-              "__guid": "8bc8bcb0-9b3b-4f33-9532-a5a5f226fc10",
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "6d689792-ffc2-41e8-b059-7fce970f1092",
               "__enabled": true,
               "Flags": 0,
+              "Height": 3000,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Operation": "Subtract",
-              "Radius": 1280
+              "Radius": 7500,
+              "Seed": 240211695
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "0329352f-ca1a-4a21-898c-b90ef08dad4a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Island (1)",
+          "Position": "7137.19922,-9396.66602,0.00103995204",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "3743a78e-d730-4125-984e-58808b4fde01",
+              "__enabled": true,
+              "Flags": 0,
+              "Height": 1024,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Radius": 15000,
+              "Seed": 666584863
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "500cbf8b-a0a3-4414-bbba-ea8b008e6383",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Island (2)",
+          "Position": "5130.0708,-18210.8281,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.MountainBrush",
+              "__guid": "08146de7-04e7-4aca-a10b-6950cb8c6347",
+              "__enabled": true,
+              "Flags": 0,
+              "Height": 1024,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Radius": 15000,
+              "Seed": 1013390189
             }
           ],
           "Children": []
@@ -332,7 +372,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "0,0,0",
+      "Position": "-2481.2041,555.717651,1065.49731",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -666,8 +706,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-69.6416473,566.473511,463.787964",
-      "Rotation": "0.191966653,0.21078752,-0.645383716,0.708658695",
+      "Position": "-2082.1084,928.290588,1335.46936",
+      "Rotation": "0.189457774,0.0747334883,-0.910745919,0.359252721",
       "Scale": "1,1,1",
       "Tags": "maincamera",
       "Enabled": true,
@@ -708,6 +748,136 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "21b8587d-02da-4f83-9789-ede6340c294a",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Ocean",
+      "Position": "0,0,256",
+      "Rotation": "0,0,0,1",
+      "Scale": "4096,4096,1",
+      "Tags": "reflection",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c68c118c-254e-47e9-a829-18429d21795c",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/water/water_mirror.vmat",
+          "Materials": null,
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PlaneReflection",
+          "__guid": "d7772624-2daa-4bef-a37f-be4afcca08e9",
+          "__enabled": true,
+          "Flags": 0,
+          "IncludeReflection": true,
+          "IncludeRefraction": false,
+          "OffsettingEnabled": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "PlaneNormal": "0,0,1",
+          "ReflectionCamera": {
+            "_type": "component",
+            "component_id": "de47391e-f046-4382-aa0a-da13f31fbbca",
+            "go": "010fb4d6-d19c-4796-a8fa-8453861972a0",
+            "component_type": "CameraComponent"
+          },
+          "ReflectionSurfaceOffset": 4,
+          "RefractionFog": false,
+          "RefractionFogColor": "0,0,0,1",
+          "RefractionFogDepth": 128,
+          "RefractionFogDistance": 0,
+          "RefractionFogHeight": 0,
+          "TargetRenderer": {
+            "_type": "component",
+            "component_id": "c68c118c-254e-47e9-a829-18429d21795c",
+            "go": "21b8587d-02da-4f83-9789-ede6340c294a",
+            "component_type": "ModelRenderer"
+          },
+          "TextureResolution": 1
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "010fb4d6-d19c-4796-a8fa-8453861972a0",
+          "__version": 2,
+          "Flags": 4096,
+          "Name": "Reflections Camera",
+          "Position": "-2082.1084,928.290588,1335.46936",
+          "Rotation": "0.189457774,0.0747334883,-0.910745919,0.359252721",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.CameraComponent",
+              "__guid": "de47391e-f046-4382-aa0a-da13f31fbbca",
+              "__enabled": false,
+              "Flags": 0,
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "All",
+              "EnablePostProcessing": true,
+              "FieldOfView": 60,
+              "FovAxis": "Horizontal",
+              "IsMainCamera": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "PostProcessAnchor": null,
+              "Priority": -100,
+              "RenderExcludeTags": "reflection,debugoverlay",
+              "RenderTags": "",
+              "RenderTexture": null,
+              "TargetEye": "None",
+              "Viewport": "0,0,1,1",
+              "ZFar": 131072,
+              "ZNear": 10
+            }
+          ],
+          "Children": []
+        }
+      ]
     }
   ],
   "SceneProperties": {

@@ -81,7 +81,7 @@ PS
         float3 voxel = trunc(i.vChunkLocal * 32.0) / 4.0;
         float tweak = SimplexNoise3D(voxel) * 0.125 + 0.75;
 
-        m.Albedo *= Tint * tweak;
+        // m.Albedo *= Tint * tweak;
 
         return ShadingModelStandard::Shade(m);
     }
