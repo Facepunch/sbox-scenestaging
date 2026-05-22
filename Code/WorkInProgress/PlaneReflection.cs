@@ -91,8 +91,6 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		ReflectionCamera.Enabled = false;
 	}
 
-
-
 	protected override void OnPreRender()
 	{
 		base.OnPreRender();
@@ -113,7 +111,8 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		var reflectPlane = new Plane( WorldPosition, planeNormal );
 
 		ReflectionCamera.WorldTransform = Scene.Camera.WorldTransform;
-
+		ReflectionCamera.ZNear = Scene.Camera.ZNear;
+		ReflectionCamera.ZFar = Scene.Camera.ZFar;
 
 		// Refract
 		if ( IncludeRefraction )
