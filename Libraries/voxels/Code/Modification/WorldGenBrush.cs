@@ -2,7 +2,13 @@
 
 namespace Voxels.Modification;
 
+public sealed record WorldGenModification()
+	: VoxelModification( 0x03 );
+
 public sealed class WorldGenBrush : VoxelBrush
 {
-	public override uint ModificationTypeId => 0x03;
+	protected override VoxelModification BuildModification()
+	{
+		return new WorldGenModification();
+	}
 }

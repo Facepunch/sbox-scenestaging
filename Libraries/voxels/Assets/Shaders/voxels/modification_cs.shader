@@ -41,8 +41,9 @@ CS
     uint3 VoxelCount < Attribute("VoxelCount"); >;
 
     float VoxelScale < Attribute("VoxelScale"); > ;
-    float3 WorldOrigin < Attribute("WorldOrigin"); >;
+    float3 WorldOrigin < Attribute("WorldOrigin"); > ;
 
+    uint ModificationOffset < Attribute("ModificationOffset"); > ;
     uint ModificationCount < Attribute("ModificationCount"); > ;
     StructuredBuffer<VoxelModificationEntry> ModificationList < Attribute("ModificationList"); >;
     StructuredBuffer<uint> ParameterData < Attribute("ParameterData"); > ;
@@ -115,7 +116,7 @@ CS
     {
         for (int i = 0; i < ModificationCount; i++)
         {
-            VoxelModificationEntry e = ModificationList[i];
+            VoxelModificationEntry e = ModificationList[ModificationOffset + i];
             VoxelColumn c;
 
             c.Index = dispatchId;

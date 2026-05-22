@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Sandbox;
+using Sandbox.UI;
+using System;
 using System.Collections.Concurrent;
-using Sandbox;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Voxels.Modification;
 using Voxels.Physics;
 using Voxels.Rendering;
+using static Sandbox.Volumes.VolumeSystem;
 
 namespace Voxels;
 
@@ -14,14 +17,19 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 	private readonly HashSet<VoxelChunk> _dirtyChunkSet = new();
 	private readonly Queue<VoxelChunk> _dirtyChunkQueue = new();
 
+	private static ComputeShader? _modificationCompute;
 	private ComputeShader? _findVerticesCompute;
 	private ComputeShader? _findIndicesCompute;
+	private static GpuBuffer<VoxelModificationEntry>? _modificationBuffer;
+	private static GpuBuffer<uint>? _parameterBuffer;
 	private GpuBuffer<RenderVertex>? _vertexBuffer;
 	private GpuBuffer<Vector3>? _physicsVertexBuffer;
 	private GpuBuffer<uint>? _vertexIndexMap;
 	private GpuBuffer<uint>? _indexBuffer;
 	private GpuBuffer<uint>? _resultBuffer;
 
+	private readonly List<VoxelModificationEntry> _modifications = new();
+	private readonly List<uint> _modificationParameters = new();
 	private readonly List<uint> _resultList = new();
 	private readonly SceneCustomObject _sceneObject;
 
@@ -78,7 +86,7 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 		}
 	}
 
-	private readonly record struct UpdatingChunk( VoxelChunk Chunk, uint VertexOffset, uint IndexOffset );
+	private readonly record struct UpdatingChunk( VoxelChunk Chunk, uint ModificationOffset, uint ModificationCount, uint VertexOffset, uint IndexOffset );
 
 	private readonly List<UpdatingChunk> _updatingChunks = new();
 	private readonly List<Task> _pendingTasks = new();
@@ -88,6 +96,8 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 		const int maxParallelChunks = 16;
 
 		_updatingChunks.Clear();
+		_modifications.Clear();
+		_modificationParameters.Clear();
 
 		var maxTotalVertices = 0U;
 		var maxTotalIndices = 0U;
@@ -98,16 +108,60 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 
 			if ( !next.IsValid() ) continue;
 
-			_updatingChunks.Add( new( next, maxTotalVertices, maxTotalIndices ) );
-
 			var maxVertices = GetMaxVertexCount( VoxelChunk.Size );
 			var maxTriangles = GetMaxTriangleCount( VoxelChunk.Size );
 
 			maxTotalVertices = (uint)(maxTotalVertices + maxVertices);
 			maxTotalIndices = (uint)(maxTotalIndices + maxTriangles * 3);
+
+			var modificationOffset = (uint)_modifications.Count;
+
+			next.WritePendingModifications( _modifications, _modificationParameters );
+
+			var modificationCount = (uint)(_modifications.Count - modificationOffset);
+
+			_updatingChunks.Add( new( next,
+				modificationOffset, modificationCount,
+				maxTotalVertices, maxTotalIndices ) );
 		}
 
 		if ( _updatingChunks.Count == 0 ) return;
+
+		if ( _modifications.Count > 0 )
+		{
+			PrepareBuffer( ref _modificationBuffer, (uint)_modifications.Count );
+			PrepareBuffer( ref _parameterBuffer, (uint)_modificationParameters.Count );
+
+			_modificationCompute ??= new ComputeShader( "Shaders/voxels/modification_cs.shader" );
+
+			_modificationBuffer.SetData( _modifications );
+			_parameterBuffer.SetData( _modificationParameters );
+
+			_modificationCompute.Attributes.Set( "ModificationList", _modificationBuffer );
+			_modificationCompute.Attributes.Set( "ParameterData", _parameterBuffer );
+
+			foreach ( var next in _updatingChunks )
+			{
+				if ( next.ModificationCount == 0 ) continue;
+
+				var span = next.Chunk.FullVoxelSpan;
+
+				_modificationCompute.Attributes.Set( "VoxelData", span.Buffer );
+				_modificationCompute.Attributes.Set( "VoxelCount", span.Size );
+				_modificationCompute.Attributes.Set( "VoxelOffset", span.Offset );
+				_modificationCompute.Attributes.Set( "VoxelStride", span.Stride );
+
+				var worldOrigin = next.Chunk.Index.Min * next.Chunk.Volume.VoxelSize - VoxelChunk.Margin * next.Chunk.VoxelScale;
+
+				_modificationCompute.Attributes.Set( "VoxelScale", next.Chunk.VoxelScale );
+				_modificationCompute.Attributes.Set( "WorldOrigin", worldOrigin );
+
+				_modificationCompute.Attributes.Set( "ModificationOffset", next.ModificationOffset );
+				_modificationCompute.Attributes.Set( "ModificationCount", next.ModificationCount );
+
+				_modificationCompute.Dispatch( span.Size.x, span.Size.y, 1 );
+			}
+		}
 
 		PrepareBuffer( ref _vertexBuffer, maxTotalVertices );
 		PrepareBuffer( ref _physicsVertexBuffer, maxTotalVertices );
@@ -133,7 +187,7 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 
 		for ( var i = 0; i < _updatingChunks.Count; i++ )
 		{
-			var (chunk, vertexOffset, _) = _updatingChunks[i];
+			var (chunk, _, _, vertexOffset, _) = _updatingChunks[i];
 			var voxelSpan = chunk.VisibleVoxelSpan;
 
 			_findVerticesCompute.Attributes.Set( "VoxelData", voxelSpan.Buffer );
@@ -167,7 +221,7 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 
 		for ( var i = 0; i < _updatingChunks.Count; i++ )
 		{
-			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
+			var (chunk, _, _, vertexOffset, indexOffset) = _updatingChunks[i];
 			var voxelSpan = chunk.VisibleVoxelSpan;
 
 			_findIndicesCompute.Attributes.Set( "VoxelData", voxelSpan.Buffer );
@@ -204,7 +258,7 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 
 		for ( var i = 0; i < _updatingChunks.Count; i++ )
 		{
-			var (chunk, vertexOffset, indexOffset) = _updatingChunks[i];
+			var (chunk, _, _, vertexOffset, indexOffset) = _updatingChunks[i];
 			var (vertexCount, indexCount) = (_resultList[i * 2], _resultList[i * 2 + 1]);
 
 			if ( !chunk.IsValid ) continue;
@@ -230,6 +284,14 @@ internal sealed partial class VoxelSystem : GameObjectSystem<VoxelSystem>
 		}
 
 		await GameTask.WhenAll( _pendingTasks );
+
+		foreach ( var item in _updatingChunks )
+		{
+			if ( item.Chunk.HasPendingModifications )
+			{
+				QueueChunkUpdate( item.Chunk );
+			}
+		}
 	}
 
 	private async Task UpdateCollisionMesh( VoxelChunk chunk, int vertexOffset, int vertexCount, int indexOffset, int indexCount )

@@ -24,7 +24,6 @@
           "Flags": 0,
           "ChunkLoadRadius": 2,
           "MaxLevel": 6,
-          "Offset": "0,0,0",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -32,7 +31,6 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "PauseChunkUpdates": false,
-          "Seed": 12379162,
           "StartSolid": false,
           "VoxelSize": 32
         },
@@ -50,6 +48,38 @@
         }
       ],
       "Children": [
+        {
+          "__guid": "63c1bf20-ed54-4ae3-96cf-d78f5c50a21c",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Plane",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.PlaneBrush",
+              "__guid": "e9c21227-5847-48a8-a113-80b9793b9a12",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Operation": "Add"
+            }
+          ],
+          "Children": []
+        },
         {
           "__guid": "8392aa9c-73e2-441b-a62a-760c4ed92a2d",
           "__version": 2,
@@ -77,6 +107,105 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "db6df5e4-9369-4363-9073-c04726c8a8bf",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sphere (1)",
+          "Position": "-5923.53662,1786.36707,1908.54211",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.SphereBrush",
+              "__guid": "d1648963-c4d1-443a-9801-ac03f86a356a",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Operation": "Subtract",
+              "Radius": 1280
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "0566ceef-ca77-42ed-953c-5f8622c7aef8",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sphere (2)",
+          "Position": "-4987.771,567.854675,2135.35718",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.SphereBrush",
+              "__guid": "0796d0e4-13f2-4909-a48b-d852cf8f30de",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Operation": "Subtract",
+              "Radius": 1280
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "39dfc867-0a77-4d4c-93f8-690e5a267fac",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Sphere (3)",
+          "Position": "-4125.07178,1895.33521,1578.95215",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Voxels.Modification.SphereBrush",
+              "__guid": "8bc8bcb0-9b3b-4f33-9532-a5a5f226fc10",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Operation": "Subtract",
+              "Radius": 1280
             }
           ],
           "Children": []
@@ -203,7 +332,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "-4721.46973,-2608.16699,2010.53992",
+      "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -537,8 +666,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-4734.10889,-2837.44287,2158.68555",
-      "Rotation": "-0.0944448113,0.11896731,0.614549279,0.774116397",
+      "Position": "-69.6416473,566.473511,463.787964",
+      "Rotation": "0.191966653,0.21078752,-0.645383716,0.708658695",
       "Scale": "1,1,1",
       "Tags": "maincamera",
       "Enabled": true,
@@ -601,14 +730,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "6b8d801b-1b24-4c6a-b150-24413e88ef01"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
         }
       }
     }

@@ -1,8 +1,9 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
-using Sandbox.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Voxels.Modification;
 using Voxels.Physics;
 using Voxels.Rendering;
@@ -27,6 +28,7 @@ internal sealed class VoxelChunk : IDisposable, IValid
 	public float VoxelScale { get; }
 
 	public bool IsValid { get; private set; }
+	public bool HasPendingModifications => IsValid && (_wasCleared || _appliedModifications < _modifications.Count);
 
 	private readonly GpuBuffer<uint> _buffer;
 
@@ -114,12 +116,11 @@ internal sealed class VoxelChunk : IDisposable, IValid
 		VisibleVoxelSpan = new GpuVoxelSpan( _buffer, 1, Size, stride );
 
 		IsValid = true;
-
-		ClearVoxelBuffer();
 	}
 
-	private readonly List<VoxelBrush> _brushes = new();
-	private int _appliedBrushes;
+	private readonly List<VoxelModification> _modifications = new();
+	private int _appliedModifications;
+	private bool _wasCleared = true;
 
 	private void ClearVoxelBuffer()
 	{
@@ -128,113 +129,80 @@ internal sealed class VoxelChunk : IDisposable, IValid
 
 	public void Clear()
 	{
-		_appliedBrushes = 0;
-
-		_brushes.Clear();
-		ClearVoxelBuffer();
+		_wasCleared = true;
+		_appliedModifications = 0;
+		_modifications.Clear();
 
 		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
 	}
 
-	public void SetBrushes( IEnumerable<VoxelBrush> brushes )
+	public void SetModifications( IReadOnlyList<VoxelModification> modifications )
 	{
-		var hadBrushes = _brushes.Count > 0;
+		var canAppend = modifications.Count >= _modifications.Count;
 
-		if ( hadBrushes )
+		for ( var i = 0; i < _modifications.Count && canAppend; i++ )
 		{
-			_appliedBrushes = 0;
-			_brushes.Clear();
+			if ( !_modifications[i].Equals( modifications[i] ) )
+			{
+				canAppend = false;
+			}
+		}
 
+		if ( canAppend )
+		{
+			AppendModifications( modifications.Skip( _modifications.Count ) );
+			return;
+		}
+
+		if ( modifications.Count == 0 )
+		{
+			if ( _modifications.Count > 0 )
+			{
+				Clear();
+			}
+
+			return;
+		}
+
+		_wasCleared = true;
+		_appliedModifications = 0;
+		_modifications.Clear();
+
+		AppendModifications( modifications );
+	}
+
+	public void AppendModifications( IEnumerable<VoxelModification> modifications )
+	{
+		var prevCount = _modifications.Count;
+
+		_modifications.AddRange( modifications );
+
+		if ( _modifications.Count == prevCount ) return;
+
+		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
+	}
+
+	public void AppendModification( VoxelModification modification )
+	{
+		_modifications.Add( modification );
+
+		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
+	}
+
+	internal void WritePendingModifications( List<VoxelModificationEntry> modifications, List<uint> parameters )
+	{
+		if ( _wasCleared )
+		{
+			_wasCleared = false;
 			ClearVoxelBuffer();
 		}
 
-		AppendBrushes( brushes );
-
-		if ( _brushes.Count == 0 )
+		for ( ; _appliedModifications < _modifications.Count; _appliedModifications++ )
 		{
-			RenderMesh = null;
-			CollisionMesh = null;
+			var modification = _modifications[_appliedModifications];
+
+			modification.Write( modifications, parameters );
 		}
-	}
-
-	public void AppendBrushes( IEnumerable<VoxelBrush> brushes )
-	{
-		foreach ( var brush in brushes )
-		{
-			if ( !brush.CanAffectChunk( this ) ) continue;
-
-			_brushes.Add( brush );
-		}
-
-		ApplyBrushes();
-	}
-
-	public void AppendBrush( VoxelBrush brush )
-	{
-		if ( !brush.CanAffectChunk( this ) ) return;
-
-		_brushes.Add( brush );
-
-		ApplyBrushes();
-	}
-
-	private static ComputeShader? _modificationCompute;
-	private static GpuBuffer<VoxelModification>? _modificationBuffer;
-	private static GpuBuffer<uint>? _parameterBuffer;
-
-	private readonly List<VoxelModification> _modificationList = new();
-	private readonly List<uint> _parameterList = new();
-
-	public void ApplyBrushes()
-	{
-		if ( _appliedBrushes >= _brushes.Count ) return;
-
-		_modificationList.Clear();
-		_parameterList.Clear();
-
-		for ( ; _appliedBrushes < _brushes.Count; _appliedBrushes++ )
-		{
-			var brush = _brushes[_appliedBrushes];
-
-			if ( !brush.IsValid ) continue;
-
-			brush.Write( this, _modificationList, _parameterList );
-		}
-
-		if ( _modificationList.Count == 0 ) return;
-
-		if ( _modificationBuffer is null || _modificationBuffer.ElementCount < _modificationList.Count )
-		{
-			_modificationBuffer?.Dispose();
-			_modificationBuffer = new GpuBuffer<VoxelModification>( _modificationList.Count.NextPowerOf2 );
-		}
-
-		if ( _parameterBuffer is null || _parameterBuffer.ElementCount < _parameterList.Count )
-		{
-			_parameterBuffer?.Dispose();
-			_parameterBuffer = new GpuBuffer<uint>( _parameterList.Count.NextPowerOf2 );
-		}
-
-		_modificationCompute ??= new ComputeShader( "Shaders/voxels/modification_cs.shader" );
-
-		_modificationCompute.Attributes.Set( "VoxelData", _buffer );
-		_modificationCompute.Attributes.Set( "VoxelCount", FullVoxelSpan.Size );
-		_modificationCompute.Attributes.Set( "VoxelOffset", FullVoxelSpan.Offset );
-		_modificationCompute.Attributes.Set( "VoxelStride", FullVoxelSpan.Stride );
-
-		_modificationCompute.Attributes.Set( "VoxelScale", VoxelScale );
-		_modificationCompute.Attributes.Set( "WorldOrigin", Index.Min * Volume.VoxelSize - Margin * VoxelScale );
-
-		_modificationBuffer.SetData( _modificationList );
-		_parameterBuffer.SetData( _parameterList );
-
-		_modificationCompute.Attributes.Set( "ModificationCount", _modificationList.Count );
-		_modificationCompute.Attributes.Set( "ModificationList", _modificationBuffer );
-		_modificationCompute.Attributes.Set( "ParameterData", _parameterBuffer );
-
-		_modificationCompute.Dispatch( FullVoxelSpan.Size.x, FullVoxelSpan.Size.y, 1 );
-
-		Volume.Scene.Get<VoxelSystem>().QueueChunkUpdate( this );
 	}
 
 	public void Dispose()

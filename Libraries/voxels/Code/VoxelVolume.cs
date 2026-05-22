@@ -1,8 +1,8 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using Voxels.Modification;
-using Voxels.Rendering;
 
 namespace Voxels;
 
@@ -12,12 +12,6 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 	[Property]
 	public float VoxelSize { get; set; } = 32f;
-
-	[Property]
-	public Vector3Int Offset { get; set; }
-
-	[Property]
-	public int Seed { get; set; } = 12379162;
 
 	[Property]
 	public int MaxLevel { get; set; } = 4;
@@ -30,13 +24,6 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 	[Property]
 	public bool StartSolid { get; set; }
-
-	[Button]
-	public void RandomizeSeed()
-	{
-		Seed = Random.Shared.Next();
-		UpdateChunks();
-	}
 
 	private Vector3Int GetLoadOrigin()
 	{
@@ -57,6 +44,8 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 			_lastLoadOrigin = loadOrigin;
 			UpdateChunks();
 		}
+
+		UpdateBrushes();
 
 		foreach ( var (index, chunk) in _chunks )
 		{
@@ -97,15 +86,53 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 
 		foreach ( var chunk in _chunks.Values )
 		{
-			chunk.SetBrushes( _brushes );
+			UpdateModifications( chunk );
 		}
+	}
+
+	internal void InvalidateBrushes()
+	{
+		_brushesInvalid = true;
 	}
 
 	[Button]
 	public void ForceRebuild()
 	{
-		_brushesInvalid = true;
+		InvalidateBrushes();
 		UpdateChunks();
+	}
+
+	internal void MarkDirty( BBox worldBounds, int voxelMargin = 4 )
+	{
+		UpdateBrushes();
+
+		var voxelBounds = new BBox( worldBounds.Mins / VoxelSize, worldBounds.Maxs / VoxelSize );
+
+		// TODO: find min / max chunk indices, iterate?
+
+		foreach ( var (index, chunk) in _chunks )
+		{
+			if ( !index.Overlaps( voxelBounds, voxelMargin ) ) continue;
+
+			UpdateModifications( chunk );
+		}
+	}
+
+	private readonly List<VoxelModification> _tempModifications = new();
+
+	private void UpdateModifications( VoxelChunk chunk )
+	{
+		_tempModifications.Clear();
+
+		foreach ( var brush in _brushes )
+		{
+			if ( brush.Modification is not { } modification ) continue;
+			if ( !modification.CanAffectChunk( chunk ) ) continue;
+
+			_tempModifications.Add( modification );
+		}
+
+		chunk.SetModifications( _tempModifications );
 	}
 
 	[Button]
@@ -121,7 +148,8 @@ public sealed class VoxelVolume : Component, Component.ExecuteInEditor
 			if ( _chunks.TryGetValue( index, out var chunk ) ) continue;
 
 			chunk = _chunks[index] = new VoxelChunk( this, index, index.VoxelScale * VoxelSize );
-			chunk.SetBrushes( _brushes );
+
+			UpdateModifications( chunk );
 		}
 	}
 

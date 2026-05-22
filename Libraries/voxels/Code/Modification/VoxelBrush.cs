@@ -4,39 +4,14 @@ using Sandbox;
 
 namespace Voxels.Modification;
 
-internal readonly record struct VoxelModification( uint ModificationTypeId, uint ParameterOffset );
+internal readonly record struct VoxelModificationEntry( uint ModificationTypeId, uint ParameterOffset );
 
-public enum BrushOperation
+public abstract record VoxelModification( uint ModificationTypeId, BBox WorldBounds )
 {
-	Add,
-	Subtract
-}
-
-public abstract class VoxelBrush : Component, Component.ExecuteInEditor
-{
-	public virtual BBox LocalBounds => new( mins: float.NegativeInfinity, maxs: float.PositiveInfinity );
-	public BBox WorldBounds => LocalBounds + WorldPosition;
-	public abstract uint ModificationTypeId { get; }
-
-	protected override void OnEnabled()
+	protected VoxelModification( uint modificationTypeId )
+		: this( modificationTypeId, new BBox( mins: float.NegativeInfinity, maxs: float.PositiveInfinity ) )
 	{
-		base.OnEnabled();
 
-		Transform.OnTransformChanged += OnTransformChanged;
-		GetComponentInParent<VoxelVolume>()?.ForceRebuild();
-	}
-
-	protected override void OnDisabled()
-	{
-		base.OnDisabled();
-
-		Transform.OnTransformChanged -= OnTransformChanged;
-		GetComponentInParent<VoxelVolume>()?.ForceRebuild();
-	}
-
-	private void OnTransformChanged()
-	{
-		GetComponentInParent<VoxelVolume>()?.ForceRebuild();
 	}
 
 	internal bool CanAffectChunk( VoxelChunk chunk )
@@ -52,11 +27,11 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 		return WorldBounds.Overlaps( chunkBounds.Grow( chunk.VoxelScale * voxelMargin ) );
 	}
 
-	internal bool Write( VoxelChunk chunk, List<VoxelModification> modifications, List<uint> parameters )
+	internal bool Write( List<VoxelModificationEntry> modifications, List<uint> parameters )
 	{
 		var parameterOffset = (uint)parameters.Count;
 
-		modifications.Add( new VoxelModification( ModificationTypeId, parameterOffset ) );
+		modifications.Add( new VoxelModificationEntry( ModificationTypeId, parameterOffset ) );
 
 		var writer = new ParameterWriter( parameters );
 
@@ -75,7 +50,7 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 		}
 
 		public void Write( uint value ) => _list.Add( value );
-		public void Write( int value ) => _list.Add( unchecked( (uint)value ) );
+		public void Write( int value ) => _list.Add( unchecked((uint)value) );
 		public void Write( float value ) => _list.Add( BitConverter.SingleToUInt32Bits( value ) );
 
 		public void Write( Vector2 value )
@@ -93,4 +68,84 @@ public abstract class VoxelBrush : Component, Component.ExecuteInEditor
 	}
 
 	protected virtual void OnWriteParameters( ParameterWriter writer ) { }
+}
+
+public enum BrushOperation
+{
+	Add,
+	Subtract
+}
+
+public abstract class VoxelBrush : Component, Component.ExecuteInEditor
+{
+	public VoxelModification? Modification { get; private set; }
+
+	protected abstract VoxelModification BuildModification();
+
+	protected VoxelVolume? Volume => GetComponentInParent<VoxelVolume>();
+
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		Transform.OnTransformChanged += OnTransformChanged;
+
+		Volume?.InvalidateBrushes();
+		UpdateModification();
+	}
+
+	protected override void OnDisabled()
+	{
+		base.OnDisabled();
+
+		Transform.OnTransformChanged -= OnTransformChanged;
+
+		Volume?.InvalidateBrushes();
+		UpdateModification();
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		Transform.OnTransformChanged -= OnTransformChanged;
+
+		Volume?.InvalidateBrushes();
+		UpdateModification();
+	}
+
+	private void OnTransformChanged()
+	{
+		UpdateModification();
+	}
+
+	protected void UpdateModification()
+	{
+		var prevModification = Modification;
+		var nextModification = Active ? BuildModification() : null;
+
+		if ( prevModification?.Equals( nextModification ) is true )
+		{
+			return;
+		}
+
+		Modification = nextModification;
+
+		OnModificationChanged( prevModification, nextModification );
+	}
+
+	private void OnModificationChanged( VoxelModification? prev, VoxelModification? next )
+	{
+		if ( GetComponentInParent<VoxelVolume>() is not { } volume ) return;
+
+		if ( prev is not null )
+		{
+			volume.MarkDirty( prev.WorldBounds );
+		}
+
+		if ( next is not null )
+		{
+			volume.MarkDirty( next.WorldBounds );
+		}
+	}
 }

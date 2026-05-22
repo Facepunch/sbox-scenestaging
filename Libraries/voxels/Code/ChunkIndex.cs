@@ -7,24 +7,24 @@ internal readonly record struct ChunkIndex( Vector3Int Position, int Level )
 
 	public int VoxelScale => 1 << Level;
 
-	public bool Contains( Vector3Int pos )
+	public bool Contains( Vector3 pos, int voxelMargin = 0 )
 	{
-		var thisMin = Min;
-		var thisMax = Max;
+		var thisMin = Min - voxelMargin * VoxelScale;
+		var thisMax = Max + voxelMargin * VoxelScale;
 
 		return pos.x >= thisMin.x && pos.x < thisMax.x
-		                          && pos.y >= thisMin.y && pos.y < thisMax.y
-		                          && pos.z >= thisMin.z && pos.z < thisMax.z;
+			&& pos.y >= thisMin.y && pos.y < thisMax.y
+			&& pos.z >= thisMin.z && pos.z < thisMax.z;
 	}
 
-	public bool Contains( Vector3Int min, Vector3Int max )
+	public bool Overlaps( BBox bounds, int voxelMargin = 0 )
 	{
-		var thisMin = Min;
-		var thisMax = Max;
+		var thisMin = Min - voxelMargin * VoxelScale;
+		var thisMax = Max + voxelMargin * VoxelScale;
 
-		return thisMin.x <= max.x && thisMax.x > min.x
-		                          && thisMin.y <= max.y && thisMax.y > min.y
-		                          && thisMin.z <= max.z && thisMax.z > min.z;
+		return thisMin.x <= bounds.Maxs.x && thisMax.x > bounds.Mins.x
+			&& thisMin.y <= bounds.Maxs.y && thisMax.y > bounds.Mins.y
+			&& thisMin.z <= bounds.Maxs.z && thisMax.z > bounds.Mins.z;
 	}
 
 	public ChunkIndex FirstSubChunk => new ChunkIndex( Position * 2, Level - 1 );
