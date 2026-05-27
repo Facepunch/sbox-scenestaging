@@ -100,6 +100,12 @@ public sealed class TraceDebugVis : Component
 			Gizmo.Draw.LineBBox( bb + r.EndPosition );
 		}
 
+		if ( Type == TraceType.Sphere )
+		{
+			Gizmo.Draw.LineSphere( r.StartPosition, SphereRadius );
+			Gizmo.Draw.LineSphere( r.EndPosition, SphereRadius );
+		}
+
 		Gizmo.Draw.Color = Color.Green;
 		Gizmo.Draw.Line( r.EndPosition, r.EndPosition + r.Normal * 2.0f );
 
