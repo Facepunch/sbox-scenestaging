@@ -1,0 +1,481 @@
+{
+  "__guid": "d8194f54-fc3b-4ab3-9690-8c265ffe0dc6",
+  "GameObjects": [
+    {
+      "__guid": "f3bc721a-1211-4fb6-9cdd-4cf1952d533a",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-550,-80,260",
+      "Rotation": "0,0.1754,0,0.9845",
+      "Scale": "1,1,1",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "7a08dabb-cbea-4f93-89f1-46d0c889bb36",
+          "__enabled": true,
+          "BackgroundColor": "0.16078,0.18039,0.21961,1",
+          "ClearFlags": "All",
+          "FieldOfView": 90,
+          "FovAxis": "Horizontal",
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "Priority": 1,
+          "ZFar": 10000,
+          "ZNear": 1
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "3115e934-a91b-4c65-9d51-68479269eba4",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,0",
+      "Rotation": "-0.0996005,0.5648625,0.1422443,0.8067073",
+      "Scale": "1,1,1",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "4c491f42-b904-4a3f-b783-03d4336a5fc5",
+          "__enabled": true,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.2,0.2,0.2,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "d117776a-f72e-4515-9f60-0c1a40a52ba6",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "bdefbb51-778a-4c42-b04b-76ba1da79c6e",
+          "__enabled": true,
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f3753096-b0a2-4e4f-b4dc-77e5f9edee43",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Box <-> Box (mover)",
+      "Position": "0,0,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "90a8f1c1-1b74-4cba-8530-640b4f72f279",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.BoxCollider",
+          "Scale": "50,50,50"
+        },
+        {
+          "__type": "ComputePenetrationDemo",
+          "__guid": "751ec24b-549d-483b-bec7-16d617388388",
+          "__enabled": true,
+          "Target": {
+            "_type": "component",
+            "component_id": "3d14886e-4b8b-4847-bb4e-ccdd8a956dee",
+            "go": "5cdc0e46-b4e4-4c47-86a8-cb11478de88c",
+            "component_type": "BoxCollider"
+          },
+          "Label": "Box <-> Box",
+          "Speed": 1.5,
+          "Range": 60
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "5cdc0e46-b4e4-4c47-86a8-cb11478de88c",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Box <-> Box (target)",
+      "Position": "45,0,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "3d14886e-4b8b-4847-bb4e-ccdd8a956dee",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.BoxCollider",
+          "Scale": "50,50,50"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "950507a9-ce4c-4cb3-a83a-f1833a5d74bc",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Sphere <-> Sphere (mover)",
+      "Position": "0,160,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "181acad3-0024-4d09-a2d5-dfd42f8b734a",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.SphereCollider",
+          "Radius": 28.0
+        },
+        {
+          "__type": "ComputePenetrationDemo",
+          "__guid": "64864513-e41f-4f4e-88f2-0c285fef6d64",
+          "__enabled": true,
+          "Target": {
+            "_type": "component",
+            "component_id": "f748fd1d-c952-4ca1-ba32-475fef3269aa",
+            "go": "7a92ecb6-6753-4708-8dd3-694d3b55c03e",
+            "component_type": "SphereCollider"
+          },
+          "Label": "Sphere <-> Sphere",
+          "Speed": 1.5,
+          "Range": 60
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "7a92ecb6-6753-4708-8dd3-694d3b55c03e",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Sphere <-> Sphere (target)",
+      "Position": "45,160,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "f748fd1d-c952-4ca1-ba32-475fef3269aa",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.SphereCollider",
+          "Radius": 28.0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "310c5ccb-56b4-44b0-90c4-491e6bf6b14b",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Capsule <-> Capsule (mover)",
+      "Position": "0,320,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "cbb533a1-b34b-4670-915d-601987519a4b",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.CapsuleCollider",
+          "Start": "0,0,-20",
+          "End": "0,0,20",
+          "Radius": 16.0
+        },
+        {
+          "__type": "ComputePenetrationDemo",
+          "__guid": "fbab602f-9a31-459a-963e-bf0a36c24ab0",
+          "__enabled": true,
+          "Target": {
+            "_type": "component",
+            "component_id": "bc92b8ad-8ef9-4905-86c2-165b941832b2",
+            "go": "b43426bc-b8ba-4e68-a2fc-b3742b367621",
+            "component_type": "CapsuleCollider"
+          },
+          "Label": "Capsule <-> Capsule",
+          "Speed": 1.5,
+          "Range": 60
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "b43426bc-b8ba-4e68-a2fc-b3742b367621",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Capsule <-> Capsule (target)",
+      "Position": "45,320,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "bc92b8ad-8ef9-4905-86c2-165b941832b2",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.CapsuleCollider",
+          "Start": "0,0,-20",
+          "End": "0,0,20",
+          "Radius": 16.0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "d943351b-9112-42b4-891b-fc2b377e36ec",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Box <-> Sphere (mover)",
+      "Position": "0,-160,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "07234175-6a70-4aec-966a-69a5461e828b",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.BoxCollider",
+          "Scale": "50,50,50"
+        },
+        {
+          "__type": "ComputePenetrationDemo",
+          "__guid": "686ca600-1dd0-4c0d-8643-dc86742339a3",
+          "__enabled": true,
+          "Target": {
+            "_type": "component",
+            "component_id": "289903fd-39ac-4fe2-a35f-8347fd76b479",
+            "go": "9159c7ab-cacc-4dfa-a60e-3c84e5dc6572",
+            "component_type": "SphereCollider"
+          },
+          "Label": "Box <-> Sphere",
+          "Speed": 1.5,
+          "Range": 60
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "9159c7ab-cacc-4dfa-a60e-3c84e5dc6572",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Box <-> Sphere (target)",
+      "Position": "45,-160,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "289903fd-39ac-4fe2-a35f-8347fd76b479",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.SphereCollider",
+          "Radius": 28.0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "947ecb34-dd69-4451-8062-a7c09a67f163",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Box <-> Capsule (mover)",
+      "Position": "0,-320,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "4f142a4e-763c-4119-8bcc-e38a5831e97b",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.BoxCollider",
+          "Scale": "50,50,50"
+        },
+        {
+          "__type": "ComputePenetrationDemo",
+          "__guid": "802723c1-49e9-43ae-b8c4-49d4a4c871b7",
+          "__enabled": true,
+          "Target": {
+            "_type": "component",
+            "component_id": "6fbf1639-7a80-494f-8ed6-bd037ce67514",
+            "go": "7bc3ee15-4790-4482-818a-4deb8a44a031",
+            "component_type": "CapsuleCollider"
+          },
+          "Label": "Box <-> Capsule",
+          "Speed": 1.5,
+          "Range": 60
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "7bc3ee15-4790-4482-818a-4deb8a44a031",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Box <-> Capsule (target)",
+      "Position": "45,-320,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "6fbf1639-7a80-494f-8ed6-bd037ce67514",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.CapsuleCollider",
+          "Start": "0,0,-20",
+          "End": "0,0,20",
+          "Radius": 16.0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "ab5b1e39-7122-4182-880a-96e51f035d74",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Capsule <-> Sphere (mover)",
+      "Position": "0,-480,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "63adbfb9-4f3f-4e12-9d28-bf6ab602d655",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.CapsuleCollider",
+          "Start": "0,0,-20",
+          "End": "0,0,20",
+          "Radius": 16.0
+        },
+        {
+          "__type": "ComputePenetrationDemo",
+          "__guid": "0c8950b4-964a-4f42-9dfa-5f9e6cc57bd7",
+          "__enabled": true,
+          "Target": {
+            "_type": "component",
+            "component_id": "8d65920d-9769-41a8-9c4c-02e73d624edb",
+            "go": "37b4e5f0-8e35-4345-b82b-258e123aa8e3",
+            "component_type": "SphereCollider"
+          },
+          "Label": "Capsule <-> Sphere",
+          "Speed": 1.5,
+          "Range": 60
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "37b4e5f0-8e35-4345-b82b-258e123aa8e3",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Capsule <-> Sphere (target)",
+      "Position": "45,-480,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__guid": "8d65920d-9769-41a8-9c4c-02e73d624edb",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Static": true,
+          "__type": "Sandbox.SphereCollider",
+          "Radius": 28.0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "07aac38e-21da-487b-899a-8cf4ab9a5002",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "51ccfef7-5218-46fe-9ee7-b9dcfe7b752a",
+          "__enabled": true,
+          "Description": "Every collider shape pair tested with ComputePenetration. Each mover slides through its target; red = overlapping, yellow arrow = depenetration vector, cyan ghost = resolved position.",
+          "Group": "Debug",
+          "SceneTags": "",
+          "Title": "Compute Penetration"
+        }
+      ],
+      "Children": []
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {
+      "Title": "Compute Penetration",
+      "Description": "Every collider shape pair tested with ComputePenetration.",
+      "Group": "Debug"
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": "Compute Penetration",
+  "Description": "Every collider shape pair tested with ComputePenetration.",
+  "__references": [],
+  "__version": 3
+}
