@@ -1,0 +1,47 @@
+GifTestPanel {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba( black, 0.6 );
+	font-family: Poppins;
+
+	.title {
+		font-size: 48px;
+		font-weight: bold;
+		color: white;
+		margin-bottom: 40px;
+	}
+
+	.row {
+		flex-direction: row;
+	}
+
+	.item {
+		flex-direction: column;
+		align-items: center;
+		margin: 0px 30px;
+	}
+
+	.gif {
+		width: 400px;
+		height: 400px;
+		border-radius: 12px;
+		background-size: cover;
+		background-position: center;
+	}
+
+	.gif.bg {
+		background-image: url( https://files.facepunch.com/layla/1b0911b1/ape.webp );
+	}
+
+	.caption {
+		font-size: 22px;
+		color: rgba( white, 0.7 );
+		margin-top: 16px;
+	}
+}
