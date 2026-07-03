@@ -48,9 +48,9 @@ public class Compilation
 	}
 
 	private static PropertySignal<float> CreateKeyframeSignal() => PropertySignal.FromKeyframes( [
-		new Keyframe<float>( 0, 0f, KeyframeInterpolation.Linear ),
-		new Keyframe<float>( 5, 0f, KeyframeInterpolation.Linear ),
-		new Keyframe<float>( 10, 1f, KeyframeInterpolation.Cubic )
+		new Keyframe<float>( 0, 0f, KeyframeInterpolation.Linear, KeyframeConnection.Connect ),
+		new Keyframe<float>( 5, 0f, KeyframeInterpolation.Linear, KeyframeConnection.Connect ),
+		new Keyframe<float>( 10, 1f, KeyframeInterpolation.Cubic, KeyframeConnection.Connect )
 	] );
 
 	/// <summary>
