@@ -23,4 +23,24 @@ public class Signals
 
 		Assert.AreSame( transformed, reduced );
 	}
+
+	/// <summary>
+	/// We can snip out keyframes when reducing to a time range.
+	/// </summary>
+	[TestMethod]
+	public void ReduceKeyframesSimple()
+	{
+		var signal = PropertySignal.FromKeyframes( [
+			new Keyframe<int>( 0.0, 100, KeyframeInterpolation.Linear ),
+			new Keyframe<int>( 1.0, 200, KeyframeInterpolation.Linear ),
+			new Keyframe<int>( 2.0, 300, KeyframeInterpolation.Linear )
+		] );
+
+		var reduced = signal.Reduce( 0.0, 1.0 );
+
+		Assert.IsInstanceOfType<IKeyframeSignal>( reduced );
+		Assert.AreEqual( 2, reduced.Keyframes.Count );
+		Assert.AreEqual( 0.0, reduced.Keyframes[0].Time );
+		Assert.AreEqual( 1.0, reduced.Keyframes[1].Time );
+	}
 }
