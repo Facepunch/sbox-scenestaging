@@ -24,19 +24,24 @@ public class Signals
 		Assert.AreSame( transformed, reduced );
 	}
 
+	private static PropertySignal<int> GenerateKeyframeSignal( KeyframeInterpolation interpolation )
+	{
+		return PropertySignal.FromKeyframes( [
+			new Keyframe<int>( 0.0, 100, interpolation ),
+			new Keyframe<int>( 1.0, 200, interpolation ),
+			new Keyframe<int>( 2.0, 300, interpolation ),
+			new Keyframe<int>( 3.0, 400, interpolation )
+		] );
+	}
+
 	/// <summary>
 	/// We can snip out keyframes when reducing to a time range.
+	/// If the range exactly ends on a keyframe, that should be the last one (unless it's cubic).
 	/// </summary>
 	[TestMethod]
-	public void ReduceKeyframesSimple()
+	public void ReduceKeyframesSimpleExact()
 	{
-		var signal = PropertySignal.FromKeyframes( [
-			new Keyframe<int>( 0.0, 100, KeyframeInterpolation.Linear ),
-			new Keyframe<int>( 1.0, 200, KeyframeInterpolation.Linear ),
-			new Keyframe<int>( 2.0, 300, KeyframeInterpolation.Linear ),
-			new Keyframe<int>( 3.0, 400, KeyframeInterpolation.Linear )
-		] );
-
+		var signal = GenerateKeyframeSignal( KeyframeInterpolation.Linear );
 		var reduced = signal.Reduce( 0.0, 1.0 );
 
 		Assert.IsInstanceOfType<IKeyframeSignal>( reduced );
@@ -46,18 +51,30 @@ public class Signals
 	}
 
 	/// <summary>
-	/// We have to keep one keyframe outside the reduced time range when using cubic interpolation.
+	/// We can snip out keyframes when reducing to a time range.
+	/// If the range ends between keyframes, we need to keep the next one.
 	/// </summary>
 	[TestMethod]
-	public void ReduceKeyframesCubic()
+	public void ReduceKeyframesSimpleBetween()
 	{
-		var signal = PropertySignal.FromKeyframes( [
-			new Keyframe<int>( 0.0, 100, KeyframeInterpolation.Cubic ),
-			new Keyframe<int>( 1.0, 200, KeyframeInterpolation.Cubic ),
-			new Keyframe<int>( 2.0, 300, KeyframeInterpolation.Cubic ),
-			new Keyframe<int>( 3.0, 400, KeyframeInterpolation.Cubic )
-		] );
+		var signal = GenerateKeyframeSignal( KeyframeInterpolation.Linear );
+		var reduced = signal.Reduce( 0.0, 1.5 );
 
+		Assert.IsInstanceOfType<IKeyframeSignal>( reduced );
+		Assert.AreEqual( 3, reduced.Keyframes.Count );
+		Assert.AreEqual( 0.0, reduced.Keyframes[0].Time );
+		Assert.AreEqual( 1.0, reduced.Keyframes[1].Time );
+		Assert.AreEqual( 2.0, reduced.Keyframes[2].Time );
+	}
+
+	/// <summary>
+	/// We have to keep one keyframe outside the reduced time range when using cubic interpolation,
+	/// if the range ends exactly on a keyframe.
+	/// </summary>
+	[TestMethod]
+	public void ReduceKeyframesCubicExact()
+	{
+		var signal = GenerateKeyframeSignal( KeyframeInterpolation.Cubic );
 		var reduced = signal.Reduce( 0.0, 1.0 );
 
 		Assert.IsInstanceOfType<IKeyframeSignal>( reduced );
@@ -65,5 +82,20 @@ public class Signals
 		Assert.AreEqual( 0.0, reduced.Keyframes[0].Time );
 		Assert.AreEqual( 1.0, reduced.Keyframes[1].Time );
 		Assert.AreEqual( 2.0, reduced.Keyframes[2].Time );
+	}
+
+	/// <summary>
+	/// We have to keep two keyframes outside the reduced time range when using cubic interpolation,
+	/// if the range ends between two keyframes.
+	/// </summary>
+	[TestMethod]
+	public void ReduceKeyframesCubicBetween()
+	{
+		var signal = GenerateKeyframeSignal( KeyframeInterpolation.Cubic );
+		var reduced = signal.Reduce( 0.0, 1.5 );
+
+		// No reduction possible.
+
+		Assert.AreEqual( reduced, signal );
 	}
 }
