@@ -33,7 +33,8 @@ public class Signals
 		var signal = PropertySignal.FromKeyframes( [
 			new Keyframe<int>( 0.0, 100, KeyframeInterpolation.Linear ),
 			new Keyframe<int>( 1.0, 200, KeyframeInterpolation.Linear ),
-			new Keyframe<int>( 2.0, 300, KeyframeInterpolation.Linear )
+			new Keyframe<int>( 2.0, 300, KeyframeInterpolation.Linear ),
+			new Keyframe<int>( 3.0, 400, KeyframeInterpolation.Linear )
 		] );
 
 		var reduced = signal.Reduce( 0.0, 1.0 );
@@ -42,5 +43,27 @@ public class Signals
 		Assert.AreEqual( 2, reduced.Keyframes.Count );
 		Assert.AreEqual( 0.0, reduced.Keyframes[0].Time );
 		Assert.AreEqual( 1.0, reduced.Keyframes[1].Time );
+	}
+
+	/// <summary>
+	/// We have to keep one keyframe outside the reduced time range when using cubic interpolation.
+	/// </summary>
+	[TestMethod]
+	public void ReduceKeyframesCubic()
+	{
+		var signal = PropertySignal.FromKeyframes( [
+			new Keyframe<int>( 0.0, 100, KeyframeInterpolation.Cubic ),
+			new Keyframe<int>( 1.0, 200, KeyframeInterpolation.Cubic ),
+			new Keyframe<int>( 2.0, 300, KeyframeInterpolation.Cubic ),
+			new Keyframe<int>( 3.0, 400, KeyframeInterpolation.Cubic )
+		] );
+
+		var reduced = signal.Reduce( 0.0, 1.0 );
+
+		Assert.IsInstanceOfType<IKeyframeSignal>( reduced );
+		Assert.AreEqual( 3, reduced.Keyframes.Count );
+		Assert.AreEqual( 0.0, reduced.Keyframes[0].Time );
+		Assert.AreEqual( 1.0, reduced.Keyframes[1].Time );
+		Assert.AreEqual( 2.0, reduced.Keyframes[2].Time );
 	}
 }
