@@ -98,4 +98,20 @@ public class Signals
 
 		Assert.AreEqual( reduced, signal );
 	}
+
+	/// <summary>
+	/// If two keyframes overlap, we want the latter's value when querying exactly at their time.
+	/// </summary>
+	[TestMethod]
+	public void SplitKeyframeGetValue()
+	{
+		var signal = PropertySignal.FromKeyframes( [
+			new Keyframe<float>( 0.0, 0f, KeyframeInterpolation.Linear ),
+			new Keyframe<float>( 1.0, 1f, KeyframeInterpolation.Linear, KeyframeConnection.EndBlock ),
+			new Keyframe<float>( 1.0, 2f, KeyframeInterpolation.Linear, KeyframeConnection.StartBlock ),
+			new Keyframe<float>( 2.0, 3f, KeyframeInterpolation.Linear )
+		] );
+
+		Assert.AreEqual( 2f, signal.GetValue( 1.0 ) );
+	}
 }
