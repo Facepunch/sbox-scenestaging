@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Sandbox.MovieMaker.Compiled;
@@ -100,5 +101,26 @@ public class Compilation
 		Assert.AreEqual( 0.01, exampleTrack.Blocks[0].TimeRange.Start );
 		Assert.AreEqual( exampleTrack.Blocks[0].TimeRange.End, exampleTrack.Blocks[1].TimeRange.Start );
 		Assert.AreEqual( 9.99, exampleTrack.Blocks[1].TimeRange.End );
+	}
+
+	/// <summary>
+	/// Make sure the last keyframe is included in the compiled block!
+	/// </summary>
+	[TestMethod]
+	public void IncludeLastKeyframe()
+	{
+		var source = new PropertyBlock<float>( PropertySignal.FromKeyframes( [
+			new Keyframe<float>( 0.0, 0f, KeyframeInterpolation.Step ),
+			new Keyframe<float>( 1.0, 100f, KeyframeInterpolation.Step )
+		] ), (0.0, 1.0) );
+
+		var compiled = source.Compile().ToArray();
+
+		Assert.AreEqual( 2, compiled.Length );
+		Assert.IsInstanceOfType<CompiledConstantBlock<float>>( compiled[0], out var block0 );
+		Assert.IsInstanceOfType<CompiledConstantBlock<float>>( compiled[1], out var block1 );
+
+		Assert.AreEqual( 0f, block0.GetValue( 0.0 ) );
+		Assert.AreEqual( 100f, block1.GetValue( 1.0 ) );
 	}
 }
