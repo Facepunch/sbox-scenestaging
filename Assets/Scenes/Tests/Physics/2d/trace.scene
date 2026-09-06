@@ -962,8 +962,8 @@
     }
   ],
   "SceneProperties": {
-    "Is2D": true,
     "NetworkInterpolation": true,
+    "PhysicsMode": "Physics2D",
     "TimeScale": 1,
     "WantsSystemScene": true,
     "Metadata": {
@@ -986,6 +986,12 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "64db792e-5935-8fbc-8cfa-050cd49fa7fd",
+          "$refs": []
+        }
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []

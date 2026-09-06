@@ -128,7 +128,7 @@
       "Name": "Ground",
       "Position": "0,520,0",
       "Rotation": "0,0,0,1",
-      "Scale": "32,0.8,1",
+      "Scale": "32,0.800000012,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -268,20 +268,22 @@
           "__enabled": true,
           "Flags": 0,
           "ColorRange": {
+            "blend": "Linear",
             "color": [
               {
-                "c": "1,0.2,0.2,1",
-                "t": 0
+                "t": 0,
+                "c": "1,0.2,0.2,1"
               },
               {
-                "c": "0.2,0.6,1,1",
-                "t": 0.5
+                "t": 0.5,
+                "c": "0.2,0.6,1,1"
               },
               {
-                "c": "0.4,1,0.4,1",
-                "t": 1
+                "t": 1,
+                "c": "0.4,1,0.4,1"
               }
-            ]
+            ],
+            "alpha": []
           },
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -383,7 +385,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -490,7 +492,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -597,7 +599,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -704,7 +706,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -811,7 +813,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -918,7 +920,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -1025,7 +1027,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -1044,8 +1046,8 @@
     }
   ],
   "SceneProperties": {
-    "Is2D": true,
     "NetworkInterpolation": true,
+    "PhysicsMode": "Physics2D",
     "TimeScale": 1,
     "WantsSystemScene": true,
     "Metadata": {
@@ -1068,6 +1070,12 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "64db792e-5935-8fbc-8cfa-050cd49fa7fd",
+          "$refs": []
+        }
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []

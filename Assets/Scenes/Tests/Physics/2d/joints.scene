@@ -128,7 +128,7 @@
       "Name": "Ground",
       "Position": "0,560,0",
       "Rotation": "0,0,0,1",
-      "Scale": "36,0.8,1",
+      "Scale": "36,0.800000012,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -200,7 +200,7 @@
       "Name": "Hub (0)",
       "Position": "-500,-400,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.52,0.52,1",
+      "Scale": "0.519999981,0.519999981,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -272,7 +272,7 @@
       "Name": "Windmill (0)",
       "Position": "-500,-400,0",
       "Rotation": "0,0,0,1",
-      "Scale": "7,0.6,1",
+      "Scale": "7,0.600000024,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -355,7 +355,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -398,7 +398,7 @@
             "Rotation": "0,0,0,0"
           },
           "MaxAngle": 0,
-          "MaxTorque": 5000000.0,
+          "MaxTorque": 5000000,
           "MinAngle": 0,
           "Motor": "TargetVelocity",
           "OnBreak": null,
@@ -410,7 +410,7 @@
           "OnComponentUpdate": null,
           "StartBroken": false,
           "TargetAngle": 0,
-          "TargetVelocity": 240.0
+          "TargetVelocity": 240
         }
       ],
       "Children": []
@@ -422,7 +422,7 @@
       "Name": "Hub (1)",
       "Position": "0,-440,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.52,0.52,1",
+      "Scale": "0.519999981,0.519999981,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -494,7 +494,7 @@
       "Name": "Windmill (1)",
       "Position": "0,-440,0",
       "Rotation": "0,0,0,1",
-      "Scale": "7,0.6,1",
+      "Scale": "7,0.600000024,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -577,7 +577,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -620,7 +620,7 @@
             "Rotation": "0,0,0,0"
           },
           "MaxAngle": 0,
-          "MaxTorque": 5000000.0,
+          "MaxTorque": 5000000,
           "MinAngle": 0,
           "Motor": "TargetVelocity",
           "OnBreak": null,
@@ -632,7 +632,7 @@
           "OnComponentUpdate": null,
           "StartBroken": false,
           "TargetAngle": 0,
-          "TargetVelocity": -360.0
+          "TargetVelocity": -360
         }
       ],
       "Children": []
@@ -644,7 +644,7 @@
       "Name": "Hub (2)",
       "Position": "500,-400,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.52,0.52,1",
+      "Scale": "0.519999981,0.519999981,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -716,7 +716,7 @@
       "Name": "Windmill (2)",
       "Position": "500,-400,0",
       "Rotation": "0,0,0,1",
-      "Scale": "7,0.6,1",
+      "Scale": "7,0.600000024,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -799,7 +799,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -842,7 +842,7 @@
             "Rotation": "0,0,0,0"
           },
           "MaxAngle": 0,
-          "MaxTorque": 5000000.0,
+          "MaxTorque": 5000000,
           "MinAngle": 0,
           "Motor": "TargetVelocity",
           "OnBreak": null,
@@ -854,7 +854,7 @@
           "OnComponentUpdate": null,
           "StartBroken": false,
           "TargetAngle": 0,
-          "TargetVelocity": 480.0
+          "TargetVelocity": 480
         }
       ],
       "Children": []
@@ -866,7 +866,7 @@
       "Name": "Anchor (0)",
       "Position": "-300,-120,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.36,0.36,1",
+      "Scale": "0.360000014,0.360000014,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -1021,7 +1021,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -1143,7 +1143,7 @@
           "Width": [
             {
               "x": 0,
-              "y": 6.0,
+              "y": 6,
               "in": 0,
               "out": 0,
               "mode": "Mirrored"
@@ -1161,7 +1161,7 @@
       "Name": "Anchor (1)",
       "Position": "-100,-120,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.36,0.36,1",
+      "Scale": "0.360000014,0.360000014,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -1316,7 +1316,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -1438,7 +1438,7 @@
           "Width": [
             {
               "x": 0,
-              "y": 6.0,
+              "y": 6,
               "in": 0,
               "out": 0,
               "mode": "Mirrored"
@@ -1456,7 +1456,7 @@
       "Name": "Anchor (2)",
       "Position": "100,-120,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.36,0.36,1",
+      "Scale": "0.360000014,0.360000014,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -1611,7 +1611,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -1733,7 +1733,7 @@
           "Width": [
             {
               "x": 0,
-              "y": 6.0,
+              "y": 6,
               "in": 0,
               "out": 0,
               "mode": "Mirrored"
@@ -1751,7 +1751,7 @@
       "Name": "Anchor (3)",
       "Position": "300,-120,0",
       "Rotation": "0,0,0,1",
-      "Scale": "0.36,0.36,1",
+      "Scale": "0.360000014,0.360000014,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -1906,7 +1906,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -2028,7 +2028,7 @@
           "Width": [
             {
               "x": 0,
-              "y": 6.0,
+              "y": 6,
               "in": 0,
               "out": 0,
               "mode": "Mirrored"
@@ -2041,8 +2041,8 @@
     }
   ],
   "SceneProperties": {
-    "Is2D": true,
     "NetworkInterpolation": true,
+    "PhysicsMode": "Physics2D",
     "TimeScale": 1,
     "WantsSystemScene": true,
     "Metadata": {
@@ -2065,6 +2065,12 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "64db792e-5935-8fbc-8cfa-050cd49fa7fd",
+          "$refs": []
+        }
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []

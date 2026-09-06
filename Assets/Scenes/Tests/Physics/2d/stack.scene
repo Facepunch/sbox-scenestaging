@@ -128,7 +128,7 @@
       "Name": "Ground",
       "Position": "0,520,0",
       "Rotation": "0,0,0,1",
-      "Scale": "32,0.8,1",
+      "Scale": "32,0.800000012,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -200,7 +200,7 @@
       "Name": "Box (0)",
       "Position": "0,455,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -283,7 +283,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -307,7 +307,7 @@
       "Name": "Box (1)",
       "Position": "0,363,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -390,7 +390,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -414,7 +414,7 @@
       "Name": "Box (2)",
       "Position": "0,271,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -497,7 +497,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -521,7 +521,7 @@
       "Name": "Box (3)",
       "Position": "0,179,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -604,7 +604,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -628,7 +628,7 @@
       "Name": "Box (4)",
       "Position": "0,87,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -711,7 +711,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -735,7 +735,7 @@
       "Name": "Box (5)",
       "Position": "0,-5,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -818,7 +818,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -842,7 +842,7 @@
       "Name": "Box (6)",
       "Position": "0,-97,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -925,7 +925,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -949,7 +949,7 @@
       "Name": "Box (7)",
       "Position": "0,-189,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1.8,1.8,1.8",
+      "Scale": "1.79999995,1.79999995,1.79999995",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -1032,7 +1032,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -1051,8 +1051,8 @@
     }
   ],
   "SceneProperties": {
-    "Is2D": true,
     "NetworkInterpolation": true,
+    "PhysicsMode": "Physics2D",
     "TimeScale": 1,
     "WantsSystemScene": true,
     "Metadata": {
@@ -1075,6 +1075,12 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "64db792e-5935-8fbc-8cfa-050cd49fa7fd",
+          "$refs": []
+        }
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []

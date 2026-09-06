@@ -128,7 +128,7 @@
       "Name": "Ground",
       "Position": "0,460,0",
       "Rotation": "0,0,0,1",
-      "Scale": "32,0.8,1",
+      "Scale": "32,0.800000012,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -199,7 +199,7 @@
       "Flags": 0,
       "Name": "Prop (0)",
       "Position": "-420,-200,0",
-      "Rotation": "0,0,0.2588,0.9659",
+      "Rotation": "0,0,0.2588,0.965900004",
       "Scale": "4,4,4",
       "Tags": "",
       "Enabled": true,
@@ -282,7 +282,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -388,7 +388,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -411,7 +411,7 @@
       "Flags": 0,
       "Name": "Prop (2)",
       "Position": "180,-260,0",
-      "Rotation": "0,0,-0.3827,0.9239",
+      "Rotation": "0,0,-0.382699996,0.923900008",
       "Scale": "4,4,4",
       "Tags": "",
       "Enabled": true,
@@ -494,7 +494,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -517,7 +517,7 @@
       "Flags": 0,
       "Name": "Prop (3)",
       "Position": "420,-380,0",
-      "Rotation": "0,0,0.1305,0.9914",
+      "Rotation": "0,0,0.130500004,0.991400003",
       "Scale": "4,4,4",
       "Tags": "",
       "Enabled": true,
@@ -600,7 +600,7 @@
             "Roll": false
           },
           "MassCenterOverride": "0,0,0",
-          "MassOverride": null,
+          "MassOverride": 0,
           "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -619,8 +619,8 @@
     }
   ],
   "SceneProperties": {
-    "Is2D": true,
     "NetworkInterpolation": true,
+    "PhysicsMode": "Physics2D",
     "TimeScale": 1,
     "WantsSystemScene": true,
     "Metadata": {
@@ -643,6 +643,12 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "64db792e-5935-8fbc-8cfa-050cd49fa7fd",
+          "$refs": []
+        }
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
@@ -653,6 +659,8 @@
   "ResourceVersion": 3,
   "Title": "Convex Decomposition",
   "Description": "Concave ModelColliders auto decomposed into convex 2D shapes.",
-  "__references": [],
+  "__references": [
+    "polyhaven.barrel_02#26609"
+  ],
   "__version": 3
 }
